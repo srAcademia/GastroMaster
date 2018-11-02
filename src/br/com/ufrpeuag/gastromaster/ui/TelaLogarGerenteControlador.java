@@ -1,5 +1,7 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
+import java.sql.SQLException;
+
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SenhaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
@@ -21,7 +23,7 @@ public class TelaLogarGerenteControlador {
 	MainAppGerente mainAppGerente = new MainAppGerente();
 	
 	@FXML
-	public void handleconcluirLogin(ActionEvent event) throws SenhaInvalidaException{
+	public void handleconcluirLogin(ActionEvent event) throws SenhaInvalidaException, SQLException{
 		try {
 			gerente = Fachada.getSingleton().logarGerente(senhaField.getText());
 			mainAppGerente.start(new Stage());
@@ -30,8 +32,6 @@ public class TelaLogarGerenteControlador {
 			MainAppLogin.getStage().close();
 		}catch(SenhaInvalidaException ex) {
 			CaixasDeAlerta.CaixaErro("Login Gerente", "Campo inválido.", ex.getLocalizedMessage());
-		}catch(Exception ex) {
-			CaixasDeAlerta.CaixaErro("Login Gerente", "Erro inesperado.", "Erro inesperado.");
 		}
 	}
 	

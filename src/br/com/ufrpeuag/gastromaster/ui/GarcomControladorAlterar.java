@@ -8,7 +8,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import javafx.event.ActionEvent;
@@ -62,7 +61,7 @@ public class GarcomControladorAlterar {
 
 	private static Garcom garcom2;
 
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL arg0, ResourceBundle arg1) throws SQLException {
 		initGarcom();
 	}
 
@@ -94,9 +93,9 @@ public class GarcomControladorAlterar {
 		}
 	}
 
-	public void initGarcom() {
+	public void initGarcom() throws SQLException {
 		nomeFieldGarcom.setText(garcom2.getNome());
-		dataNascFieldGarcom.setText(Data.mudarDataParaString(garcom2.getDataNasc()));
+		dataNascFieldGarcom.setText(Fachada.getSingleton().mudarDataParaString((garcom2.getDataNasc())));
 		telefoneFieldGarcom.setText(garcom2.getTelefone());
 		emailFieldGarcom.setText(garcom2.getEmail());
 		salarioFieldGarcom.setText(Double.toString(garcom2.getSalario()));

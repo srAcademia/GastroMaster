@@ -1,6 +1,5 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
@@ -21,8 +20,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class GerenteControlador {
 	

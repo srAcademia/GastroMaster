@@ -61,6 +61,8 @@ public class TodasMesasControlador implements Initializable{
 	@FXML
 	private Button deletarPedido;
 	@FXML
+	private Button mudarDisponibilidade;
+	@FXML
 	private Label valorLabel;
 	@FXML
 	private Label numeroLabel;
@@ -242,7 +244,7 @@ public class TodasMesasControlador implements Initializable{
 	}
 	
 	@FXML
-	public void handlePagar(ActionEvent event) throws ContaGerarException, SQLException, PedidoInexistenteException, CPFInvalidoException, RecuperarCPFException {
+	public void handlePagar(ActionEvent event) throws ContaGerarException, SQLException, PedidoInexistenteException, CPFInvalidoException, RecuperarCPFException, MesaInexistenteException {
 			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Realizar Pagamento", "Tem certeza de que deseja realizar pagamento?");
 			if (confirmacao == true) {
 				Mesa mesa = new Mesa();
@@ -258,6 +260,7 @@ public class TodasMesasControlador implements Initializable{
 						Fachada.getSingleton().cadastrarGerenciamentoContas(gerenciamento);
 						Fachada.getSingleton().deletarTodasContasPorMesa(contas.get(0));
 						Fachada.getSingleton().deletarTodosPedidosPelaMesa(mesa.getNumero());
+						Fachada.getSingleton().mudarDisponibilidadeMesa(mesa);
 					}
 				} else {
 					CaixasDeAlerta.CaixaErro("Realizar Pagamento", "Mesa nï¿½o encontrada", "Selecione uma mesa para fazer o pagamento.");
@@ -300,6 +303,22 @@ public class TodasMesasControlador implements Initializable{
 		}catch(Exception ex) {
 			CaixasDeAlerta.CaixaErro("Deletar Pedido", "Erro inesperado.", "Erro inesperado.");
 		}
+	}
+	
+	@FXML
+	public void handleMudarDisponibilidade(ActionEvent event) throws SQLException, MesaInexistenteException {
+		Mesa mesa = new Mesa();
+		mesa = mesaList.getSelectionModel().getSelectedItem();
+		if(mesa != null) {
+			try {
+				Fachada.getSingleton().mudarDisponibilidadeMesa(mesa);
+			}catch(MesaInexistenteException ex) {
+				CaixasDeAlerta.CaixaErro("Deletar Mesa", ex.getLocalizedMessage(), "Selecione uma mesa para mudar a disponibilidade..");
+			}
+		} else {
+			CaixasDeAlerta.CaixaErro("Mudar Disponibilidade", "Mesa não encontrada", "Selecione uma mesa mudar a disponibilidade.");
+		}
+		listarMesas();
 	}
 
 }

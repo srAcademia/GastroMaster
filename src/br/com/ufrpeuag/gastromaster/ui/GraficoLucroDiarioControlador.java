@@ -1,11 +1,8 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
-import java.time.LocalDate;
 import java.util.Map;
 
-import br.com.ufrpeuag.gastromaster.dados.RepositorioGerenciamentoContas;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
+import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
@@ -17,18 +14,17 @@ import javafx.stage.Stage;
 
 public class GraficoLucroDiarioControlador extends Application {
 	
+	private String anoLucro;
+	private String mesLucro;
 	public GraficoLucroDiarioControlador (String ano, String mes) {
-		TelaRelatoriosControlador.setAno2(ano);
-		TelaRelatoriosControlador.setMes2(mes);
+		this.anoLucro = ano;
+		this.mesLucro = mes;
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
-		RepositorioGerenciamentoContas gn = new RepositorioGerenciamentoContas();
-		LocalDate data = LocalDate.now();
-
-		Map<String, Integer> example = gn.recuperarPorDia("jul","2019");
+		
+		Map<String, Integer> example = Fachada.getSingleton().recuperarPorDia(mesLucro, anoLucro);
 
 		CategoryAxis xAxis = new CategoryAxis();
 		xAxis.setLabel("Dias ");

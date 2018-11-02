@@ -36,13 +36,7 @@ public class TelaInicialLoginControler implements Initializable {
 			gerente = Fachada.getSingleton().verificarIdentificadorGerente(txtIndentificador.getText());
 			garcom = Fachada.getSingleton().verificarIdentificadorGarcom(txtIndentificador.getText());
 			
-			if(txtIndentificador.getText().equals("rootgastroadminmaster")){
-				mainAppGerente.start(new Stage());
-				TelaInicialLoginControler.getWindow().close();
-				MainAppLogin.getStage().close();
-			}
-			
-			else if(gerente == null && garcom == null) {
+			if(gerente == null && garcom == null) {
 				CaixasDeAlerta.CaixaErro("Login", "Login Inválido", "Login não encontrado.");
 			}
 			else if(gerente != null){
