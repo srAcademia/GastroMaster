@@ -1,46 +1,228 @@
 package br.com.ufrpeuag.gastromaster.dados;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.interfaces.GarcomDao;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
-public class RepositorioGarcom implements GarcomDao{
+public class RepositorioGarcom implements GarcomDao {
 
 	@Override
-	public void inserir(Garcom d) {
-		// TODO Auto-generated method stub
-		
+	public void inserir(Garcom garcom) {
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+			String sql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario, cod_endereco) VALUES(?,?,?,?,?,?,?)";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, garcom.getNome());
+			pstmt.setString(2, garcom.getCpf());
+			pstmt.setString(3, garcom.getDataNasc());
+			pstmt.setString(4, garcom.getTelefone());
+			pstmt.setString(5, garcom.getEmail());
+			pstmt.setDouble(6, garcom.getSalario());
+			pstmt.setInt(7, garcom.getEndereco().getId_endereco());
+			pstmt.executeUpdate();
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
 	}
 
 	@Override
 	public Garcom recuperar(Integer codigo) {
-		// TODO Auto-generated method stub
+
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement("SELECT *\r\n"
+					+ "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where id_garcom = ?;");
+			pstmt.setInt(1, codigo);
+
+			result = pstmt.executeQuery();
+
+			Garcom g = null;
+			Endereco e = null;
+
+			if (result.next()) {
+
+				g = new Garcom();
+				e = new Endereco();
+				g.setId_garcom(result.getInt("id_garcom"));
+				g.setNome(result.getString("nome"));
+				g.setCpf(result.getString("cpf"));
+				g.setDataNasc(result.getString("dataNasc"));
+				g.setTelefone(result.getString("telefone"));
+				g.setEmail(result.getString("email"));
+				g.setSalario(result.getDouble("salario"));
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("Bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+				g.setEndereco(e);
+				return g;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
 		return null;
 	}
 
 	@Override
-	public void alterar(Garcom d) {
-		// TODO Auto-generated method stub
-		
+	public void alterar(Garcom garcom) {
+		String sql = "UPDATE Garcom SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
+				+ "email = ?," + "salario = ?" + "WHERE id_garcom = ?";
+
+		try (Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, garcom.getNome());
+			pstmt.setString(2, garcom.getCpf());
+			pstmt.setString(3, garcom.getDataNasc());
+			pstmt.setString(4, garcom.getTelefone());
+			pstmt.setString(5, garcom.getEmail());
+			pstmt.setDouble(6, garcom.getSalario());
+			pstmt.setInt(7, garcom.getId_garcom());
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override
-	public void deletar(Garcom d) {
-		// TODO Auto-generated method stub
-		
+	public void deletar(Garcom garcom) {
+		String sql = "DELETE FROM Garcom WHERE id_garcom = ?";
+
+		try (Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setInt(1, garcom.getId_garcom());
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override
 	public List<Garcom> listarTodos() {
-		// TODO Auto-generated method stub
+		List<Garcom> lista = new ArrayList<>();
+		String sql = "Select * FROM Garcom join endereco  on cod_endereco = id_endereco ";
+		try (Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+				Statement stmt = conn.createStatement();
+				ResultSet result = stmt.executeQuery(sql)) {
+			Garcom g = null;
+			Endereco e = null;
+
+			while (result.next()) {
+
+				g = new Garcom();
+				e = new Endereco();
+
+				g.setId_garcom(result.getInt("id_garcom"));
+				g.setNome(result.getString("nome"));
+				g.setCpf(result.getString("cpf"));
+				g.setDataNasc(result.getString("dataNasc"));
+				g.setTelefone(result.getString("telefone"));
+				g.setEmail(result.getString("email"));
+				g.setSalario(result.getDouble("salario"));
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("Bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+				g.setEndereco(e);
+
+				lista.add(g);
+
+			}
+			return lista;
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+
+		}
+
 		return null;
 	}
 
 	@Override
 	public Garcom recuperar(String cpf) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement("SELECT *\r\n"
+					+ "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where cpf = ?;");
+			pstmt.setString(1, cpf);
+
+			result = pstmt.executeQuery();
+
+			Garcom g = null;
+			Endereco e = null;
+
+			if (result.next()) {
+
+				g = new Garcom();
+				e = new Endereco();
+				g.setId_garcom(result.getInt("id_garcom"));
+				g.setNome(result.getString("nome"));
+				g.setCpf(result.getString("cpf"));
+				g.setDataNasc(result.getString("dataNasc"));
+				g.setTelefone(result.getString("telefone"));
+				g.setEmail(result.getString("email"));
+				g.setSalario(result.getDouble("salario"));
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("Bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+				g.setEndereco(e);
+				return g;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+		return null;
+
+	}
 }
