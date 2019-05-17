@@ -2,7 +2,7 @@ package br.com.ufrpeuag.gastromaster.negocio.modelo.classes;
 
 public class Funcionario {
 
-	private int id_func;
+	
 	private String nome;
 	private String cpf;
 	private Endereco endereco;
@@ -11,8 +11,8 @@ public class Funcionario {
 	private String email;
 	private double salario;
 
-	public Funcionario(String nome, String cpf, Endereco endereco, String dataNasc, String telefone,
-			String email, double salario) {
+	public Funcionario(String nome, String cpf, String dataNasc, String telefone,
+			String email, double salario, Endereco endereco) {
 		
 		this.nome = nome;
 		this.cpf = cpf;
@@ -23,8 +23,8 @@ public class Funcionario {
 		this.salario = salario;
 	}
 
-	public int getId_func() {
-		return id_func;
+	public Funcionario() {
+		super();
 	}
 
 	public String getNome() {
