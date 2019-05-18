@@ -39,9 +39,23 @@ public class ConfiguracoesBanco {
 				+ "cod_endereco INTEGER,"
 				+ "CONSTRAINT fk_endereco FOREIGN KEY(cod_endereco) REFERENCES Endereco(id_endereco) ON DELETE CASCADE ON UPDATE CASCADE );";
 
+		String gerente = "CREATE TABLE IF NOT EXISTS Gerente("
+				+ "id_gerente INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "nome TEXT,"
+				+ "cpf TEXT,"
+				+ "dataNasc TEXT,"
+				+ "telefone TEXT,"
+				+ "email TEXT,"
+				+ "salario REAL,"
+				+ "senha TEXT,"
+				+ "cod_endereco INTEGER,"
+				+ "CONSTRAINT fk_endereco FOREIGN KEY(cod_endereco) REFERENCES Endereco(id_endereco) ON DELETE CASCADE ON UPDATE CASCADE );";
+
 		Statement stmt = conn.createStatement();
 		stmt.execute(endereco);
 		stmt.execute(garcom);
+		stmt.execute(gerente);
+		
 
 	}
 
