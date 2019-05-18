@@ -12,7 +12,7 @@ public class ConfiguracoesBanco {
 
 	private static ConfiguracoesBanco singleton = null;
 	private Connection conn;
-	
+
 	public static ConfiguracoesBanco getSingleton() throws SQLException {
 		if (singleton == null) {
 			singleton = new ConfiguracoesBanco();
@@ -20,7 +20,7 @@ public class ConfiguracoesBanco {
 		return singleton;
 	}
 	private void criarBanco() throws SQLException {
-		
+
 		String endereco = "CREATE TABLE IF NOT EXISTS Endereco("
 				+ "id_endereco INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "cidade TEXT,"
@@ -42,14 +42,14 @@ public class ConfiguracoesBanco {
 		Statement stmt = conn.createStatement();
 		stmt.execute(endereco);
 		stmt.execute(garcom);
-		
+
 	}
 
 	private Connection connect() throws SQLException {
 		this.conn = DriverManager.getConnection(url);
 		return conn;
 	}
-	
+
 	private ConfiguracoesBanco() throws SQLException {
 		this.connect();
 		this.criarBanco();

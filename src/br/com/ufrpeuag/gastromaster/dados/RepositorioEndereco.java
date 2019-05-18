@@ -13,10 +13,11 @@ public class RepositorioEndereco implements EnderecoDao {
 
 	@Override
 	public void inserir(Endereco end) {
+		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String sql = "INSERT INTO Endereco (cidade, bairro, rua, numero, cep) VALUES(?,?,?,?,?)";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			String inserirSql = "INSERT INTO Endereco (cidade, bairro, rua, numero, cep) VALUES(?,?,?,?,?)";
+			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setString(1, end.getCidade());
 			pstmt.setString(2, end.getBairro());
@@ -26,26 +27,109 @@ public class RepositorioEndereco implements EnderecoDao {
 			pstmt.executeUpdate();
 
 		} catch (SQLException ex) {
-			// throw new ExceptionErroNoBanco(ex.getMessage());
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 
 	}
 
 	@Override
 	public Endereco recuperar(Integer codigo) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+			pstmt = conn.prepareStatement("SELECT * from Endereco where id_endereco = ?;");
+			pstmt.setInt(1, codigo);
+			result = pstmt.executeQuery();
+			Endereco e = null;
+			if (result.next()) {
+
+				e = new Endereco();
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("Bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+
+				return e;
+			}
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
 		return null;
 	}
 
 	@Override
-	public void alterar(Endereco d) {
-		// TODO Auto-generated method stub
+	public void alterar(Endereco end) {
+		PreparedStatement pstmt = null;
+		String alterarSql = "UPDATE Endereco SET " + "cidade = ? , " + "bairro = ?, " + "rua = ?," + "numero = ?," + "cep = ?"
+				+ " WHERE id_endereco = ?;";
 
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+			pstmt = conn.prepareStatement(alterarSql);
+
+			pstmt.setString(1, end.getCidade());
+			pstmt.setString(2, end.getBairro());
+			pstmt.setString(3, end.getRua());
+			pstmt.setInt(4, end.getNumero());
+			pstmt.setString(5, end.getCep());
+			pstmt.setInt(6, end.getId_endereco());
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
 	}
 
 	@Override
-	public void deletar(Endereco d) {
-		// TODO Auto-generated method stub
+	public void deletar(Endereco end) {
+		String deletarSql = "DELETE FROM Endereco WHERE id_endereco = ?";
+		PreparedStatement pstmt = null;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
+			pstmt = conn.prepareStatement(deletarSql);
+
+			pstmt.setInt(1, end.getId_endereco());
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
 	}
 
 	@Override
@@ -59,8 +143,8 @@ public class RepositorioEndereco implements EnderecoDao {
 		int id = 0;
 		try {
 			conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String sql = "SELECT *FROM Endereco WHERE id_endereco= (SELECT MAX(id_endereco) FROM Endereco);";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			String recuperarUltimoIdSql = "SELECT *FROM Endereco WHERE id_endereco= (SELECT MAX(id_endereco) FROM Endereco);";
+			PreparedStatement pstmt = conn.prepareStatement(recuperarUltimoIdSql);
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs != null) {

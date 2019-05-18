@@ -16,11 +16,11 @@ public class RepositorioGarcom implements GarcomDao {
 
 	@Override
 	public void inserir(Garcom garcom) {
-
+		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String sql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario, cod_endereco) VALUES(?,?,?,?,?,?,?)";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			String inserirSql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario, cod_endereco) VALUES(?,?,?,?,?,?,?)";
+			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setString(1, garcom.getNome());
 			pstmt.setString(2, garcom.getCpf());
@@ -33,6 +33,13 @@ public class RepositorioGarcom implements GarcomDao {
 
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 	}
 
@@ -46,7 +53,7 @@ public class RepositorioGarcom implements GarcomDao {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement("SELECT *\r\n"
-					+ "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where id_garcom = ?;");
+					+ "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where id_garcom = ?");
 			pstmt.setInt(1, codigo);
 
 			result = pstmt.executeQuery();
@@ -92,11 +99,13 @@ public class RepositorioGarcom implements GarcomDao {
 
 	@Override
 	public void alterar(Garcom garcom) {
-		String sql = "UPDATE Garcom SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
-				+ "email = ?," + "salario = ?" + "WHERE id_garcom = ?";
+		String alterarSql = "UPDATE Garcom SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
+				+ "email = ?," + "salario = ?" + " WHERE id_garcom = ?";
+		PreparedStatement pstmt = null;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-		try (Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt = conn.prepareStatement(alterarSql);
 
 			pstmt.setString(1, garcom.getNome());
 			pstmt.setString(2, garcom.getCpf());
@@ -110,31 +119,52 @@ public class RepositorioGarcom implements GarcomDao {
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
 		}
 	}
 
 	@Override
 	public void deletar(Garcom garcom) {
-		String sql = "DELETE FROM Garcom WHERE id_garcom = ?";
+		String deletarSql = "DELETE FROM Garcom WHERE id_garcom = ?";
+		PreparedStatement pstmt = null;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-		try (Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt = conn.prepareStatement(deletarSql);
 
 			pstmt.setInt(1, garcom.getId_garcom());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
 		}
 	}
 
 	@Override
 	public List<Garcom> listarTodos() {
 		List<Garcom> lista = new ArrayList<>();
-		String sql = "Select * FROM Garcom join endereco  on cod_endereco = id_endereco ";
-		try (Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet result = stmt.executeQuery(sql)) {
+		String listarTodosSql = "Select * FROM Garcom join endereco  on cod_endereco = id_endereco ";
+		ResultSet result = null;
+		Statement stmt = null;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+			stmt = conn.createStatement();
+			result = stmt.executeQuery(listarTodosSql);
 			Garcom g = null;
 			Endereco e = null;
 
@@ -165,6 +195,15 @@ public class RepositorioGarcom implements GarcomDao {
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+
+		} finally {
+
+			try {
+				result.close();
+				stmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
 
 		}
 
