@@ -18,11 +18,12 @@ public class RepositorioProduto implements ProdutoDao {
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Produto(nome, quantidade) VALUES(?,?)";
+			String inserirSql = "INSERT INTO Produto(nome, quantidade,preco) VALUES(?,?,?)";
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setString(1, produto.getNome());
 			pstmt.setInt(2, produto.getQuantidade());
+			pstmt.setDouble(3, produto.getPreco());
 
 			pstmt.executeUpdate();
 
@@ -59,6 +60,7 @@ public class RepositorioProduto implements ProdutoDao {
 				p.setId_produto(result.getInt("id_produto"));
 				p.setNome(result.getString("nome"));
 				p.setQuantidade(result.getInt("quantidade"));
+				p.setPreco(result.getDouble("preco"));
 				return p;
 			}
 
@@ -79,7 +81,8 @@ public class RepositorioProduto implements ProdutoDao {
 
 	@Override
 	public void alterar(Produto produto) {
-		String alterarSql = "UPDATE Produto SET " + "nome = ? , " + "quantidade = ?" + " WHERE id_produto = ?";
+		String alterarSql = "UPDATE Produto SET " + "nome = ? , " + "quantidade = ?," + "preco = ? "
+				+ " WHERE id_produto = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
@@ -88,7 +91,8 @@ public class RepositorioProduto implements ProdutoDao {
 
 			pstmt.setString(1, produto.getNome());
 			pstmt.setInt(2, produto.getQuantidade());
-			pstmt.setInt(3, produto.getId_produto());
+			pstmt.setDouble(3, produto.getPreco());
+			pstmt.setInt(4, produto.getId_produto());
 
 			pstmt.executeUpdate();
 
@@ -149,6 +153,7 @@ public class RepositorioProduto implements ProdutoDao {
 				p.setId_produto(result.getInt("id_produto"));
 				p.setNome(result.getString("nome"));
 				p.setQuantidade(result.getInt("quantidade"));
+				p.setPreco(result.getDouble("preco"));
 				lista.add(p);
 
 			}
@@ -172,7 +177,7 @@ public class RepositorioProduto implements ProdutoDao {
 	}
 
 	@Override
-	public void removerQuantProduto(Produto produto,Integer quantidade) {
+	public void removerQuantProduto(Produto produto, Integer quantidade) {
 		String alterarSql = "UPDATE Produto SET quantidade = ? WHERE id_produto = ?";
 		PreparedStatement pstmt = null;
 		try {
@@ -180,7 +185,6 @@ public class RepositorioProduto implements ProdutoDao {
 
 			pstmt = conn.prepareStatement(alterarSql);
 
-		
 			pstmt.setInt(1, produto.getQuantidade() - quantidade);
 			pstmt.setInt(2, produto.getId_produto());
 
@@ -197,15 +201,13 @@ public class RepositorioProduto implements ProdutoDao {
 			}
 
 		}
-	
-
 
 	}
 
 	@Override
 	public int retonarQuantidadeProduto(Produto produto) {
-		
-		int quant=0;
+
+		int quant = 0;
 		String sql = "SELECT quantidade FROM Produto WHERE id_produto= ?";
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
@@ -217,7 +219,7 @@ public class RepositorioProduto implements ProdutoDao {
 			pstmt.setInt(1, produto.getId_produto());
 
 			result = pstmt.executeQuery();
-			
+
 			if (result != null) {
 				if (result.next()) {
 					quant = result.getInt("quantidade");

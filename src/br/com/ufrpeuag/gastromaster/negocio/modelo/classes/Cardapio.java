@@ -1,19 +1,24 @@
 package br.com.ufrpeuag.gastromaster.negocio.modelo.classes;
 
-import java.util.List;
-
 public class Cardapio {
 
 	private int id_cardapio;
 	private String prato;
-	private double valores;
-	private List<Produto> produtos;
+	private double preco;
 
-	public Cardapio(String prato, double valores, List<Produto> produtos) {
+	public Cardapio() {
+
+	}
+
+	public Cardapio(String prato, double preco) {
 
 		this.prato = prato;
-		this.valores = valores;
-		this.produtos = produtos;
+		this.preco = preco;
+
+	}
+
+	public void setId_cardapio(int id_cardapio) {
+		this.id_cardapio = id_cardapio;
 	}
 
 	public int getId_cardapio() {
@@ -28,20 +33,17 @@ public class Cardapio {
 		this.prato = prato;
 	}
 
-	public double getValores() {
-		return valores;
+	public double getPreco() {
+		return preco;
 	}
 
-	public void setValores(double valores) {
-		this.valores = valores;
+	public void setPreco(double preco) {
+		this.preco = preco;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
-	}
-
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	@Override
+	public String toString() {
+		return "Cardapio [id_cardapio=" + id_cardapio + ", prato=" + prato + ", preco=" + preco + "]";
 	}
 
 }
