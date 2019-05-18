@@ -13,7 +13,7 @@ public class MainProduto {
 		ConfiguracoesBanco.getSingleton().getConnection();
 		RepositorioProduto rp= new RepositorioProduto();
 		
-		Produto p = new Produto("nome",10);
+		Produto p = new Produto("nome",10,5);
 		
 		//Inserir
 		rp.inserir(p);
