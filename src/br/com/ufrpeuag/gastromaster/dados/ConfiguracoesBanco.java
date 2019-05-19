@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class ConfiguracoesBanco {
 
-	private final String url = "jdbc:sqlite:./banco/banco.db";
+	private final String url = "jdbc:sqlite:./banco.db";
 
 	private static ConfiguracoesBanco singleton = null;
 	private Connection conn;
