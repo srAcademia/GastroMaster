@@ -17,6 +17,7 @@ public class MainProduto {
 		
 		ConfiguracoesBanco.getSingleton().getConnection();
 		RepositorioProduto rp= new RepositorioProduto();
+
 		Produto p = new Produto("macarracao", -1);
 		
 		try {
@@ -27,6 +28,9 @@ public class MainProduto {
 			System.out.println(ex.getLocalizedMessage());
 		}
 		/*
+		
+		Produto p = new Produto("nome",10,5);
+
 		//Inserir
 		rp.inserir(p);
 		

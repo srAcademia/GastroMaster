@@ -54,14 +54,21 @@ public class ConfiguracoesBanco {
 		String produto ="CREATE TABLE IF NOT EXISTS Produto("
 				+ "id_produto INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "nome TEXT,"
-				+ "quantidade INTERGER);";
-		
+				+ "quantidade INTERGER,"
+				+ "preco REAL);";
+
+		String cardapio = "CREATE TABLE IF NOT EXISTS Cardapio("
+				+ "id_cardapio INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "prato TEXT,"
+				+ "preco REAL);";
+
 		Statement stmt = conn.createStatement();
 		stmt.execute(endereco);
 		stmt.execute(garcom);
 		stmt.execute(gerente);
 		stmt.execute(produto);
-		
+		stmt.execute(cardapio);
+
 
 	}
 
