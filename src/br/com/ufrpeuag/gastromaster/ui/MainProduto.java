@@ -15,12 +15,12 @@ public class MainProduto {
 
 	public static void main(String[] args) throws SQLException, NomeInvalidoException, PrecoInvalidoException, ProdutoExistenteException, QuantidadeProdutoInvalidaException{
 		
-		ConfiguracoesBanco.getSingleton().getConnection();
 		RepositorioProduto rp= new RepositorioProduto();
 
-		Produto p = new Produto("macarracao", -1);
+		Produto p = new Produto("macarracao", 2, 2.5);
 		
 		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
 			Fachada.getSingleton().produtoCadastroValidacao(p);
 		}catch(NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());

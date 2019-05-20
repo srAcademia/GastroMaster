@@ -30,8 +30,8 @@ public class ConfiguracoesBanco {
 				+ "cep TEXT);";
 		String garcom = "CREATE TABLE IF NOT EXISTS Garcom("
 				+ "id_garcom INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ "nome TEXT,"
-				+ "cpf TEXT,"
+				+ "nome TEXT ,"
+				+ "cpf TEXT ,"
 				+ "dataNasc TEXT,"
 				+ "telefone TEXT,"
 				+ "email TEXT,"
@@ -61,6 +61,16 @@ public class ConfiguracoesBanco {
 				+ "id_cardapio INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "prato TEXT,"
 				+ "preco REAL);";
+		
+		String mesa = "CREATE TABLE IF NOT EXISTS Mesa("
+				+ "id_mesa INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "numero INTEGER,"
+				+ "disponibilidade INTEGER,"
+				+ "cod_garcom INTEGER,"
+				+ "CONSTRAINT fk_garcom FOREIGN KEY(cod_garcom) "
+				+ "REFERENCES Endereco(id_garcom) "
+				+ "ON DELETE CASCADE ON UPDATE CASCADE );";
+				
 
 		Statement stmt = conn.createStatement();
 		stmt.execute(endereco);
@@ -68,6 +78,7 @@ public class ConfiguracoesBanco {
 		stmt.execute(gerente);
 		stmt.execute(produto);
 		stmt.execute(cardapio);
+		stmt.execute(mesa);
 
 
 	}

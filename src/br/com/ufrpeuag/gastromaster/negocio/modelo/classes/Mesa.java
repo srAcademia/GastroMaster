@@ -6,11 +6,11 @@ public class Mesa {
 
 	private int id_mesa;
 	private int numero;
-	private boolean disponibilidade;
+	private int disponibilidade;
 	private Garcom garcom;
 	private List<Pedido> pedido;
 
-	public Mesa(int numero, boolean disponibilidade, Garcom garcom, List<Pedido> pedido) {
+	public Mesa(int numero, int disponibilidade, Garcom garcom, List<Pedido> pedido) {
 		super();
 		this.numero = numero;
 		this.disponibilidade = disponibilidade;
@@ -30,11 +30,11 @@ public class Mesa {
 		this.numero = numero;
 	}
 
-	public boolean isDisponibilidade() {
+	public int isDisponibilidade() {
 		return disponibilidade;
 	}
 
-	public void setDisponibilidade(boolean disponibilidade) {
+	public void setDisponibilidade(int disponibilidade) {
 		this.disponibilidade = disponibilidade;
 	}
 

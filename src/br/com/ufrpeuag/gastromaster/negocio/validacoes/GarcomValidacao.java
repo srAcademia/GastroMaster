@@ -11,7 +11,8 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
 public class GarcomValidacao {
-	private GarcomDao repGarcom;
+	
+	private static GarcomDao repGarcom;
 	
 	public GarcomValidacao() {
 		repGarcom = new RepositorioGarcom();
@@ -31,19 +32,23 @@ public class GarcomValidacao {
 			throw new NomeInvalidoException();
 		}
 		//Falta tratar o CPF e a data de Nascimento da forma correta
-		//Verificações para saber se o garcom pode ser cadastrado
-		//Necessário um método que verifique a já existencia do funcionario
+		//Verificaï¿½ï¿½es para saber se o garcom pode ser cadastrado
+		//Necessï¿½rio um mï¿½todo que verifique a jï¿½ existencia do funcionario
 		repGarcom.inserir(garcom);	
 	}
 	
 	public void garcomRemocaoValidacao(Garcom garcom) throws GarcomInexistenteException{
-		//Necessário um método que verifique a inexistencia do funcionario
+		//Necessï¿½rio um mï¿½todo que verifique a inexistencia do funcionario
 		repGarcom.deletar(garcom);
 	}
 	
 	public void garcomAlteracaoValidacao(Garcom garcom) throws GarcomInexistenteException{
-		//Necessário um método que verifique a inexistencia do funcionario
-		repGarcom.alterar(garcom);
+		//Necessï¿½rio um mï¿½todo que verifique a inexistencia do funcionario
+		
+		if(repGarcom.listarTodos()==null) {
+			
+		}
+		repGarcom.listarTodos();
 	}
 	
 	
