@@ -7,7 +7,9 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaExcep
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
 public class GarcomValidacao {
@@ -17,18 +19,25 @@ public class GarcomValidacao {
 		repGarcom = new RepositorioGarcom();
 	}
 	
-	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GarcomExistenteException{
+	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, SalarioInvalidoException, GarcomExistenteException{
+		
+		if(garcom.getEndereco().equals(null)) {
+			throw new EnderecoVazioException();
+		}
 		if(garcom.getCpf() == null) {
 			throw new CPFInvalidoException();
+		}
+		if(repGarcom.recuperar(garcom.getCpf()) != null) {
+			throw new GarcomExistenteException();
+		}
+		if(garcom.getNome() == null || garcom.getNome().isEmpty()) {
+			throw new NomeInvalidoException();
 		}
 		if(garcom.getDataNasc() == null || garcom.getDataNasc().isEmpty()) {
 			throw new DataNascimentoInvalidaException();
 		}
-		if(garcom.getEndereco().equals(null)) {
-			throw new EnderecoVazioException();
-		}
-		if(garcom.getNome() == null || garcom.getNome().isEmpty()) {
-			throw new NomeInvalidoException();
+		if(garcom.getSalario() <= 0) {
+			throw new SalarioInvalidoException();
 		}
 		//Falta tratar o CPF e a data de Nascimento da forma correta
 		//Verificações para saber se o garcom pode ser cadastrado
@@ -46,8 +55,11 @@ public class GarcomValidacao {
 		repGarcom.alterar(garcom);
 	}
 	
-	
-	
-	
+	public Garcom garcomRecuperarValidacao(Integer codigo) throws IDRecuperacaoInvalidaException{
+		if(codigo == 0) {
+			throw new IDRecuperacaoInvalidaException();
+		}
+		return repGarcom.recuperar(codigo);
+	}
 
 }

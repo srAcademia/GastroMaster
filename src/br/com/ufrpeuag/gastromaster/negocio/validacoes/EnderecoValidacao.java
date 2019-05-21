@@ -6,6 +6,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
@@ -38,12 +39,24 @@ public class EnderecoValidacao {
 	
 	public void enderecoRemocaoValidacao(Endereco endereco) throws EnderecoInexistenteException{
 		//Necessário um método que verifique a inexistencia do endereco
+		if(repEnd.recuperar(endereco.getId_endereco()) == null) {
+			throw new EnderecoInexistenteException();
+		}
 		repEnd.deletar(endereco);
 	}
 	
 	public void enderecoAlteracaoValidacao(Endereco endereco) throws EnderecoInexistenteException{
 		//Necessário um método que verifique a inexistencia do endereco
+		if(repEnd.recuperar(endereco.getId_endereco()) == null) {
+			throw new EnderecoInexistenteException();
+		}
 		repEnd.alterar(endereco);
+	}
+	
+	//public Endereco enderecoRecupeparValidacao()
+	
+	public int enderecoRecuperarUltimoIDValidacao()throws IDInexistenteException{
+		return repEnd.recuperarUltimoID();
 	}
 
 }

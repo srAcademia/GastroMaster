@@ -31,7 +31,7 @@ public class Garcom extends Funcionario {
 		return "Garcom [id_garcom=" + id_garcom + ", getId_garcom()=" + getId_garcom() + 
 				 ", getNome()=" + getNome() + ", getCpf()=" + getCpf() + ", getEndereco()="
 				+ getEndereco()+ ", getDataNasc()=" + getDataNasc() + ", getTelefone()=" + getTelefone()
-				+ ", getEmail()=" + getEmail() + ", getSalario()=" + getSalario() + "]";
+				+ ", getEmail()=" + getEmail() + ", getSalario()=" + getSalario() + "]\n";
 	}
 	
 }

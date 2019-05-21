@@ -11,6 +11,8 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PrecoInvalidoException;
@@ -18,6 +20,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
@@ -60,7 +63,11 @@ public class Fachada {
 		this.endereco.enderecoAlteracaoValidacao(endereco);
 	}
 	
-	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GarcomExistenteException{
+	public int enderecoRecuperarUltimoIDValidacao() throws IDInexistenteException{
+		return this.endereco.enderecoRecuperarUltimoIDValidacao();
+	}
+	
+	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GarcomExistenteException, SalarioInvalidoException{
 		this.garcom.garcomCadastroValidacao(garcom);
 	}
 	
@@ -70,6 +77,10 @@ public class Fachada {
 	
 	public void garcomAlteracaoValidacao(Garcom garcom) throws GarcomInexistenteException{
 		this.garcom.garcomAlteracaoValidacao(garcom);
+	}
+	
+	public Garcom garcomRecuperarValidacao(Integer codigo) throws IDRecuperacaoInvalidaException{
+		return this.garcom.garcomRecuperarValidacao(codigo);
 	}
 	
 	public void gerenteCadastroValidacao(Gerente gerente) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GerenteExistenteException{

@@ -18,7 +18,7 @@ public class MainProduto {
 		ConfiguracoesBanco.getSingleton().getConnection();
 		RepositorioProduto rp= new RepositorioProduto();
 
-		Produto p = new Produto("macarracao", -1);
+		Produto p = new Produto("macarracao", -1, 2.5);
 		
 		try {
 			Fachada.getSingleton().produtoCadastroValidacao(p);
