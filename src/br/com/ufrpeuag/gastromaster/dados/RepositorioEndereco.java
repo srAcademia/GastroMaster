@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.interfaces.EnderecoDao;
@@ -80,8 +82,8 @@ public class RepositorioEndereco implements EnderecoDao {
 	@Override
 	public void alterar(Endereco end) {
 		PreparedStatement pstmt = null;
-		String alterarSql = "UPDATE Endereco SET " + "cidade = ? , " + "bairro = ?, " + "rua = ?," + "numero = ?," + "cep = ?"
-				+ " WHERE id_endereco = ?;";
+		String alterarSql = "UPDATE Endereco SET " + "cidade = ? , " + "bairro = ?, " + "rua = ?," + "numero = ?,"
+				+ "cep = ?" + " WHERE id_endereco = ?;";
 
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
@@ -134,6 +136,48 @@ public class RepositorioEndereco implements EnderecoDao {
 
 	@Override
 	public List<Endereco> listarTodos() {
+		List<Endereco> lista = new ArrayList<>();
+		String listarTodosSql = "Select * FROM Endereco";
+		ResultSet result = null;
+		Statement stmt = null;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+			stmt = conn.createStatement();
+
+			result = stmt.executeQuery(listarTodosSql);
+
+			Endereco e = null;
+
+			while (result.next()) {
+
+				e = new Endereco();
+
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+
+				lista.add(e);
+
+			}
+			return lista;
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			try {
+				result.close();
+				stmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
 		return null;
 	}
 
