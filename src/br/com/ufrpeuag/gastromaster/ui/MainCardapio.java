@@ -19,7 +19,7 @@ public class MainCardapio {
 		repCardapio.inserir(cardapio);
 
 		// Recuperar
-		cardapio = repCardapio.recuperar(3);
+		/*cardapio = repCardapio.recuperar(3);
 		System.out.println(cardapio.getId_cardapio());
 
 		// Alterar
@@ -33,7 +33,7 @@ public class MainCardapio {
 		repCardapio.deletar(cardapio);
 
 		// Recuperar Todos
-		System.out.println(repCardapio.listarTodos());
+		System.out.println(repCardapio.listarTodos());*/
 
 	}
 
