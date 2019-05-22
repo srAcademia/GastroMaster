@@ -1,4 +1,4 @@
-/*package br.com.ufrpeuag.gastromaster.ui;
+package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
@@ -21,21 +21,21 @@ public class MainProduto {
 		Produto p = new Produto("Coca-cola", 2, 2.5);
 		Produto p2 = new Produto("Fanta", 10, 5);
 
-		try {
+		/*try {
 			ConfiguracoesBanco.getSingleton().getConnection();
 			Fachada.getSingleton().produtoCadastroValidacao(p);
 		} catch (NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		} catch (QuantidadeProdutoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}
+		}*/
 
 		// Inserir
 
 		rp.inserir(p);
 		rp.inserir(p2);
 
-		// Recuperar e alterar
+		/*// Recuperar e alterar
 		p = rp.recuperar(1);
 		p.setNome("Refrigerante2");
 		rp.alterar(p);
@@ -59,5 +59,5 @@ public class MainProduto {
 
 		// Listar Todos
 		// System.out.println(rp.listarTodos());
-	}
-}*/
+*/	}
+}
