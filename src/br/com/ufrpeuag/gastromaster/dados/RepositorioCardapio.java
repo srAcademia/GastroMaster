@@ -11,7 +11,6 @@ import java.util.List;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.CardapioDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 
-
 public class RepositorioCardapio implements CardapioDao {
 
 	@Override
@@ -137,7 +136,7 @@ public class RepositorioCardapio implements CardapioDao {
 	@Override
 	public List<Cardapio> listarTodos() {
 		List<Cardapio> listaCardapio = new ArrayList<>();
-		String listarTodosSql = "Select * FROM Produto";
+		String listarTodosSql = "Select * FROM Cardapio";
 		ResultSet result = null;
 		Statement stmt = null;
 		try {
@@ -173,6 +172,46 @@ public class RepositorioCardapio implements CardapioDao {
 
 		}
 
+		return null;
+	}
+
+	@Override
+	public Cardapio recuperar(String nome) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement("SELECT * from Cardapio where prato = ?");
+
+			pstmt.setString(1, nome);
+
+			result = pstmt.executeQuery();
+
+			Cardapio c = null;
+
+			if (result.next()) {
+
+				c = new Cardapio();
+				c.setId_cardapio(result.getInt("id_cardapio"));
+				c.setPrato(result.getString("prato"));
+				c.setPreco(result.getDouble("preco"));
+				return c;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
 		return null;
 	}
 

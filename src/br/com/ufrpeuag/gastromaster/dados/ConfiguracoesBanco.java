@@ -65,12 +65,18 @@ public class ConfiguracoesBanco {
 		String mesa = "CREATE TABLE IF NOT EXISTS Mesa("
 				+ "id_mesa INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "numero INTEGER,"
-				+ "disponibilidade INTEGER,"
-				+ "cod_garcom INTEGER,"
-				+ "CONSTRAINT fk_garcom FOREIGN KEY(cod_garcom) "
-				+ "REFERENCES Endereco(id_garcom) "
-				+ "ON DELETE CASCADE ON UPDATE CASCADE );";
-				
+				+ "disponibilidade INTEGER"
+				+ ");";
+		String pedido = "CREATE TABLE IF NOT EXISTS Pedido("
+				+ "id_pedido INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "cod_produto INTEGER,"
+				+ "cod_cardapio INTEGER,"
+				+ "valor REAL, "
+				+ " CONSTRAINT fk_produto FOREIGN KEY(cod_produto) REFERENCES Produto(id_produto)"
+				+ " ON DELETE CASCADE ON UPDATE CASCADE "
+				+ " CONSTRAINT fk_cardapio FOREIGN KEY(cod_cardapio) REFERENCES Cardapio(id_cardapio) "
+				+ " ON DELETE CASCADE ON UPDATE CASCADE "
+				+ ");";	
 
 		Statement stmt = conn.createStatement();
 		stmt.execute(endereco);
@@ -79,6 +85,7 @@ public class ConfiguracoesBanco {
 		stmt.execute(produto);
 		stmt.execute(cardapio);
 		stmt.execute(mesa);
+		stmt.execute(pedido);
 
 
 	}

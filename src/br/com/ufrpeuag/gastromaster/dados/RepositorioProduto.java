@@ -205,7 +205,7 @@ public class RepositorioProduto implements ProdutoDao {
 	}
 
 	@Override
-	public int retonarQuantidadeProduto(Produto produto) {
+	public int retornarQuantidadeProduto(Produto produto) {
 
 		int quant = 0;
 		String sql = "SELECT quantidade FROM Produto WHERE id_produto= ?";
@@ -242,4 +242,47 @@ public class RepositorioProduto implements ProdutoDao {
 		return 0;
 
 	}
+
+
+	@Override
+	public Produto retornarProduto(String nome) {
+		String sql = "SELECT *  FROM Produto WHERE nome = ?";
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, nome);
+
+			result = pstmt.executeQuery();
+
+			Produto p = null;
+
+			if (result.next()) {
+
+				p = new Produto();
+				p.setId_produto(result.getInt("id_produto"));
+				p.setNome(result.getString("nome"));
+				p.setQuantidade(result.getInt("quantidade"));
+				p.setPreco(result.getDouble("preco"));
+				return p;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+		return null;
+	}
+
 }

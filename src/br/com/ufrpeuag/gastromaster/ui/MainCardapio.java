@@ -1,4 +1,4 @@
-package br.com.ufrpeuag.gastromaster.ui;
+/*package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
@@ -14,14 +14,18 @@ public class MainCardapio {
 
 		RepositorioCardapio repCardapio = new RepositorioCardapio();
 		Cardapio cardapio = new Cardapio("Pizza", 50);
+		Cardapio cardapio1 = new Cardapio("Lasanha", 50);
 
 		// Inserir
 		repCardapio.inserir(cardapio);
-
+		repCardapio.inserir(cardapio1);
 		// Recuperar
 		cardapio = repCardapio.recuperar(3);
 		System.out.println(cardapio.getId_cardapio());
 
+		// Recuperar nome:
+		cardapio = repCardapio.recuperar("Lasanha");
+		System.out.println(cardapio);
 		// Alterar
 		cardapio = repCardapio.recuperar(3);
 		cardapio.setPrato("Lasanha");
@@ -38,3 +42,4 @@ public class MainCardapio {
 	}
 
 }
+*/
