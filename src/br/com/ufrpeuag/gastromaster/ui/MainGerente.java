@@ -1,5 +1,5 @@
 package br.com.ufrpeuag.gastromaster.ui;
-/*
+
 import java.sql.SQLException;
 
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
@@ -20,7 +20,7 @@ public class MainGerente {
 		Gerente gerente = new Gerente("Milena","11536598701","14/07/1198","88888","milly",220,"12345",end);
 		
 		//Inserir em endereço
-		repEndereco.inserir(end);
+		//repEndereco.inserir(end);
 		
 		//Recuperar Ultimo endereço
 		int idEndereco = repEndereco.recuperarUltimoID();
@@ -29,10 +29,11 @@ public class MainGerente {
 		gerente.getEndereco().setId_endereco(idEndereco);
 		
 		//INSERIR Gerente
-		repGerente.inserir(gerente);
-		
+		//repGerente.inserir(gerente);
+		gerente = repGerente.recuperarCPF("11536598701");
+		System.out.println(gerente);
 		//Recuperar
-		gerente = repGerente.recuperar(1);
+		/*gerente = repGerente.recuperar(1);
 		System.out.println(gerente);
 		
 		//Deletar endereco e gerente
@@ -50,10 +51,9 @@ public class MainGerente {
 		repGerente.alterar(gerente);
 		
 		//ListarTodos
-		System.out.println(repGerente.listarTodos());
+		System.out.println(repGerente.listarTodos());*/
 		
 
 	}
 
 }
-*/

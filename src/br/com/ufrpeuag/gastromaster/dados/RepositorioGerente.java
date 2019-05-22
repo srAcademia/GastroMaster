@@ -227,4 +227,57 @@ public class RepositorioGerente implements GerenteDao {
 		return null;
 	}
 
+	@Override
+	public Gerente recuperarCPF(String cpf) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement("SELECT *\r\n"
+					+ "from Gerente g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where cpf = ?;");
+			pstmt.setString(1, cpf);
+
+			result = pstmt.executeQuery();
+
+			Gerente g = null;
+			Endereco e = null;
+
+			if (result.next()) {
+
+				g = new Gerente();
+				e = new Endereco();
+				g.setId_gerente(result.getInt("id_gerente"));
+				g.setNome(result.getString("nome"));
+				g.setCpf(result.getString("cpf"));
+				g.setDataNasc(result.getString("dataNasc"));
+				g.setTelefone(result.getString("telefone"));
+				g.setEmail(result.getString("email"));
+				g.setSalario(result.getDouble("salario"));
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("Bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+				g.setEndereco(e);
+				return g;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+		return null;
+
+	}
 }

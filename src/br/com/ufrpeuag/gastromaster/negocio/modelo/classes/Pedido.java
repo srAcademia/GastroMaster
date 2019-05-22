@@ -4,17 +4,27 @@ public class Pedido {
 
 	private int id_pedido;
 	private Cardapio cardapio;
-	private Mesa mesa;
+	private Produto produto;
 	private double valor;
 
-	public Pedido(Cardapio cardapio, Mesa mesa, double valor) {
+	public Pedido() {
+
+	}
+
+	public Pedido(Cardapio cardapio, Produto produto,double valor) {
+
 		this.cardapio = cardapio;
-		this.mesa = mesa;
-		this.valor = valor;
+		this.produto = produto;
+		this.valor=valor;
+		
 	}
 
 	public int getId_pedido() {
 		return id_pedido;
+	}
+
+	public void setId_pedido(int id_pedido) {
+		this.id_pedido = id_pedido;
 	}
 
 	public Cardapio getCardapio() {
@@ -25,12 +35,12 @@ public class Pedido {
 		this.cardapio = cardapio;
 	}
 
-	public Mesa getMesa() {
-		return mesa;
+	public Produto getProduto() {
+		return produto;
 	}
 
-	public void setMesa(Mesa mesa) {
-		this.mesa = mesa;
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
 
 	public double getValor() {
@@ -39,6 +49,15 @@ public class Pedido {
 
 	public void setValor(double valor) {
 		this.valor = valor;
+	}
+	public double calcularValorPedido(double precoProd , double precoCard) {
+		return precoProd + precoCard;
+	}
+
+	@Override
+	public String toString() {
+		return "Pedido [id_pedido=" + id_pedido + ", cardapio=" + cardapio + ", produto=" + produto + ", valor=" + valor
+				+ "]\n";
 	}
 
 }

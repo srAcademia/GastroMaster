@@ -37,8 +37,8 @@ public class Gerente extends Funcionario {
 		return "Gerente [id_gerente=" + id_gerente + ", senha=" + senha + ", getId_gerente()=" + getId_gerente()
 				+ ", getSenha()=" + getSenha() + ", getNome()=" + getNome() + ", getCpf()=" + getCpf()
 				+ ", getEndereco()=" + getEndereco() + ", getDataNasc()=" + getDataNasc() + ", getTelefone()="
-				+ getTelefone() + ", getEmail()=" + getEmail() + ", getSalario()=" + getSalario() + ", toString()="
-				+ super.toString() + "]";
+				+ getTelefone() + ", getEmail()=" + getEmail() + ", getSalario()=" + getSalario()
+				+ "]\n";
 	}
 
 }
