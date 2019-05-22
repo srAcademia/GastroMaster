@@ -23,6 +23,9 @@ public class ProdutoValidacao {
 		if(produto.getNome() == null || produto.getNome().isEmpty()) {
 			throw new NomeInvalidoException();
 		}
+		if(produto.getPreco() <= 0) {
+			throw new PrecoInvalidoException();
+		}
 		//Necessário criar um metódo que verifica existência
 		repProduto.inserir(produto);
 	}

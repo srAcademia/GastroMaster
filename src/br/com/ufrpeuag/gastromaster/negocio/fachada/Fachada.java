@@ -1,5 +1,7 @@
 package br.com.ufrpeuag.gastromaster.negocio.fachada;
 
+import java.util.List;
+
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
@@ -11,13 +13,18 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PrecoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
@@ -56,11 +63,19 @@ public class Fachada {
 		this.endereco.enderecoRemocaoValidacao(endereco);
 	}
 	
-	public void enderecoAlteracaoValidacao(Endereco endereco) throws EnderecoInexistenteException{
+	public void enderecoAlteracaoValidacao(Endereco endereco) throws BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException{
 		this.endereco.enderecoAlteracaoValidacao(endereco);
 	}
 	
-	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GarcomExistenteException{
+	public Endereco enderecoRecuperarValidacao(Integer codigo) throws EnderecoInexistenteException{
+		return this.endereco.enderecoRecuperarValidacao(codigo);
+	}
+	
+	public int enderecoRecuperarUltimoIDValidacao() throws IDInexistenteException{
+		return this.endereco.enderecoRecuperarUltimoIDValidacao();
+	}
+	
+	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GarcomExistenteException, SalarioInvalidoException{
 		this.garcom.garcomCadastroValidacao(garcom);
 	}
 	
@@ -68,11 +83,23 @@ public class Fachada {
 		this.garcom.garcomRemocaoValidacao(garcom);
 	}
 	
-	public void garcomAlteracaoValidacao(Garcom garcom) throws GarcomInexistenteException{
+	public void garcomAlteracaoValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, SalarioInvalidoException {
 		this.garcom.garcomAlteracaoValidacao(garcom);
 	}
 	
-	public void gerenteCadastroValidacao(Gerente gerente) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GerenteExistenteException{
+	public Garcom garcomRecuperarValidacao(Integer codigo) throws IDRecuperacaoInvalidaException{
+		return this.garcom.garcomRecuperarValidacao(codigo);
+	}
+	
+	public List<Garcom> garcomListarTodosValidacao() throws ListarTodosInvalidoException{
+		return this.garcom.garcomListarTodosValidacao();
+	}
+	
+	public Garcom garcomRecuperarCPFValidacao(String CPF) throws CPFInvalidoException, RecuperarCPFException{
+		return this.garcom.garcomRecuperarCPFValidacao(CPF);
+	}
+	
+	public void gerenteCadastroValidacao(Gerente gerente) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GerenteExistenteException, SalarioInvalidoException{
 		this.gerente.gerenteCadastroValidacao(gerente);
 	}
 	
@@ -80,8 +107,16 @@ public class Fachada {
 		this.gerente.gerenteRemocaoValidacao(gerente);
 	}
 	
-	public void gerenteAlteracaoValidacao(Gerente gerente) throws GerenteInexistenteException{
+	public void gerenteAlteracaoValidacao(Gerente gerente) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GerenteExistenteException, SalarioInvalidoException{
 		this.gerente.gerenteAlteracaoValidacao(gerente);
+	}
+	
+	public Gerente gerenteRecuperarValidacao(Integer codigo) throws IDRecuperacaoInvalidaException{
+		return this.gerente.gerenteRecuperarValidacao(codigo);
+	}
+	
+	public List<Gerente> gerenteListarTodosValidacao() throws ListarTodosInvalidoException{
+		return this.gerente.gerenteListarTodosValidacao();
 	}
 	
 	public void produtoCadastroValidacao(Produto produto) throws PrecoInvalidoException, ProdutoExistenteException, QuantidadeProdutoInvalidaException, NomeInvalidoException {
