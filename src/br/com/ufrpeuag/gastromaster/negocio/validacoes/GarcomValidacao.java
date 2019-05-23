@@ -97,9 +97,7 @@ public class GarcomValidacao {
 		}
 		List<Garcom> garcom =  new ArrayList<>();
 		garcom = this.repGarcom.listarTodos();
-		System.out.println("entrou recuperarcpf");
 		for(int i = 0; i < garcom.size(); i++) {
-			System.out.println("varreu "+i+" vez");
 			if(garcom.get(i).getCpf().equals(CPF)) {
 				return repGarcom.recuperar(CPF);
 			}

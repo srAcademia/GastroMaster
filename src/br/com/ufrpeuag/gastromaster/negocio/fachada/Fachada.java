@@ -15,23 +15,34 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoVazioException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoExistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PrecoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.CardapioValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.EnderecoValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GarcomValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenteValidacao;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.PedidoValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.ProdutoValidacao;
 
 public class Fachada {
@@ -40,6 +51,8 @@ public class Fachada {
 	private GarcomValidacao garcom;
 	private GerenteValidacao gerente;
 	private ProdutoValidacao produto;
+	private CardapioValidacao cardapio;
+	private PedidoValidacao pedido;
 	
 	public static Fachada getSingleton() {
 		if (singleton == null) {
@@ -53,6 +66,8 @@ public class Fachada {
 		garcom = new GarcomValidacao();
 		gerente = new GerenteValidacao();
 		produto = new ProdutoValidacao();
+		cardapio = new CardapioValidacao();
+		pedido = new PedidoValidacao();
 	}
 	
 	public void enderecoCadastroValidacao(Endereco endereco) throws BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException{
@@ -127,7 +142,71 @@ public class Fachada {
 		this.produto.produtoRemocaoValidacao(produto);
 	}
 	
-	public void produtoAlteracaoValidacao(Produto produto) throws ProdutoInexistenteException{
+	public void produtoAlteracaoValidacao(Produto produto) throws ProdutoInexistenteException, NomeInvalidoException, QuantidadeProdutoInvalidaException, PrecoInvalidoException{
 		this.produto.produtoAlteracaoValidacao(produto);
+	}
+	
+	public Produto produtoRetornarProdutoValidacao(String nome) throws ProdutoInexistenteException, NomeInvalidoException {
+		return this.produto.produtoRetornarProdutoValidacao(nome);
+	}
+	
+	public Produto produtoRecuperarValidacao(Integer codigo) throws IDRecuperacaoItemInvalidoException{
+		return this.produto.produtoRecuperarValidacao(codigo);
+	}
+	
+	public int produtoRetornarQuantidadeProdutoValidacao(Produto produto) throws ProdutoInexistenteException{
+		return this.produto.produtoRetornarQuantidadeProdutoValidacao(produto);
+	}
+	
+	public void produtoRemoverQuantProdutoValidacao(Produto produto, Integer quantidade) throws ProdutoInexistenteException, QuantidadeInvalidaException, QuantidadeProdutoInvalidaException {
+		this.produto.produtoRemoverQuantProdutoValidacao(produto, quantidade);
+	}
+	
+	public List<Produto> produtoListarTodosValidacao() throws ListarTodosInvalidoException{
+		return this.produto.produtoListarTodosValidacao();
+	}
+	
+	public void cardapioCadastroValidacao(Cardapio cardapio) throws PratoExistenteException, NomeInvalidoException, PrecoInvalidoException{
+		this.cardapio.cardapioCadastroValidacao(cardapio);
+	}
+	
+	public void cardapioRemocaoValidacao(Cardapio cardapio) throws PratoInexistenteException {
+		this.cardapio.cardapioRemocaoValidacao(cardapio);
+	}
+	
+	public void cardapioAlteracaoValidacao(Cardapio cardapio) throws NomeInvalidoException, PrecoInvalidoException {
+		this.cardapio.cardapioAlteracaoValidacao(cardapio);
+	}
+	
+	public Cardapio cardapioRecuperarValidacao(String nome) throws PratoInexistenteException, NomeInvalidoException {
+		return this.cardapio.cardapioRecuperarValidacao(nome);
+	}
+	
+	public Cardapio cardapioRecuperarValidacao(Integer codigo) throws IDRecuperacaoItemInvalidoException{
+		return this.cardapio.cardapioRecuperarValidacao(codigo);
+	}
+	
+	public List<Cardapio> cardapioListarTodosValidacao() throws ListarTodosInvalidoException {
+		return this.cardapio.cardapioListarTodosValidacao();
+	}
+	
+	public void pedidoCadastorValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException{
+		this.pedido.pedidoCadastorValidacao(pedido);
+	}
+	
+	public void pedidoRemocaoValidacao(Pedido pedido) throws PedidoInexistenteException {
+		this.pedido.pedidoRemocaoValidacao(pedido);
+	}
+	
+	public void pedidoAlteracaoValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
+		this.pedido.pedidoAlteracaoValidacao(pedido);
+	}
+	
+	public Pedido pedidoRecuperarValidacao(Integer codigo) throws  IDRecuperacaoItemInvalidoException {
+		return this.pedido.pedidoRecuperarValidacao(codigo);
+	}
+	
+	public List<Pedido> pedidoListarTodosValidacao() throws ListarTodosInvalidoException {
+		return this.pedido.pedidoListarTodosValidacao();
 	}
 }
