@@ -6,6 +6,7 @@ public interface GerenteDao extends Dao<Gerente> {
 	
 	public Gerente verificar(Integer identificador);
 	public Gerente logar(String senha);
+	public Gerente recuperarCPF(String cpf);
 	
 
 }

@@ -8,21 +8,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.CardapioDao;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.MesaDao;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 
-public class RepositorioCardapio implements CardapioDao {
+public class RepositorioMesa implements MesaDao {
 
 	@Override
-	public void inserir(Cardapio cardapio) {
+	public void inserir(Mesa mesa) {
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Cardapio(prato, preco) VALUES(?,?)";
+			String inserirSql = "INSERT INTO Mesa(numero, disponibilidade) VALUES(?,?)";
 			pstmt = conn.prepareStatement(inserirSql);
 
-			pstmt.setString(1, cardapio.getPrato());
-			pstmt.setDouble(2, cardapio.getPreco());
+			pstmt.setInt(1, mesa.getNumero());
+			pstmt.setInt(2, mesa.getDisponibilidade());
 
 			pstmt.executeUpdate();
 
@@ -39,28 +39,27 @@ public class RepositorioCardapio implements CardapioDao {
 	}
 
 	@Override
-	public Cardapio recuperar(Integer codigo) {
+	public Mesa recuperar(Integer codigo) {
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
 
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT * from Cardapio where id_cardapio = ?");
-
+			pstmt = conn.prepareStatement("SELECT * from Mesa where id_mesa = ?");
 			pstmt.setInt(1, codigo);
 
 			result = pstmt.executeQuery();
 
-			Cardapio c = null;
+			Mesa m = null;
 
 			if (result.next()) {
 
-				c = new Cardapio();
-				c.setId_cardapio(result.getInt("id_cardapio"));
-				c.setPrato(result.getString("prato"));
-				c.setPreco(result.getDouble("preco"));
-				return c;
+				m = new Mesa();
+				m.setId_mesa(result.getInt("id_mesa"));
+				m.setNumero(result.getInt("numero"));
+				m.setDisponibilidade(result.getInt("disponibilidade"));
+				return m;
 			}
 
 		} catch (SQLException ex) {
@@ -79,18 +78,17 @@ public class RepositorioCardapio implements CardapioDao {
 	}
 
 	@Override
-	public void alterar(Cardapio cardapio) {
-		String alterarSql = "UPDATE Cardapio SET " + "prato = ? , " + "preco = ? " + " WHERE id_cardapio = ?";
-
+	public void alterar(Mesa mesa) {
+		String alterarSql = "UPDATE Mesa SET " + "numero = ? , " + "disponibilidade = ? " + " WHERE id_mesa = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
-			pstmt.setString(1, cardapio.getPrato());
-			pstmt.setDouble(2, cardapio.getPreco());
-			pstmt.setInt(3, cardapio.getId_cardapio());
+			pstmt.setInt(1, mesa.getNumero());
+			pstmt.setInt(2, mesa.getDisponibilidade());
+			pstmt.setInt(3, mesa.getId_mesa());
 
 			pstmt.executeUpdate();
 
@@ -105,19 +103,18 @@ public class RepositorioCardapio implements CardapioDao {
 			}
 
 		}
-
 	}
 
 	@Override
-	public void deletar(Cardapio cardapio) {
-		String deletarSql = "DELETE FROM Cardapio WHERE id_cardapio = ?";
+	public void deletar(Mesa mesa) {
+		String deletarSql = "DELETE FROM Mesa WHERE id_mesa = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(deletarSql);
 
-			pstmt.setInt(1, cardapio.getId_cardapio());
+			pstmt.setInt(1, mesa.getId_mesa());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -134,29 +131,27 @@ public class RepositorioCardapio implements CardapioDao {
 	}
 
 	@Override
-	public List<Cardapio> listarTodos() {
-		List<Cardapio> listaCardapio = new ArrayList<>();
-		String listarTodosSql = "Select * FROM Cardapio";
+	public List<Mesa> listarTodos() {
+		List<Mesa> lista = new ArrayList<>();
+		String listarTodosSql = "Select * FROM Mesa";
 		ResultSet result = null;
 		Statement stmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(listarTodosSql);
-
-			Cardapio c = null;
-
+			Mesa m = null;
 			while (result.next()) {
 
-				c = new Cardapio();
+				m = new Mesa();
 
-				c.setId_cardapio(result.getInt("id_cardapio"));
-				c.setPrato(result.getString("prato"));
-				c.setPreco(result.getDouble("preco"));
-				listaCardapio.add(c);
+				m.setId_mesa(result.getInt("id_mesa"));
+				m.setNumero(result.getInt("numero"));
+				m.setDisponibilidade(result.getInt("disponibilidade"));
+				lista.add(m);
 
 			}
-			return listaCardapio;
+			return lista;
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -172,46 +167,6 @@ public class RepositorioCardapio implements CardapioDao {
 
 		}
 
-		return null;
-	}
-
-	@Override
-	public Cardapio recuperar(String nome) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
-
-		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-
-			pstmt = conn.prepareStatement("SELECT * from Cardapio where prato = ?");
-
-			pstmt.setString(1, nome);
-
-			result = pstmt.executeQuery();
-
-			Cardapio c = null;
-
-			if (result.next()) {
-
-				c = new Cardapio();
-				c.setId_cardapio(result.getInt("id_cardapio"));
-				c.setPrato(result.getString("prato"));
-				c.setPreco(result.getDouble("preco"));
-				return c;
-			}
-
-		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
-		} finally {
-
-			try {
-				result.close();
-				pstmt.close();
-			} catch (SQLException ex) {
-				System.out.println(ex.getMessage());
-			}
-
-		}
 		return null;
 	}
 

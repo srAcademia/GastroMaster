@@ -1,5 +1,5 @@
 package br.com.ufrpeuag.gastromaster.ui;
-
+/*
 import java.sql.SQLException;
 
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
@@ -18,23 +18,41 @@ public class MainProduto {
 		ConfiguracoesBanco.getSingleton().getConnection();
 		RepositorioProduto rp= new RepositorioProduto();
 
+<<<<<<< HEAD
+=======
+
+		/*try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+
+>>>>>>> b01750888d483d95cca928715b4022e99e98ec95
 		Produto p = new Produto("macarracao", -1, 2.5);
 		
 		try {
+
 			Fachada.getSingleton().produtoCadastroValidacao(p);
 		}catch(NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(QuantidadeProdutoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
+
+		}*/
+
 		}
 		/*
 		
 		Produto p = new Produto("nome",10,5);
 
+
 		//Inserir
 		rp.inserir(p);
+
+		rp.inserir(p2);
+
+		// Recuperar e alterar
+
 		
 		//Recuperar e alterar
+
 		p = rp.recuperar(1);
 		p.setNome("Refrigerante2");
 		rp.alterar(p);
@@ -51,9 +69,11 @@ public class MainProduto {
 		//Remover uma quantidade
 		p = rp.recuperar(4);
 		rp.removerQuantProduto(p, 5);
-		*/
+	
 		// Listar Todos
-		System.out.println(rp.listarTodos());
-	}
 
-}
+		// System.out.println(rp.listarTodos());
+	}
+	
+
+}*/

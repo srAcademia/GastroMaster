@@ -8,22 +8,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.CardapioDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.PedidoDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
-public class RepositorioCardapio implements CardapioDao {
+public class RepositorioPedido implements PedidoDao {
 
 	@Override
-	public void inserir(Cardapio cardapio) {
+	public void inserir(Pedido pedido) {
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Cardapio(prato, preco) VALUES(?,?)";
+			String inserirSql = "INSERT INTO Pedido (cod_produto, cod_cardapio, valor) VALUES(?,?,?)";
 			pstmt = conn.prepareStatement(inserirSql);
 
-			pstmt.setString(1, cardapio.getPrato());
-			pstmt.setDouble(2, cardapio.getPreco());
-
+			pstmt.setInt(1, pedido.getProduto().getId_produto());
+			pstmt.setInt(2, pedido.getCardapio().getId_cardapio());
+			pstmt.setDouble(3, pedido.getValor());
 			pstmt.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -39,28 +41,48 @@ public class RepositorioCardapio implements CardapioDao {
 	}
 
 	@Override
-	public Cardapio recuperar(Integer codigo) {
+	public Pedido recuperar(Integer codigo) {
+
+		String sqlRecuperar = "select * " + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) "
+				+ "JOIN Cardapio c on (pe.cod_cardapio= c.id_cardapio) " + "where id_pedido = ?";
+
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
+
+		Cardapio c = null;
+		Produto p = null;
+		Pedido pedido = null;
 
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT * from Cardapio where id_cardapio = ?");
-
+			pstmt = conn.prepareStatement(sqlRecuperar);
 			pstmt.setInt(1, codigo);
 
 			result = pstmt.executeQuery();
 
-			Cardapio c = null;
-
 			if (result.next()) {
 
 				c = new Cardapio();
-				c.setId_cardapio(result.getInt("id_cardapio"));
+				p = new Produto();
+				pedido = new Pedido();
+
+				pedido.setId_pedido(result.getInt("id_pedido"));
+
+				c.setId_cardapio(result.getInt("Id_cardapio"));
 				c.setPrato(result.getString("prato"));
 				c.setPreco(result.getDouble("preco"));
-				return c;
+				pedido.setCardapio(c);
+
+				p.setId_produto(result.getInt("id_produto"));
+				p.setNome(result.getString("nome"));
+				p.setQuantidade(result.getInt("quantidade"));
+				p.setPreco(result.getDouble("preco"));
+				pedido.setProduto(p);
+
+				pedido.setValor(result.getDouble("valor"));
+
+				return pedido;
 			}
 
 		} catch (SQLException ex) {
@@ -79,18 +101,18 @@ public class RepositorioCardapio implements CardapioDao {
 	}
 
 	@Override
-	public void alterar(Cardapio cardapio) {
-		String alterarSql = "UPDATE Cardapio SET " + "prato = ? , " + "preco = ? " + " WHERE id_cardapio = ?";
-
+	public void alterar(Pedido pedido) {
+		String alterarSql = "UPDATE Pedido SET cod_produto =?, cod_cardapio = ? , valor= ?  WHERE id_pedido = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
-			pstmt.setString(1, cardapio.getPrato());
-			pstmt.setDouble(2, cardapio.getPreco());
-			pstmt.setInt(3, cardapio.getId_cardapio());
+			pstmt.setInt(1, pedido.getProduto().getId_produto());
+			pstmt.setInt(2, pedido.getCardapio().getId_cardapio());
+			pstmt.setDouble(3, pedido.getValor());
+			pstmt.setInt(4, pedido.getId_pedido());
 
 			pstmt.executeUpdate();
 
@@ -105,19 +127,18 @@ public class RepositorioCardapio implements CardapioDao {
 			}
 
 		}
-
 	}
 
 	@Override
-	public void deletar(Cardapio cardapio) {
-		String deletarSql = "DELETE FROM Cardapio WHERE id_cardapio = ?";
+	public void deletar(Pedido pedido) {
+		String deletarSql = "DELETE FROM Pedido WHERE id_pedido = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(deletarSql);
 
-			pstmt.setInt(1, cardapio.getId_cardapio());
+			pstmt.setInt(1, pedido.getId_pedido());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -134,29 +155,48 @@ public class RepositorioCardapio implements CardapioDao {
 	}
 
 	@Override
-	public List<Cardapio> listarTodos() {
-		List<Cardapio> listaCardapio = new ArrayList<>();
-		String listarTodosSql = "Select * FROM Cardapio";
+	public List<Pedido> listarTodos() {
+		List<Pedido> lista = new ArrayList<>();
+		String listarTodosSql = "select * " + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) "
+				+ "JOIN Cardapio c on (pe.cod_cardapio= c.id_cardapio)";
+
 		ResultSet result = null;
 		Statement stmt = null;
+
+		Cardapio c = null;
+		Produto p = null;
+		Pedido pedido = null;
+
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(listarTodosSql);
 
-			Cardapio c = null;
-
 			while (result.next()) {
 
 				c = new Cardapio();
+				p = new Produto();
+				pedido = new Pedido();
 
-				c.setId_cardapio(result.getInt("id_cardapio"));
+				pedido.setId_pedido(result.getInt("id_pedido"));
+
+				c.setId_cardapio(result.getInt("Id_cardapio"));
 				c.setPrato(result.getString("prato"));
 				c.setPreco(result.getDouble("preco"));
-				listaCardapio.add(c);
+				pedido.setCardapio(c);
+
+				p.setId_produto(result.getInt("id_produto"));
+				p.setNome(result.getString("nome"));
+				p.setQuantidade(result.getInt("quantidade"));
+				p.setPreco(result.getDouble("preco"));
+				pedido.setProduto(p);
+
+				pedido.setValor(result.getDouble("valor"));
+
+				lista.add(pedido);
 
 			}
-			return listaCardapio;
+			return lista;
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -172,46 +212,6 @@ public class RepositorioCardapio implements CardapioDao {
 
 		}
 
-		return null;
-	}
-
-	@Override
-	public Cardapio recuperar(String nome) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
-
-		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-
-			pstmt = conn.prepareStatement("SELECT * from Cardapio where prato = ?");
-
-			pstmt.setString(1, nome);
-
-			result = pstmt.executeQuery();
-
-			Cardapio c = null;
-
-			if (result.next()) {
-
-				c = new Cardapio();
-				c.setId_cardapio(result.getInt("id_cardapio"));
-				c.setPrato(result.getString("prato"));
-				c.setPreco(result.getDouble("preco"));
-				return c;
-			}
-
-		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
-		} finally {
-
-			try {
-				result.close();
-				pstmt.close();
-			} catch (SQLException ex) {
-				System.out.println(ex.getMessage());
-			}
-
-		}
 		return null;
 	}
 
