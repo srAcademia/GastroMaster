@@ -16,7 +16,11 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperarMesaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaCadastradaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaDisponibilidadeInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
@@ -36,12 +40,14 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.CardapioValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.EnderecoValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GarcomValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenteValidacao;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.MesaValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.PedidoValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.ProdutoValidacao;
 
@@ -53,6 +59,7 @@ public class Fachada {
 	private ProdutoValidacao produto;
 	private CardapioValidacao cardapio;
 	private PedidoValidacao pedido;
+	private MesaValidacao mesa;
 	
 	public static Fachada getSingleton() {
 		if (singleton == null) {
@@ -68,6 +75,7 @@ public class Fachada {
 		produto = new ProdutoValidacao();
 		cardapio = new CardapioValidacao();
 		pedido = new PedidoValidacao();
+		mesa = new MesaValidacao();
 	}
 	
 	public void enderecoCadastroValidacao(Endereco endereco) throws BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException{
@@ -208,5 +216,25 @@ public class Fachada {
 	
 	public List<Pedido> pedidoListarTodosValidacao() throws ListarTodosInvalidoException {
 		return this.pedido.pedidoListarTodosValidacao();
+	}
+	
+	public void mesaCadastroMesaValidacao(Mesa mesa) throws MesaCadastradaException, NumeroInvalidoException, MesaDisponibilidadeInvalidaException{
+		this.mesa.mesaCadastroMesaValidacao(mesa);
+	}
+	
+	public void mesaRemocaoValidacao(Mesa mesa) throws MesaInexistenteException{
+		this.mesa.mesaRemocaoValidacao(mesa);
+	}
+	
+	public void mesaAlteracaoValidacao(Mesa mesa) throws MesaDisponibilidadeInvalidaException {
+		this.mesa.mesaAlteracaoValidacao(mesa);
+	}
+	
+	public Mesa mesaRecuperarValidacao(Integer codigo) throws IDRecuperarMesaException {
+		return this.mesa.mesaRecuperarValidacao(codigo);
+	}
+	
+	public List<Mesa> mesaListarTodosValidacao() throws ListarTodosInvalidoException {
+		return this.mesa.mesaListarTodosValidacao();
 	}
 }

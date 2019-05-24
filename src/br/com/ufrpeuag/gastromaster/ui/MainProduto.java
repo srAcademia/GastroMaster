@@ -47,16 +47,9 @@ public class MainProduto {
 			Fachada.getSingleton().produtoAlteracaoValidacao(produto);
 		}catch(IDRecuperacaoProdutoInvalidoException | NomeInvalidoException | QuantidadeProdutoInvalidaException | PrecoInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
-<<<<<<< HEAD
 		}
 		//*/
-		//TESTE RETORNAR QUANTIDADE
-=======
-
-		}*/
-
-		
->>>>>>> 24b432e43882c6c72498c73e4b591cef420532cf
+		//TESTE RETORNAR QUANTIDADE 
 		/*
 		try {
 			produto = Fachada.getSingleton().produtoRecuperarValidacao(2);

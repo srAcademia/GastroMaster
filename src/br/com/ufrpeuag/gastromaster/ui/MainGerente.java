@@ -1,4 +1,4 @@
-/*package br.com.ufrpeuag.gastromaster.ui;
+package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
@@ -22,34 +22,38 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Funcionario;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 
 public class MainGerente {
-
-	public static void main(String[] args) throws SQLException, BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException, CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GerenteExistenteException, IDInexistenteException, SalarioInvalidoException, IDRecuperacaoInvalidaException{
-		
-		ConfiguracoesBanco.getSingleton().getConnection();
-		RepositorioGerente repGerente = new RepositorioGerente();
-		
-		//Endereco end  = new Endereco("Garanhuns","sitio","Mochila",30,"55555");
-		//Gerente gerente = new Gerente("Allan","878742814","14/07/1198","88888","milly",220,"12345",end);
-		Endereco end = new Endereco();
-		Gerente gerente = new Gerente();
-		//TESTE DE CADASTRO
-		/*
+	//Endereco end  = new Endereco("Garanhuns","sitio","Mochila",30,"55555");
+	//Gerente gerente = new Gerente("Allan","878742814","14/07/1198","88888","milly",220,"12345",end);
+	//Endereco end = new Endereco();
+	//Gerente gerente = new Gerente();
+	//TESTE DE CADASTRO
+	//*
+	public static void gerenciarCadastroGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String dataNasc, String telefone, String email, String senha, double salario)
+			throws SQLException, BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException, CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GerenteExistenteException, IDInexistenteException, SalarioInvalidoException, IDRecuperacaoInvalidaException{
 		try {
+			ConfiguracoesBanco.getSingleton().getConnection();	
+			Endereco end  = new Endereco(cidade, bairro, rua, numero, cep);
+			Gerente gerente = new Gerente(nome, cpf, dataNasc, telefone, email, salario, senha, end);
 			Fachada.getSingleton().enderecoCadastroValidacao(end);
 			int id = Fachada.getSingleton().enderecoRecuperarUltimoIDValidacao();
 			gerente.getEndereco().setId_endereco(id);
 			Fachada.getSingleton().gerenteCadastroValidacao(gerente);
 		}catch(BairroInvalidoException | CEPInvalidoException | CidadeInvalidaException | NumeroInvalidoException | RuaInvalidaException | CPFInvalidoException | DataNascimentoInvalidaException | EnderecoVazioException | NomeInvalidoException | GerenteExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
+			
+	}
 		//System.out.println(id);
 		//System.out.println(garcom.getId_garcom());
 		//System.out.println(repGarcom.listarTodos());*/
 		//TESTE DE RECUPERACAO
-		/*
+	/*
 		try{
 			gerente = Fachada.getSingleton().gerenteRecuperarValidacao(5);
 			end = Fachada.getSingleton().enderecoRecuperarValidacao(13);
@@ -97,8 +101,6 @@ public class MainGerente {
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}
-		//
+		//*/
 
-	}
-
-}*/
+}

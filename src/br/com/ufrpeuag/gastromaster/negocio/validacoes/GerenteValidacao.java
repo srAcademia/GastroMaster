@@ -27,10 +27,12 @@ public class GerenteValidacao {
 		if(gerente.getEndereco().equals(null)) {
 			throw new EnderecoVazioException();
 		}
+		if(repGerente.recuperarCPF(gerente.getCpf()) != null) {
+			throw new GerenteExistenteException();
+		}
 		if(gerente.getCpf() == null) {
 			throw new CPFInvalidoException();
 		}
-		//METODO RECUPERAR PARA VERIFICAR EXISTENCIA
 		if(gerente.getNome() == null || gerente.getNome().isEmpty()) {
 			throw new NomeInvalidoException();
 		}
