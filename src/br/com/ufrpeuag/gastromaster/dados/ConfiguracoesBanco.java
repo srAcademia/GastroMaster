@@ -77,6 +77,22 @@ public class ConfiguracoesBanco {
 				+ " CONSTRAINT fk_cardapio FOREIGN KEY(cod_cardapio) REFERENCES Cardapio(id_cardapio) "
 				+ " ON DELETE CASCADE ON UPDATE CASCADE "
 				+ ");";	
+		
+		String conta ="CREATE TABLE IF NOT EXISTS Conta("
+				+ "id_conta INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "pagamento INTEGER,"
+				+ "data TEXT,"
+				+ "cod_pedido INTEGER,"
+				+ "cod_garcom INTEGER,"
+				+ "cod_mesa INTEGER,"
+				+ "valor REAL,"
+				+ "CONSTRAINT fk_pedido FOREIGN KEY(cod_pedido) REFERENCES Pedido(id_pedido)"
+				+ " ON DELETE CASCADE ON UPDATE CASCADE "
+				+ "CONSTRAINT fk_garcom  FOREIGN KEY(cod_garcom) REFERENCES Garcom(id_garcom)"
+				+ " ON DELETE CASCADE ON UPDATE CASCADE "
+				+ "CONSTRAINT fk_mesa FOREIGN KEY(cod_mesa) REFERENCES Mesa(id_mesa) "
+				+ " ON DELETE CASCADE ON UPDATE CASCADE "
+				+ ");";
 
 		Statement stmt = conn.createStatement();
 		stmt.execute(endereco);
@@ -86,7 +102,7 @@ public class ConfiguracoesBanco {
 		stmt.execute(cardapio);
 		stmt.execute(mesa);
 		stmt.execute(pedido);
-
+		stmt.execute(conta);
 
 	}
 

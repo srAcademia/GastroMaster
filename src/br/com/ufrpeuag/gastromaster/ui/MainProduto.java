@@ -34,7 +34,7 @@ public class MainProduto {
 
 		}*/
 
-		}
+		
 		/*
 		
 		Produto p = new Produto("nome",10,5);
