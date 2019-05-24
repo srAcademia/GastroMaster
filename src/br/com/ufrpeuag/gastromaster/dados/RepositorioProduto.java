@@ -285,4 +285,33 @@ public class RepositorioProduto implements ProdutoDao {
 		return null;
 	}
 
+	@Override
+	public void adicionarQuantProduto(Produto produto, Integer quantidade) {
+		String alterarSql = "UPDATE Produto SET quantidade = ? WHERE id_produto = ?";
+		PreparedStatement pstmt = null;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement(alterarSql);
+
+			pstmt.setInt(1, produto.getQuantidade() + quantidade);
+			pstmt.setInt(2, produto.getId_produto());
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+	}
+
+
 }
