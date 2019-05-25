@@ -126,6 +126,7 @@ public class RepositorioConta implements ContaDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 
 				c.setGarcom(g);
@@ -284,6 +285,7 @@ public class RepositorioConta implements ContaDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 
 				c.setGarcom(g);
@@ -419,6 +421,7 @@ public class RepositorioConta implements ContaDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 
 				c.setGarcom(g);

@@ -75,7 +75,7 @@ public class Gerente extends Funcionario {
 
 	@Override
 	public String toString() {
-		return "Gerente [id_gerente=" + id_gerente + ", senha=" + senha + ", getIndentificador()=" + getIdentificador()
+		return "Gerente [id_gerente=" + id_gerente + ", senha=" + senha + ", getIdentificador()=" + getIdentificador()
 				+ ", getNome()=" + getNome() + ", getCpf()=" + getCpf() + ", getEndereco()=" + getEndereco()
 				+ ", getDataNasc()=" + getDataNasc() + ", getTelefone()=" + getTelefone() + ", getEmail()=" + getEmail()
 				+ ", getSalario()=" + getSalario() + "]\n";

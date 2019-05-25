@@ -19,7 +19,8 @@ public class RepositorioGarcom implements GarcomDao {
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario, cod_endereco) VALUES(?,?,?,?,?,?,?)";
+			String inserirSql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario,"
+					+ " identificador ,cod_endereco) VALUES(?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setString(1, garcom.getNome());
@@ -28,7 +29,8 @@ public class RepositorioGarcom implements GarcomDao {
 			pstmt.setString(4, garcom.getTelefone());
 			pstmt.setString(5, garcom.getEmail());
 			pstmt.setDouble(6, garcom.getSalario());
-			pstmt.setInt(7, garcom.getEndereco().getId_endereco());
+			pstmt.setString(7, garcom.getIdentificador());
+			pstmt.setInt(8, garcom.getEndereco().getId_endereco());
 			pstmt.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -78,6 +80,7 @@ public class RepositorioGarcom implements GarcomDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 				return g;
 			}
@@ -100,7 +103,7 @@ public class RepositorioGarcom implements GarcomDao {
 	@Override
 	public void alterar(Garcom garcom) {
 		String alterarSql = "UPDATE Garcom SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
-				+ "email = ?," + "salario = ?" + " WHERE id_garcom = ?";
+				+ "email = ?," + "salario = ? , identificador = ?" + " WHERE id_garcom = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
@@ -113,7 +116,8 @@ public class RepositorioGarcom implements GarcomDao {
 			pstmt.setString(4, garcom.getTelefone());
 			pstmt.setString(5, garcom.getEmail());
 			pstmt.setDouble(6, garcom.getSalario());
-			pstmt.setInt(7, garcom.getId_garcom());
+			pstmt.setString(7, garcom.getIdentificador());
+			pstmt.setInt(8, garcom.getId_garcom());
 
 			pstmt.executeUpdate();
 
@@ -186,6 +190,7 @@ public class RepositorioGarcom implements GarcomDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 
 				lista.add(g);
@@ -245,6 +250,7 @@ public class RepositorioGarcom implements GarcomDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 				return g;
 			}
@@ -264,4 +270,60 @@ public class RepositorioGarcom implements GarcomDao {
 		return null;
 
 	}
+
+	@Override
+	public Garcom verificar(String identificador) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement("SELECT *\r\n"
+					+ "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where identificador = ?;");
+			pstmt.setString(1, identificador);
+
+			result = pstmt.executeQuery();
+
+			Garcom g = null;
+			Endereco e = null;
+
+			if (result.next()) {
+
+				g = new Garcom();
+				e = new Endereco();
+				g.setId_garcom(result.getInt("id_garcom"));
+				g.setNome(result.getString("nome"));
+				g.setCpf(result.getString("cpf"));
+				g.setDataNasc(result.getString("dataNasc"));
+				g.setTelefone(result.getString("telefone"));
+				g.setEmail(result.getString("email"));
+				g.setSalario(result.getDouble("salario"));
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("Bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
+				g.setEndereco(e);
+				return g;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+		return null;
+
+	}
+
 }

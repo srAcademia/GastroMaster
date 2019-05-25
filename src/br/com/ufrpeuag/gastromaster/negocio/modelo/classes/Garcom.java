@@ -39,7 +39,7 @@ public class Garcom extends Funcionario {
 				+ getSalario() + "]\n";
 	}
 
-	public String gerarIndentificador() {
+	public String gerarIdentificador() {
 
 		String md5 = null;
 		char c;
