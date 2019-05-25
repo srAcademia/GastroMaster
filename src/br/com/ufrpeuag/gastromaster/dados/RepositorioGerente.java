@@ -187,6 +187,7 @@ public class RepositorioGerente implements GerenteDao {
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
+				g.setSenha(result.getString("senha"));
 				e.setId_endereco(result.getInt("id_endereco"));
 				e.setCidade(result.getString("cidade"));
 				e.setBairro(result.getString("Bairro"));
@@ -247,6 +248,7 @@ public class RepositorioGerente implements GerenteDao {
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
+				g.setSenha(result.getString("senha"));
 				e.setId_endereco(result.getInt("id_endereco"));
 				e.setCidade(result.getString("cidade"));
 				e.setBairro(result.getString("Bairro"));
