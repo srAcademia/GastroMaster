@@ -126,6 +126,7 @@ public class RepositorioConta implements ContaDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 
 				c.setGarcom(g);
@@ -159,7 +160,8 @@ public class RepositorioConta implements ContaDao {
 	@Override
 	public void alterar(Conta conta) {
 		String alterarSql = "UPDATE Conta SET pagamento= ? , data= ? , "
-				+ "cod_pedido= ? , cod_garcom= ? , cod_mesa= ?," + " valor= ?  WHERE id_conta = ?";
+				+ "cod_pedido= ? , cod_garcom= ? , "
+				+ "cod_mesa= ?," + " valor= ?  WHERE id_conta = ?";
 		PreparedStatement pstmt = null;
 
 		try {
@@ -173,6 +175,7 @@ public class RepositorioConta implements ContaDao {
 			pstmt.setInt(4, conta.getGarcom().getId_garcom());
 			pstmt.setInt(5, conta.getMesa().getId_mesa());
 			pstmt.setDouble(6, conta.getValor());
+			pstmt.setDouble(7, conta.getId_conta());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -282,6 +285,7 @@ public class RepositorioConta implements ContaDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 
 				c.setGarcom(g);
@@ -417,6 +421,7 @@ public class RepositorioConta implements ContaDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 
 				c.setGarcom(g);
@@ -449,14 +454,14 @@ public class RepositorioConta implements ContaDao {
 
 	@Override
 	public void concluirPagamento(Conta conta) {
-		String alterarSql = "UPDATE Conta SET pagamento = 1  WHERE id_conta = ?";
+		String alterarSql = "UPDATE Conta SET pagamento = ?  WHERE id_conta = ?";
 		PreparedStatement pstmt = null;
 
 		try {
 
 			pstmt = this.conn.prepareStatement(alterarSql);
 
-			pstmt.setInt(1, conta.getPagamento());
+			pstmt.setInt(1, 1);
 			pstmt.setInt(2, conta.getId_conta());
 			pstmt.executeUpdate();
 

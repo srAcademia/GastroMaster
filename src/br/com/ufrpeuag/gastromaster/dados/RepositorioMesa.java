@@ -170,4 +170,76 @@ public class RepositorioMesa implements MesaDao {
 		return null;
 	}
 
+	@Override
+	public Mesa recuperarNumeroMesa(Integer numero) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement("SELECT * from Mesa where numero = ?");
+			pstmt.setInt(1, numero);
+
+			result = pstmt.executeQuery();
+
+			Mesa m = null;
+
+			if (result.next()) {
+
+				m = new Mesa();
+				m.setId_mesa(result.getInt("id_mesa"));
+				m.setNumero(result.getInt("numero"));
+				m.setDisponibilidade(result.getInt("disponibilidade"));
+				return m;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+		return null;
+	}
+
+	@Override
+	public void mudarDisponibilidade(Mesa mesa) {
+		String alterarSql = "UPDATE Mesa SET  disponibilidade = ? " + " WHERE id_mesa = ?";
+		PreparedStatement pstmt = null;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement(alterarSql);
+			if(mesa.getDisponibilidade() == 1) {
+				pstmt.setInt(1, 0);
+				pstmt.setInt(2, mesa.getId_mesa());
+
+			}else {
+				pstmt.setInt(1, 1);
+				pstmt.setInt(2, mesa.getId_mesa());
+			}
+			
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+	}
+
 }
