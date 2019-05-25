@@ -1,3 +1,4 @@
+    
 package br.com.ufrpeuag.gastromaster.negocio.modelo.classes;
 
 import java.math.BigInteger;
@@ -33,17 +34,10 @@ public class Garcom extends Funcionario {
 
 	@Override
 	public String toString() {
-<<<<<<< HEAD
-		return "Garcom [id_garcom=" + id_garcom + ", getId_garcom()=" + getId_garcom() + 
-				 ", getNome()=" + getNome() + ", getCpf()=" + getCpf() + ", getEndereco()="
-				+ getEndereco()+ ", getDataNasc()=" + getDataNasc() + ", getTelefone()=" + getTelefone()
-				+ ", getEmail()=" + getEmail() + ", getSalario()=" + getSalario() + "]\n";
-=======
 		return "Garcom [id_garcom=" + id_garcom + ", getIdentificador()=" + getIdentificador() + ", getNome()="
 				+ getNome() + ", getCpf()=" + getCpf() + ", getEndereco()=" + getEndereco() + ", getDataNasc()="
 				+ getDataNasc() + ", getTelefone()=" + getTelefone() + ", getEmail()=" + getEmail() + ", getSalario()="
 				+ getSalario() + "]\n";
->>>>>>> f76cb530fe8c86c3d1625a801a6c4f98c31ff09f
 	}
 
 	public String gerarIdentificador() {

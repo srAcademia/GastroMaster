@@ -49,23 +49,21 @@ public class EnderecoValidacao {
 		repEnd.deletar(endereco);
 	}
 
-	public void enderecoAlteracaoValidacao(Endereco endereco) throws BairroInvalidoException, CEPInvalidoException,
-	CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException {
-		// Necess�rio um m�todo que verifique a inexistencia do endereco
-		if (endereco.getBairro() == null || endereco.getBairro().isEmpty()) {
-			throw new BairroInvalidoException();
+	public void enderecoAlteracaoValidacao(Endereco endereco, String cidade, String bairro, String rua, int numero, String cep) {
+		if(bairro.isEmpty() == false) {
+			endereco.setBairro(bairro);
 		}
-		if (endereco.getCep() == null || endereco.getCep().isEmpty()) {
-			throw new CEPInvalidoException();
+		if(cidade.isEmpty() == false) {
+			endereco.setCidade(cidade);
 		}
-		if (endereco.getCidade() == null || endereco.getCidade().isEmpty()) {
-			throw new CidadeInvalidaException();
+		if(rua.isEmpty() == false) {
+			endereco.setRua(rua);
 		}
-		if (endereco.getNumero() <= 0) {
-			throw new NumeroInvalidoException();
+		if(numero > 0 ) {
+			endereco.setNumero(numero);
 		}
-		if (endereco.getRua() == null || endereco.getRua().isEmpty()) {
-			throw new RuaInvalidaException();
+		if(cep.isEmpty() == false) {
+			endereco.setCep(cep);
 		}
 		repEnd.alterar(endereco);
 	}

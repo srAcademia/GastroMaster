@@ -45,15 +45,15 @@ public class ProdutoValidacao {
 		repProduto.deletar(produto);
 	}
 	
-	public void produtoAlteracaoValidacao(Produto produto) throws ProdutoInexistenteException, NomeInvalidoException, QuantidadeProdutoInvalidaException, PrecoInvalidoException{
-		if(produto.getNome() == null || produto.getNome().isEmpty()) {
-			throw new NomeInvalidoException();
+	public void produtoAlteracaoValidacao(Produto produto, String nome, String novoNome, int quantidade, double preco){
+		if(novoNome.isEmpty() == false) {
+			produto.setNome(novoNome);
 		}
-		if(produto.getQuantidade() < 0) {
-			throw new QuantidadeProdutoInvalidaException();
+		if(quantidade > 0) {
+			produto.setQuantidade(quantidade);
 		}
-		if(produto.getPreco() <= 0) {
-			throw new PrecoInvalidoException();
+		if(preco > 0) {
+			produto.setPreco(preco);
 		}
 		repProduto.alterar(produto);
 	}
@@ -91,7 +91,7 @@ public class ProdutoValidacao {
 		return repProduto.retornarQuantidadeProduto(produto);
 	}
 	
-	public void produtoRemoverQuantProdutoValidacao(Produto produto, Integer quantidade) throws ProdutoInexistenteException, QuantidadeInvalidaException, QuantidadeProdutoInvalidaException {
+	public void produtoRemoverQuantProdutoValidacao(Produto produto, Integer quantidade) throws QuantidadeInvalidaException, QuantidadeProdutoInvalidaException {
 		if(produto.getQuantidade() < quantidade) {
 			throw new QuantidadeInvalidaException();
 		}
@@ -99,6 +99,12 @@ public class ProdutoValidacao {
 			throw new QuantidadeProdutoInvalidaException();
 		}
 		repProduto.removerQuantProduto(produto, quantidade);
+	}
+	public void produtoAdicionarQuantProdutoValidacao(Produto produto, Integer quantidade) throws QuantidadeProdutoInvalidaException {
+		if(quantidade.equals(null) || quantidade < 0) {
+			throw new QuantidadeProdutoInvalidaException();
+		}
+		repProduto.adicionarQuantProduto(produto, quantidade);
 	}
 	
 	public List<Produto> produtoListarTodosValidacao() throws ListarTodosInvalidoException{

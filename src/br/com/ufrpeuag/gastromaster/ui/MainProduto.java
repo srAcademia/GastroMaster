@@ -1,9 +1,8 @@
-/*package br.com.ufrpeuag.gastromaster.ui;
+package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
-import br.com.ufrpeuag.gastromaster.dados.RepositorioProduto;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoProdutoInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PrecoInvalidoException;
@@ -14,67 +13,114 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaEx
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 public class MainProduto {
-	public static void main(String[] args) throws SQLException, NomeInvalidoException, PrecoInvalidoException, ProdutoExistenteException, QuantidadeProdutoInvalidaException, ProdutoInexistenteException, IDRecuperacaoProdutoInvalidoException{
-		
-		ConfiguracoesBanco.getSingleton().getConnection();
-		RepositorioProduto rp= new RepositorioProduto();
-		//Produto produto = new Produto("coca-cola 150ml", 0, 2);
-		Produto produto = new Produto();
-		/*
-		TESTE DE INSERCAO
+	
+	//INSERCAO
+	public void gerenciarCadastroProduto(String nome, int quantidade, double preco) throws SQLException, NomeInvalidoException, PrecoInvalidoException, ProdutoExistenteException, QuantidadeProdutoInvalidaException {
 		try {
+			ConfiguracoesBanco.getSingleton().getConnection();;
+			Produto produto = new Produto(nome, quantidade, preco);
 			Fachada.getSingleton().produtoCadastroValidacao(produto);
 		}catch(NomeInvalidoException | QuantidadeProdutoInvalidaException | ProdutoExistenteException | PrecoInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
+	}
 		
-		/*
-		TESTE TE REMOCAO
+	//REMOCAO
+	public void gerenciarRemocaoProduto(String nome) throws SQLException, ProdutoInexistenteException, NomeInvalidoException {
 		try {
-			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao("macarracao");
+			ConfiguracoesBanco.getSingleton().getConnection();;
+			Produto produto = new Produto();
+			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
 			Fachada.getSingleton().produtoRemocaoValidacao(produto);
-		}catch(ProdutoInexistenteException ex) {
+		}catch(ProdutoInexistenteException | NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
-		//TESTE DE RECUPERAR COM CODIGO E ALTERAR
-		/*
+	}
+	
+	//ALTERACAO
+	public void gerenciarAlteracaoProduto(String nome, String novoNome, int quantidade, double preco)throws SQLException{
 		try {
-			produto = Fachada.getSingleton().produtoRecuperarValidacao(2);
-			produto.setNome("coca cola 200ml");
-			produto.setQuantidade(7);
-			Fachada.getSingleton().produtoAlteracaoValidacao(produto);
-		}catch(IDRecuperacaoProdutoInvalidoException | NomeInvalidoException | QuantidadeProdutoInvalidaException | PrecoInvalidoException ex) {
+			ConfiguracoesBanco.getSingleton().getConnection();;
+			Produto produto = new Produto();
+			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
+			Fachada.getSingleton().produtoAlteracaoValidacao(produto, nome, novoNome, quantidade, preco);
+		}catch(NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
-		//TESTE RETORNAR QUANTIDADE 
-		/*
+	}
+	
+	//RECUPERAR
+	public void gerenciarRecuperarProduto(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException {
+		try {	
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Produto produto = new Produto();
+			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
+			System.out.println(produto);
+		}catch(IDRecuperacaoItemInvalidoException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
+	
+	//RETORNAR QUANTIDADE 
+	public void gerenciarVerificarQuantidadeProduto(String nome)throws SQLException, ProdutoInexistenteException, NomeInvalidoException{
 		try {
-			produto = Fachada.getSingleton().produtoRecuperarValidacao(2);
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Produto produto = new Produto();
+			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
 			int quant = Fachada.getSingleton().produtoRetornarQuantidadeProdutoValidacao(produto);
 			System.out.println(quant);
-		}catch(ProdutoInexistenteException ex) {
+		}catch(ProdutoInexistenteException | NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
-		//TESTE DE REMOVER ALGUMA QUANTIDADE
-		/*
+	}
+	
+	//REMOVER ALGUMA QUANTIDADE
+	public void gerenciarRemoverQuantidadeProduto(Integer codigo, int quantidade) throws SQLException, QuantidadeInvalidaException, QuantidadeProdutoInvalidaException, IDRecuperacaoItemInvalidoException {
 		try {
-			produto = Fachada.getSingleton().produtoRecuperarValidacao(2);
-			Fachada.getSingleton().produtoRemoverQuantProdutoValidacao(produto, 2);
-		}catch(ProdutoInexistenteException | QuantidadeInvalidaException | QuantidadeProdutoInvalidaException ex) {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Produto produto = new Produto();
+			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
+			Fachada.getSingleton().produtoRemoverQuantProdutoValidacao(produto, quantidade);
+		}catch(IDRecuperacaoItemInvalidoException | QuantidadeInvalidaException | QuantidadeProdutoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
-		//TESTE DE MOSTRAR TODOS
-		/*
+	}
+	
+	//ADICIONAR ALGUMA QUANTIDADE
+	public void gerenciarAdcionarQuantidadeProduto(Integer codigo, int quantidade) throws SQLException, QuantidadeProdutoInvalidaException, IDRecuperacaoItemInvalidoException {
 		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Produto produto = new Produto();
+			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
+			Fachada.getSingleton().produtoAdicionarQuantProdutoValidacao(produto, quantidade);
+		}catch(IDRecuperacaoItemInvalidoException | QuantidadeProdutoInvalidaException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
+		
+	//TESTE DE MOSTRAR TODOS
+	public void gerenciarListarProduto() throws SQLException, ListarTodosInvalidoException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().produtoListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
-	//}
-//}
+	}
+}

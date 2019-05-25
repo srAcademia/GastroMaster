@@ -3,45 +3,63 @@ package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.ufrpeuag.gastromaster.dados.RepositorioEndereco;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioGarcom;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.EnderecoDao;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.GarcomDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
 public class GarcomValidacao {
 	private GarcomDao repGarcom;
+	private EnderecoDao repEndereco;
+	Endereco end = new Endereco();
+	int id;
 	
 	public GarcomValidacao() {
 		repGarcom = new RepositorioGarcom();
+		repEndereco = new RepositorioEndereco();
 	}
 	
-	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, SalarioInvalidoException, GarcomExistenteException{
-		
-		if(garcom.getEndereco().equals(null)) {
-			throw new EnderecoVazioException();
-		}
+	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, SalarioInvalidoException, GarcomExistenteException{
 		if(garcom.getCpf() == null) {
+			id = repEndereco.recuperarUltimoID();
+			end = repEndereco.recuperar(id);
+			repEndereco.deletar(end);
 			throw new CPFInvalidoException();
 		}
 		if(repGarcom.recuperar(garcom.getCpf()) != null) {
+			id = repEndereco.recuperarUltimoID();
+			end = repEndereco.recuperar(id);
+			repEndereco.deletar(end);
 			throw new GarcomExistenteException();
 		}
 		if(garcom.getNome() == null || garcom.getNome().isEmpty()) {
+			id = repEndereco.recuperarUltimoID();
+			end = repEndereco.recuperar(id);
+			repEndereco.deletar(end);
 			throw new NomeInvalidoException();
 		}
 		if(garcom.getDataNasc() == null || garcom.getDataNasc().isEmpty()) {
+			id = repEndereco.recuperarUltimoID();
+			end = repEndereco.recuperar(id);
+			repEndereco.deletar(end);
 			throw new DataNascimentoInvalidaException();
 		}
 		if(garcom.getSalario() <= 0) {
+			id = repEndereco.recuperarUltimoID();
+			end = repEndereco.recuperar(id);
+			repEndereco.deletar(end);
 			throw new SalarioInvalidoException();
 		}
 		repGarcom.inserir(garcom);	
@@ -54,21 +72,24 @@ public class GarcomValidacao {
 		repGarcom.deletar(garcom);
 	}
 	
-	public void garcomAlteracaoValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, SalarioInvalidoException {
-		if(garcom.getEndereco().equals(null)) {
-			throw new EnderecoVazioException();
+	public void garcomAlteracaoValidacao(Garcom garcom, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario) throws CPFInvalidoException, DataNascimentoInvalidaException{
+		if(nome.isEmpty() == false) {
+			garcom.setNome(nome);
 		}
-		if(garcom.getCpf() == null) {
-			throw new CPFInvalidoException();
+		if(novoCPF.isEmpty() == false) {
+			garcom.setCpf(novoCPF);
 		}
-		if(garcom.getNome() == null || garcom.getNome().isEmpty()) {
-			throw new NomeInvalidoException();
+		if(dataNasc.isEmpty() == false) {
+			garcom.setDataNasc(dataNasc);
 		}
-		if(garcom.getDataNasc() == null || garcom.getDataNasc().isEmpty()) {
-			throw new DataNascimentoInvalidaException();
+		if(telefone.isEmpty() == false) {
+			garcom.setTelefone(telefone);
 		}
-		if(garcom.getSalario() <= 0) {
-			throw new SalarioInvalidoException();
+		if(email.isEmpty() == false) {
+			garcom.setEmail(email);
+		}
+		if(salario > 0 ) {
+			garcom.setSalario(salario);
 		}
 		repGarcom.alterar(garcom);
 	}
@@ -103,6 +124,16 @@ public class GarcomValidacao {
 			}
 		}
 		throw new RecuperarCPFException();
+	}
+	
+	public Garcom garcomVerificarValidacao(String identificador) throws LoginInvalidoException {
+		if(identificador.equals(null) || identificador.isEmpty()) {
+			throw new LoginInvalidoException();
+		}
+		if(repGarcom.verificar(identificador) == null) {
+			throw new LoginInvalidoException();
+		}
+		return repGarcom.verificar(identificador);
 	}
 
 }
