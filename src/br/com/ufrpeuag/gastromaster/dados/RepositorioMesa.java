@@ -211,14 +211,14 @@ public class RepositorioMesa implements MesaDao {
 
 	@Override
 	public void mudarDisponibilidade(Mesa mesa) {
-		String alterarSql = "UPDATE Mesa SET  disponibilidade = 0 " + " WHERE id_mesa = ?";
+		String alterarSql = "UPDATE Mesa SET  disponibilidade = ? " + " WHERE id_mesa = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
-			pstmt.setInt(1, mesa.getDisponibilidade());
+			pstmt.setInt(1,1);
 			pstmt.setInt(2, mesa.getId_mesa());
 
 			pstmt.executeUpdate();

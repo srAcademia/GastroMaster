@@ -27,21 +27,21 @@ public class MainConta {
 	public static void main(String[] args) throws SQLException {
 		src = new Scanner(System.in);
 		
-	ConfiguracoesBanco.getSingleton().getConnection();
+	//ConfiguracoesBanco.getSingleton().getConnection();
 	String data = "25/01/2016";
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	LocalDate date = LocalDate.parse(data,formatter);
 	//System.out.println(date);
 	
-	LocalDate localDate = LocalDate.now(); // Data atual
+	
     
     // A classe do java.sql.Date converte o localDate
-
+	LocalDate localDate = LocalDate.now(); // Data atual
     java.sql.Date date = java.sql.Date.valueOf(localDate);
     // o formatador
     SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
     String dataFormatada = formatador.format(date);
-    System.out.println(dataFormatada);
+   
 		
 		
 		
@@ -49,7 +49,10 @@ public class MainConta {
 		RepositorioMesa rm = new RepositorioMesa();
 
 		Mesa m = new Mesa(2, 0);
-		rm.inserir(m);
+		//rm.inserir(m);
+		m = rm.recuperarNumeroMesa(2);
+		System.out.println(m);
+		//rm.mudarDisponibilidade(m);
 		
 		
 		//Garcom e endereco
@@ -115,6 +118,7 @@ public class MainConta {
 		rpedido.inserir(pedido);
 		
 		//Conta
+		
 		RepositorioConta rc = new RepositorioConta();
 		Pedido pedido = null;
 		Garcom g = null;
@@ -123,7 +127,10 @@ public class MainConta {
 		RepositorioMesa rm = new RepositorioMesa();
 		Mesa m =null; 
 		Conta c = null;
-		Conta c = new Conta(1,date,pedido,g,m,50);
+		
+		 c = new Conta(1,date,pedido,g,m,50);
+		
+		
 		pedido = rpedido.recuperar(2);
 		g = rg.recuperar(1);
 		m = rm.recuperar(1);
@@ -141,6 +148,13 @@ public class MainConta {
 		System.out.println(c);
 		System.out.println(rc.fecharConta(c));
 		rc.deletar(c);
+		c = rc.recuperarPorMesa(1);
+		System.out.println(c);
+		rc.concluirPagamento(c);
+		pedido = rpedido.recuperar(4);
+		c.setPedido(pedido);
+		rc.alterar(c);
+		System.out.println(rc.fecharConta(c));
 	}
 
 }
