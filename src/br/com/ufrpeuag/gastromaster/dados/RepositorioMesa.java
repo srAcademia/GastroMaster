@@ -217,10 +217,15 @@ public class RepositorioMesa implements MesaDao {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
+			if(mesa.getDisponibilidade() == 1) {
+				pstmt.setInt(1, 0);
+				pstmt.setInt(2, mesa.getId_mesa());
 
-			pstmt.setInt(1,1);
-			pstmt.setInt(2, mesa.getId_mesa());
-
+			}else {
+				pstmt.setInt(1, 1);
+				pstmt.setInt(2, mesa.getId_mesa());
+			}
+			
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
