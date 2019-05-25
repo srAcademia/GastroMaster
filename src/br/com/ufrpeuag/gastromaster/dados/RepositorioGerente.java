@@ -19,8 +19,8 @@ public class RepositorioGerente implements GerenteDao {
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Gerente (nome, cpf, dataNasc, telefone, email, salario,senha,cod_endereco)"
-					+ " VALUES(?,?,?,?,?,?,?,?)";
+			String inserirSql = "INSERT INTO Gerente (nome, cpf, dataNasc, telefone, email, salario,senha,identificador,cod_endereco)"
+					+ " VALUES(?,?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setString(1, gerente.getNome());
@@ -30,7 +30,8 @@ public class RepositorioGerente implements GerenteDao {
 			pstmt.setString(5, gerente.getEmail());
 			pstmt.setDouble(6, gerente.getSalario());
 			pstmt.setString(7, gerente.getSenha());
-			pstmt.setInt(8, gerente.getEndereco().getId_endereco());
+			pstmt.setString(8, gerente.getIdentificador());
+			pstmt.setInt(9, gerente.getEndereco().getId_endereco());
 			pstmt.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -57,14 +58,14 @@ public class RepositorioGerente implements GerenteDao {
 			pstmt = conn.prepareStatement("SELECT *\r\n"
 					+ "from Gerente g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where id_gerente = ?");
 			pstmt.setInt(1, codigo);
-
+			System.out.println(codigo);
 			result = pstmt.executeQuery();
 
 			Gerente g = null;
 			Endereco e = null;
 
 			if (result.next()) {
-
+			
 				g = new Gerente();
 				e = new Endereco();
 				g.setId_gerente(result.getInt("id_gerente"));
@@ -81,6 +82,7 @@ public class RepositorioGerente implements GerenteDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 				return g;
 			}
@@ -103,7 +105,7 @@ public class RepositorioGerente implements GerenteDao {
 	@Override
 	public void alterar(Gerente gerente) {
 		String alterarSql = "UPDATE Gerente SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
-				+ "email = ?," + "salario = ?," + "senha = ? " + " WHERE id_gerente = ?";
+				+ "email = ?," + "salario = ?," + "senha = ?, identificador = ? " + " WHERE id_gerente = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
@@ -117,7 +119,8 @@ public class RepositorioGerente implements GerenteDao {
 			pstmt.setString(5, gerente.getEmail());
 			pstmt.setDouble(6, gerente.getSalario());
 			pstmt.setString(7, gerente.getSenha());
-			pstmt.setInt(8, gerente.getId_gerente());
+			pstmt.setString(8, gerente.getIdentificador());
+			pstmt.setInt(9, gerente.getId_gerente());
 
 			pstmt.executeUpdate();
 
@@ -184,13 +187,13 @@ public class RepositorioGerente implements GerenteDao {
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
-				g.setSenha(result.getString("senha"));
 				e.setId_endereco(result.getInt("id_endereco"));
 				e.setCidade(result.getString("cidade"));
 				e.setBairro(result.getString("Bairro"));
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 
 				lista.add(g);
@@ -215,18 +218,7 @@ public class RepositorioGerente implements GerenteDao {
 		return null;
 	}
 
-	@Override
-	public Gerente verificar(Integer identificador) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Gerente logar(String senha) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public Gerente recuperarCPF(String cpf) {
 		PreparedStatement pstmt = null;
@@ -261,6 +253,7 @@ public class RepositorioGerente implements GerenteDao {
 				e.setRua(result.getString("rua"));
 				e.setNumero(result.getInt("numero"));
 				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
 				g.setEndereco(e);
 				return g;
 			}
@@ -280,4 +273,114 @@ public class RepositorioGerente implements GerenteDao {
 		return null;
 
 	}
+	@Override
+	public Gerente verificar(String identificador) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement("SELECT *\r\n"
+					+ "from Gerente g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where identificador = ?;");
+			pstmt.setString(1, identificador);
+
+			result = pstmt.executeQuery();
+
+			Gerente g = null;
+			Endereco e = null;
+
+			if (result.next()) {
+
+				g = new Gerente();
+				e = new Endereco();
+				g.setId_gerente(result.getInt("id_gerente"));
+				g.setNome(result.getString("nome"));
+				g.setCpf(result.getString("cpf"));
+				g.setDataNasc(result.getString("dataNasc"));
+				g.setTelefone(result.getString("telefone"));
+				g.setEmail(result.getString("email"));
+				g.setSalario(result.getDouble("salario"));
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("Bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
+				g.setEndereco(e);
+				return g;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+		return null;
+
+	}
+
+	@Override
+	public Gerente logar(String senha) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement("SELECT *\r\n"
+					+ "from Gerente g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where senha = ?;");
+			pstmt.setString(1, senha);
+
+			result = pstmt.executeQuery();
+
+			Gerente g = null;
+			Endereco e = null;
+
+			if (result.next()) {
+
+				g = new Gerente();
+				e = new Endereco();
+				g.setId_gerente(result.getInt("id_gerente"));
+				g.setNome(result.getString("nome"));
+				g.setCpf(result.getString("cpf"));
+				g.setDataNasc(result.getString("dataNasc"));
+				g.setTelefone(result.getString("telefone"));
+				g.setEmail(result.getString("email"));
+				g.setSalario(result.getDouble("salario"));
+				e.setId_endereco(result.getInt("id_endereco"));
+				e.setCidade(result.getString("cidade"));
+				e.setBairro(result.getString("Bairro"));
+				e.setRua(result.getString("rua"));
+				e.setNumero(result.getInt("numero"));
+				e.setCep(result.getString("cep"));
+				g.setIdentificador(result.getString("identificador"));
+				g.setEndereco(e);
+				return g;
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+		return null;
+
+	}
+
 }

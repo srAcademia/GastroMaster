@@ -36,6 +36,7 @@ public class ConfiguracoesBanco {
 				+ "telefone TEXT,"
 				+ "email TEXT,"
 				+ "salario REAL,"
+				+ "identificador TEXT,"
 				+ "cod_endereco INTEGER,"
 				+ "CONSTRAINT fk_endereco FOREIGN KEY(cod_endereco) REFERENCES Endereco(id_endereco) ON DELETE CASCADE ON UPDATE CASCADE );";
 
@@ -48,6 +49,7 @@ public class ConfiguracoesBanco {
 				+ "email TEXT,"
 				+ "salario REAL,"
 				+ "senha TEXT,"
+				+ "identificador TEXT,"
 				+ "cod_endereco INTEGER,"
 				+ "CONSTRAINT fk_endereco FOREIGN KEY(cod_endereco) REFERENCES Endereco(id_endereco) ON DELETE CASCADE ON UPDATE CASCADE );";
 

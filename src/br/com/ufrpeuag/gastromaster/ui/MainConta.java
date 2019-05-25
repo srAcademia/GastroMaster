@@ -26,7 +26,7 @@ public class MainConta {
 	private static Scanner src;
 	public static void main(String[] args) throws SQLException {
 		src = new Scanner(System.in);
-		
+			
 	//ConfiguracoesBanco.getSingleton().getConnection();
 	String data = "25/01/2016";
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -132,7 +132,10 @@ public class MainConta {
 		
 		
 		pedido = rpedido.recuperar(2);
-		g = rg.recuperar(1);
+		
+		RepositorioGarcom rg = new  RepositorioGarcom();
+		//Recuperar pelo identificador do garcom
+		g = rg.verificar("243e75");
 		m = rm.recuperar(1);
 		System.out.println(g);
 		System.out.println(m);
