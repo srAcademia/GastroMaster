@@ -107,7 +107,6 @@ public class MainPrincipal{
 												mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "8998324", "30/01/2001", "87 9953-3012", "kelwinjonas@gmail.com", 9999999, "12345", "");
 												break;
 											case 2:
-												//ELE TA COLOCANDO A SENHA NULA; ERRO NO BANCO EM RECUPERAR PELO CPF
 												mainGerente.gerenciarAlteracaoGerente("", "", "", 0, "", "Milena Macedo", "8998324", "", "", "", "", 0, "");
 												break;
 											case 3:

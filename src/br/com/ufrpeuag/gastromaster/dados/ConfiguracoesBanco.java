@@ -63,7 +63,7 @@ public class ConfiguracoesBanco {
 				+ "id_cardapio INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "prato TEXT,"
 				+ "preco REAL);";
-		
+
 		String mesa = "CREATE TABLE IF NOT EXISTS Mesa("
 				+ "id_mesa INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "numero INTEGER,"
@@ -79,7 +79,7 @@ public class ConfiguracoesBanco {
 				+ " CONSTRAINT fk_cardapio FOREIGN KEY(cod_cardapio) REFERENCES Cardapio(id_cardapio) "
 				+ " ON DELETE CASCADE ON UPDATE CASCADE "
 				+ ");";	
-		
+
 		String conta ="CREATE TABLE IF NOT EXISTS Conta("
 				+ "id_conta INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "pagamento INTEGER,"
@@ -96,6 +96,19 @@ public class ConfiguracoesBanco {
 				+ " ON DELETE CASCADE ON UPDATE CASCADE "
 				+ ");";
 
+		String gerenciamentoContas = "CREATE TABLE IF NOT EXISTS GerenciamentoContas("
+				+ "id_gerenc INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ "cod_garcom INTEGER,"
+				+ "cod_mesa INTEGER,"
+				+ "valorTotal REAL,"
+				+ "data TEXT,"
+				+ "CONSTRAINT fk_garcom  FOREIGN KEY(cod_garcom) REFERENCES Garcom(id_garcom)"
+				+ " ON DELETE CASCADE ON UPDATE CASCADE "
+				+ "CONSTRAINT fk_mesa FOREIGN KEY(cod_mesa) REFERENCES Mesa(id_mesa) "
+				+ " ON DELETE CASCADE ON UPDATE CASCADE "
+				+ ");";
+				
+
 		Statement stmt = conn.createStatement();
 		stmt.execute(endereco);
 		stmt.execute(garcom);
@@ -105,6 +118,7 @@ public class ConfiguracoesBanco {
 		stmt.execute(mesa);
 		stmt.execute(pedido);
 		stmt.execute(conta);
+		stmt.execute(gerenciamentoContas);
 
 	}
 
