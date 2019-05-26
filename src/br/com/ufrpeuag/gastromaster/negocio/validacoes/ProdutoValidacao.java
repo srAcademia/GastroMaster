@@ -45,8 +45,11 @@ public class ProdutoValidacao {
 		repProduto.deletar(produto);
 	}
 	
-	public void produtoAlteracaoValidacao(Produto produto, String nome, String novoNome, int quantidade, double preco){
+	public void produtoAlteracaoValidacao(Produto produto, String nome, String novoNome, int quantidade, double preco)throws ProdutoExistenteException{
 		if(novoNome.isEmpty() == false) {
+			if(repProduto.retornarProduto(novoNome) != null) {
+				throw new ProdutoExistenteException();
+			}
 			produto.setNome(novoNome);
 		}
 		if(quantidade > 0) {

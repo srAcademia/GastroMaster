@@ -40,12 +40,15 @@ public class CardapioValidacao {
 		repCardapio.deletar(cardapio);
 	}
 	
-	public void cardapioAlteracaoValidacao(Cardapio cardapio) throws NomeInvalidoException, PrecoInvalidoException {
-		if(cardapio.getPrato() == null || cardapio.getPrato().isEmpty()) {
-			throw new NomeInvalidoException();
+	public void cardapioAlteracaoValidacao(Cardapio cardapio, String nome, String novoNome, double preco) throws PratoExistenteException {
+		if(novoNome.isEmpty() == false) {
+			if(repCardapio.recuperar(novoNome) != null) {
+				throw new PratoExistenteException();
+			}
+			cardapio.setPrato(novoNome);
 		}
-		if(cardapio.getPreco() <= 0) {
-			throw new PrecoInvalidoException();
+		if(preco > 0) {
+			cardapio.setPreco(preco);
 		}
 		repCardapio.alterar(cardapio);
 	}

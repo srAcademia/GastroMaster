@@ -19,7 +19,8 @@ public class PedidoValidacao {
 		repPedido = new RepositorioPedido();
 	}
 	
-	public void pedidoCadastorValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException{
+	public void pedidoCadastroValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException{
+		pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), pedido.getProduto().getPreco()));
 		if(pedido.getValor() <= 0) {
 			throw new PedidoInvalidoException();
 		}
@@ -42,6 +43,7 @@ public class PedidoValidacao {
 	}
 	
 	public void pedidoAlteracaoValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
+		pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), pedido.getProduto().getPreco()));
 		if(pedido.getValor() <= 0) {
 			throw new PedidoInvalidoException();
 		}
@@ -51,11 +53,11 @@ public class PedidoValidacao {
 		repPedido.alterar(pedido);
 	}
 	
-	public Pedido pedidoRecuperarValidacao(Integer codigo) throws  IDRecuperacaoItemInvalidoException {
+	public Pedido pedidoRecuperarValidacao(Integer codigo)throws IDRecuperacaoItemInvalidoException {
 		List<Pedido> ped = new ArrayList<>();
 		ped = this.repPedido.listarTodos();
 		for (int i = 0; i < ped.size(); i++) {
-			if(ped.get(i).getId_pedido() == codigo) {
+			if(ped.get(i).getId_pedido() == (codigo)) {
 				return repPedido.recuperar(codigo);
 			}
 		}

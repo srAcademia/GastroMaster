@@ -1,9 +1,8 @@
-/*package br.com.ufrpeuag.gastromaster.ui;
+package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
-import br.com.ufrpeuag.gastromaster.dados.RepositorioCardapio;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
@@ -14,52 +13,72 @@ import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 
 public class MainCardapio {
-
-	public static void main(String[] args) throws SQLException {
-
-		ConfiguracoesBanco.getSingleton().getConnection();
-
-		//Cardapio cardapio = new Cardapio("Porcao media de batata", 12);
-		Cardapio cardapio = new Cardapio();
-		// TESTE DE INSERCAO
-		/*
+	
+	//INSERCAO
+	public void gerenciarCadastroCardapio(String nome, double preco) throws SQLException, NomeInvalidoException, PrecoInvalidoException{
 		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Cardapio cardapio = new Cardapio(nome, preco);
 			Fachada.getSingleton().cardapioCadastroValidacao(cardapio);
 		}catch(PratoExistenteException | NomeInvalidoException | PrecoInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
-		
-		// TESTE DE REMOCAO E RECUPERAR PELO NOME
-		/*
+	}
+	
+	//REMOCAO
+	public void gerenciarRemocaoCardapio(String nome) throws SQLException, NomeInvalidoException, PratoInexistenteException {
 		try {
-			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao("Pizza");
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Cardapio cardapio = new Cardapio();
+			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nome);
 			Fachada.getSingleton().cardapioRemocaoValidacao(cardapio);
 		}catch(PratoInexistenteException | NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
-		
-		/*/
-		//TESTE DE ALTERACAO E RECUPERAR PELO CODIGO
+	}
+	
+	//ALTERACAO
+	public void gerenciarAlteracaoCardapio(String nome, String novoNome, double preco) throws SQLException, PratoInexistenteException, NomeInvalidoException, PratoExistenteException {
 		try {
-			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(2);
-			cardapio.setPrato("Porcao grande de batata");
-			Fachada.getSingleton().cardapioAlteracaoValidacao(cardapio);
-		}catch(IDRecuperacaoItemInvalidoException | NomeInvalidoException | PrecoInvalidoException ex) {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Cardapio cardapio = new Cardapio();
+			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nome);
+			Fachada.getSingleton().cardapioAlteracaoValidacao(cardapio, nome, novoNome, preco);
+		}catch(PratoInexistenteException | NomeInvalidoException | PratoExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		//*/
-		
-		/*
-		//TESTE DE LISTAR TODOS
+	}
+	
+	//RECUPERAR
+	public void gerenciarRecuperarCardapio(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException {
 		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Cardapio cardapio = new Cardapio();
+			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(codigo);
+			System.out.println(cardapio);
+		}catch(IDRecuperacaoItemInvalidoException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
+	
+	//LISTAR TODOS
+	public void gerenciarListarCardapio() throws SQLException, ListarTodosInvalidoException {
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().cardapioListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
 		}
-		
-		//*/
-	//}
-
-//}
+	}
+	
+}

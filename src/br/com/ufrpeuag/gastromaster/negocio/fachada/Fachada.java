@@ -1,5 +1,6 @@
 package br.com.ufrpeuag.gastromaster.negocio.fachada;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
@@ -38,6 +39,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SenhaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
@@ -45,6 +47,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.CardapioValidacao;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.ContaValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.EnderecoValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GarcomValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenteValidacao;
@@ -61,15 +64,16 @@ public class Fachada {
 	private CardapioValidacao cardapio;
 	private PedidoValidacao pedido;
 	private MesaValidacao mesa;
+	private ContaValidacao conta;
 	
-	public static Fachada getSingleton() {
+	public static Fachada getSingleton() throws SQLException {
 		if (singleton == null) {
 			singleton = new Fachada();
 		}
 		return singleton;
 	}
 	
-	private Fachada () {
+	private Fachada () throws SQLException {
 		endereco = new EnderecoValidacao();
 		garcom = new GarcomValidacao();
 		gerente = new GerenteValidacao();
@@ -77,6 +81,7 @@ public class Fachada {
 		cardapio = new CardapioValidacao();
 		pedido = new PedidoValidacao();
 		mesa = new MesaValidacao();
+		conta = new ContaValidacao();
 	}
 	
 	public void enderecoCadastroValidacao(Endereco endereco) throws BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException{
@@ -107,7 +112,7 @@ public class Fachada {
 		this.garcom.garcomRemocaoValidacao(garcom);
 	}
 	
-	public void garcomAlteracaoValidacao(Garcom garcom, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario) throws CPFInvalidoException, DataNascimentoInvalidaException {
+	public void garcomAlteracaoValidacao(Garcom garcom, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario) throws CPFInvalidoException, RecuperarCPFException, DataNascimentoInvalidaException, GarcomExistenteException {
 		this.garcom.garcomAlteracaoValidacao(garcom, nome, cpf, novoCPF, dataNasc, telefone, email, salario);
 	}
 	
@@ -135,7 +140,7 @@ public class Fachada {
 		this.gerente.gerenteRemocaoValidacao(gerente);
 	}
 	
-	public void gerenteAlteracaoValidacao(Gerente gerente, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha) throws CPFInvalidoException, DataNascimentoInvalidaException{
+	public void gerenteAlteracaoValidacao(Gerente gerente, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha) throws CPFInvalidoException, DataNascimentoInvalidaException, GerenteExistenteException{
 		this.gerente.gerenteAlteracaoValidacao(gerente, nome, cpf, novoCPF, dataNasc, telefone, email, salario, senha);
 	}
 	
@@ -167,7 +172,7 @@ public class Fachada {
 		this.produto.produtoRemocaoValidacao(produto);
 	}
 	
-	public void produtoAlteracaoValidacao(Produto produto, String nome, String novoNome, int quantidade, double preco){
+	public void produtoAlteracaoValidacao(Produto produto, String nome, String novoNome, int quantidade, double preco)throws ProdutoExistenteException{
 		this.produto.produtoAlteracaoValidacao(produto, nome, novoNome, quantidade, preco);
 	}
 	
@@ -202,8 +207,8 @@ public class Fachada {
 		this.cardapio.cardapioRemocaoValidacao(cardapio);
 	}
 	
-	public void cardapioAlteracaoValidacao(Cardapio cardapio) throws NomeInvalidoException, PrecoInvalidoException {
-		this.cardapio.cardapioAlteracaoValidacao(cardapio);
+	public void cardapioAlteracaoValidacao(Cardapio cardapio, String nome, String novoNome, double preco) throws PratoExistenteException {
+		this.cardapio.cardapioAlteracaoValidacao(cardapio, nome, novoNome, preco);
 	}
 	
 	public Cardapio cardapioRecuperarValidacao(String nome) throws PratoInexistenteException, NomeInvalidoException {
@@ -218,8 +223,8 @@ public class Fachada {
 		return this.cardapio.cardapioListarTodosValidacao();
 	}
 	
-	public void pedidoCadastorValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException{
-		this.pedido.pedidoCadastorValidacao(pedido);
+	public void pedidoCadastroValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException{
+		this.pedido.pedidoCadastroValidacao(pedido);
 	}
 	
 	public void pedidoRemocaoValidacao(Pedido pedido) throws PedidoInexistenteException {
@@ -242,19 +247,31 @@ public class Fachada {
 		this.mesa.mesaCadastroMesaValidacao(mesa);
 	}
 	
-	public void mesaRemocaoValidacao(Mesa mesa) throws MesaInexistenteException{
+	public void mesaRemocaoValidacao(Mesa mesa){
 		this.mesa.mesaRemocaoValidacao(mesa);
 	}
 	
-	public void mesaAlteracaoValidacao(Mesa mesa) throws MesaDisponibilidadeInvalidaException {
-		this.mesa.mesaAlteracaoValidacao(mesa);
+	public void mesaAlteracaoValidacao(Mesa mesa, int novoNumero) throws MesaCadastradaException{
+		this.mesa.mesaAlteracaoValidacao(mesa, novoNumero);
 	}
 	
 	public Mesa mesaRecuperarValidacao(Integer codigo) throws IDRecuperarMesaException {
 		return this.mesa.mesaRecuperarValidacao(codigo);
 	}
 	
+	public Mesa mesaRecuperarNumeroValidacao(Integer numero) throws MesaInexistenteException {
+		return this.mesa.mesaRecuperarNumeroValidacao(numero);
+	}
+	
+	public void mesaMudarDisponibilidadeValidacao(Mesa mesa) {
+		this.mesa.mesaMudarDisponibilidadeValidacao(mesa);
+	}
+	
 	public List<Mesa> mesaListarTodosValidacao() throws ListarTodosInvalidoException {
 		return this.mesa.mesaListarTodosValidacao();
+	}
+	
+	public void contaCadastroContaValidacao(Conta conta) {
+		this.conta.contaCadastroContaValidacao(conta);
 	}
 }

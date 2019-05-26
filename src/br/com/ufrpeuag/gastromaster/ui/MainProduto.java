@@ -42,13 +42,13 @@ public class MainProduto {
 	}
 	
 	//ALTERACAO
-	public void gerenciarAlteracaoProduto(String nome, String novoNome, int quantidade, double preco)throws SQLException{
+	public void gerenciarAlteracaoProduto(String nome, String novoNome, int quantidade, double preco)throws SQLException, NomeInvalidoException, ProdutoInexistenteException, ProdutoExistenteException{
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();;
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
 			Fachada.getSingleton().produtoAlteracaoValidacao(produto, nome, novoNome, quantidade, preco);
-		}catch(NomeInvalidoException ex) {
+		}catch(NomeInvalidoException | ProdutoExistenteException | ProdutoInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");

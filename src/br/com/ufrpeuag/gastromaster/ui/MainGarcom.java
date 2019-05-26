@@ -12,6 +12,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
@@ -74,7 +75,7 @@ public class MainGarcom {
 		
 	//TESTE ALTERACAO	
 	public void gerenciarAlteracaoGarcom(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario)
-			throws SQLException, CPFInvalidoException, DataNascimentoInvalidaException, RecuperarCPFException, EnderecoInexistenteException {
+			throws SQLException, CPFInvalidoException, DataNascimentoInvalidaException, RecuperarCPFException, GarcomExistenteException {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
 			Garcom garcom = new Garcom();
@@ -83,7 +84,7 @@ public class MainGarcom {
 			end = Fachada.getSingleton().enderecoRecuperarValidacao(garcom.getEndereco().getId_endereco());		
 			Fachada.getSingleton().enderecoAlteracaoValidacao(end, cidade, bairro, rua, numero, cep);
 			Fachada.getSingleton().garcomAlteracaoValidacao(garcom, nome, cpf, novoCPF, dataNasc, telefone, email, salario);
-		}catch(CPFInvalidoException | DataNascimentoInvalidaException ex) {
+		}catch(CPFInvalidoException | RecuperarCPFException | DataNascimentoInvalidaException | GarcomExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
@@ -101,5 +102,19 @@ public class MainGarcom {
 			System.out.println("Erro inesperado.");
 		}
 	}
-		
+	
+	//VERIFICA SE E GARCOM
+	public Garcom gerenciarVerificarGarcom(String identificador) throws SQLException, LoginInvalidoException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();	
+			Garcom garcom = new Garcom();
+			garcom = Fachada.getSingleton().garcomVerificarValidacao(identificador);
+			return garcom;
+		}catch(LoginInvalidoException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+		return null;
+	}
 }

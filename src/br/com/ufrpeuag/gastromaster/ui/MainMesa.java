@@ -1,73 +1,100 @@
-/*package br.com.ufrpeuag.gastromaster.ui;
+package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
-import br.com.ufrpeuag.gastromaster.dados.RepositorioMesa;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperarMesaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaCadastradaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaDisponibilidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 
 public class MainMesa {
 
-	public static void main(String[] args) throws SQLException {
-	
-		ConfiguracoesBanco.getSingleton().getConnection();
-		RepositorioMesa rm = new RepositorioMesa();
-		//Mesa mesa = new Mesa(1, 1);
-		Mesa mesa = new Mesa();
-		
-		//TESTE DE INSERCAO
-		/*
+	//INSERCAO
+	public void gerenciarCadastroMesa(int numero, int disponibilidade) throws SQLException, MesaCadastradaException, NumeroInvalidoException, MesaDisponibilidadeInvalidaException{
 		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Mesa mesa = new Mesa(numero, disponibilidade);
 			Fachada.getSingleton().mesaCadastroMesaValidacao(mesa);
 		}catch(MesaCadastradaException | NumeroInvalidoException |MesaDisponibilidadeInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-		//*/
 		
-		//TESTE DE RECUPERAR E ALTERAR
-		
-		/*/
+	}
+	
+	//REMOCAO
+	public void gerenciarRemocaoMesa(int numero) throws SQLException, MesaInexistenteException {
 		try {
-			mesa = Fachada.getSingleton().mesaRecuperarValidacao(1);
-			mesa.setDisponibilidade(1);
-			Fachada.getSingleton().mesaAlteracaoValidacao(mesa);
-		}catch(IDRecuperarMesaException | MesaDisponibilidadeInvalidaException ex) {
-			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
-			System.out.println("Erro inesperado.");
-		}
-		//*/
-		//TESTE DE REMOCAO SEMPRE PRITANDO QUE MESA N EXISTE
-		/*
-		try {
-			mesa = Fachada.getSingleton().mesaRecuperarValidacao(2);
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Mesa mesa = new Mesa();
+			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
 			Fachada.getSingleton().mesaRemocaoValidacao(mesa);
-		}catch(IDRecuperarMesaException | MesaInexistenteException ex) {
+		}catch(MesaInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 		
-		//*/
-		/*
-		//TESTE LISTAR TODOS
+	}
+	
+	public Mesa gerenciarGerenciamentoMesa(int numero) throws SQLException, MesaInexistenteException {
 		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Mesa mesa = new Mesa();
+			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
+			return mesa;
+		}catch(MesaInexistenteException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+		return null;
+		
+	}
+	
+	
+	//ALTERAR
+	public void gerenciarAlteracaoMesa(int numero, int novoNumero) throws SQLException, MesaCadastradaException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Mesa mesa = new Mesa();
+			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
+			Fachada.getSingleton().mesaAlteracaoValidacao(mesa, novoNumero);
+		}catch(MesaCadastradaException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
+	
+	//MUDAR DISPONIBILIDADE
+	public void gerenciarMudarDisponibilidadeMesa(int numero) throws SQLException, MesaInexistenteException {
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Mesa mesa = new Mesa();
+			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
+			Fachada.getSingleton().mesaMudarDisponibilidadeValidacao(mesa);;
+		}catch(MesaInexistenteException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
+		
+	//LISTAR TODOS
+	public void gerenciarListarMesa() throws SQLException, ListarTodosInvalidoException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().mesaListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-		//*/
-		
-	//}
-
-//}
+	}
+}
