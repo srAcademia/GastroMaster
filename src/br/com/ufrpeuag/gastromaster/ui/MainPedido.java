@@ -21,7 +21,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 public class MainPedido {
 	
 	//INSERCAO
-	public Pedido gerenciarCadastroPedido(String nomeCard, String nomeProduto) throws SQLException, PratoInexistenteException, NomeInvalidoException, PedidoInvalidoException, PedidoVazioException, ProdutoInexistenteException {
+	/*public Pedido gerenciarCadastroPedido(String nomeCard, String nomeProduto) throws SQLException, PratoInexistenteException, NomeInvalidoException, PedidoInvalidoException, PedidoVazioException, ProdutoInexistenteException {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio();
@@ -43,7 +43,7 @@ public class MainPedido {
 		}
 		return null;
 			
-	}
+	}*/
 	
 	//REMOCAO
 	public void gerenciarRemocaoPedido(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException, PedidoInexistenteException {

@@ -8,6 +8,7 @@ public interface ProdutoDao extends Dao<Produto> {
 	public void adicionarQuantProduto(Produto produto,Integer quantidade);
 	public int retornarQuantidadeProduto(Produto produto);
 	public Produto retornarProduto(String nome);
+	public int retornarID(String nome);
 	
 
 }

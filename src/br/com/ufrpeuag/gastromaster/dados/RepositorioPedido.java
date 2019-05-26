@@ -10,6 +10,7 @@ import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.interfaces.PedidoDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
@@ -20,12 +21,13 @@ public class RepositorioPedido implements PedidoDao {
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Pedido (cod_produto, cod_cardapio, valor) VALUES(?,?,?)";
+			String inserirSql = "INSERT INTO Pedido (cod_produto, cod_cardapio, valor,cod_mesa) VALUES(?,?,?,?)";
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setInt(1, pedido.getProduto().getId_produto());
 			pstmt.setInt(2, pedido.getCardapio().getId_cardapio());
 			pstmt.setDouble(3, pedido.getValor());
+			pstmt.setInt(4, pedido.getMesa().getId_mesa());
 			pstmt.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -66,6 +68,7 @@ public class RepositorioPedido implements PedidoDao {
 				c = new Cardapio();
 				p = new Produto();
 				pedido = new Pedido();
+				Mesa m = new Mesa();
 
 				pedido.setId_pedido(result.getInt("id_pedido"));
 
@@ -81,6 +84,13 @@ public class RepositorioPedido implements PedidoDao {
 				pedido.setProduto(p);
 
 				pedido.setValor(result.getDouble("valor"));
+
+				// Mesa
+				m.setId_mesa(result.getInt("id_mesa"));
+				m.setNumero(result.getInt("numero"));
+				m.setDisponibilidade(result.getInt("disponibilidade"));
+
+				pedido.setMesa(m);
 
 				return pedido;
 			}
@@ -102,7 +112,7 @@ public class RepositorioPedido implements PedidoDao {
 
 	@Override
 	public void alterar(Pedido pedido) {
-		String alterarSql = "UPDATE Pedido SET cod_produto =?, cod_cardapio = ? , valor= ?  WHERE id_pedido = ?";
+		String alterarSql = "UPDATE Pedido SET cod_produto =?, cod_cardapio = ? , valor= ?, cod_mesa = ?  WHERE id_pedido = ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
@@ -113,6 +123,7 @@ public class RepositorioPedido implements PedidoDao {
 			pstmt.setInt(2, pedido.getCardapio().getId_cardapio());
 			pstmt.setDouble(3, pedido.getValor());
 			pstmt.setInt(4, pedido.getId_pedido());
+			pstmt.setInt(4, pedido.getMesa().getId_mesa());
 
 			pstmt.executeUpdate();
 
@@ -177,7 +188,7 @@ public class RepositorioPedido implements PedidoDao {
 				c = new Cardapio();
 				p = new Produto();
 				pedido = new Pedido();
-
+				Mesa m = new Mesa();
 				pedido.setId_pedido(result.getInt("id_pedido"));
 
 				c.setId_cardapio(result.getInt("Id_cardapio"));
@@ -192,6 +203,12 @@ public class RepositorioPedido implements PedidoDao {
 				pedido.setProduto(p);
 
 				pedido.setValor(result.getDouble("valor"));
+
+				m.setId_mesa(result.getInt("id_mesa"));
+				m.setNumero(result.getInt("numero"));
+				m.setDisponibilidade(result.getInt("disponibilidade"));
+
+				pedido.setMesa(m);
 
 				lista.add(pedido);
 
@@ -213,6 +230,47 @@ public class RepositorioPedido implements PedidoDao {
 		}
 
 		return null;
+	}
+
+	@Override
+	public int retornarId(Integer id_cardapio, Integer id_produto, Integer id_mesa) {
+
+		String sql = "SELECT *  FROM Pedido WHERE (cod_cardapio= ? ) and (cod_produto = ? ) and (cod_mesa = ? )";
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+		int id = 0;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id_cardapio);
+			pstmt.setInt(2, id_produto);
+			pstmt.setInt(3, id_mesa);
+
+			result = pstmt.executeQuery();
+
+			if (result != null) {
+				if (result.next()) {
+					id = result.getInt("id_pedido");
+
+				}
+			}
+			return id;
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+		return 0;
 	}
 
 }

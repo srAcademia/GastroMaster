@@ -69,12 +69,16 @@ public class ConfiguracoesBanco {
 				+ "numero INTEGER,"
 				+ "disponibilidade INTEGER"
 				+ ");";
+		
 		String pedido = "CREATE TABLE IF NOT EXISTS Pedido("
 				+ "id_pedido INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "cod_produto INTEGER,"
 				+ "cod_cardapio INTEGER,"
-				+ "valor REAL, "
+				+ "valor REAL,"
+				+ "cod_mesa INTEGER,  "
 				+ " CONSTRAINT fk_produto FOREIGN KEY(cod_produto) REFERENCES Produto(id_produto)"
+				+ " ON DELETE CASCADE ON UPDATE CASCADE "
+				+ " CONSTRAINT fk_mesa FOREIGN KEY(cod_mesa) REFERENCES mesa(id_mesa)"
 				+ " ON DELETE CASCADE ON UPDATE CASCADE "
 				+ " CONSTRAINT fk_cardapio FOREIGN KEY(cod_cardapio) REFERENCES Cardapio(id_cardapio) "
 				+ " ON DELETE CASCADE ON UPDATE CASCADE "

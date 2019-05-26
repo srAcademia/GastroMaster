@@ -215,4 +215,42 @@ public class RepositorioCardapio implements CardapioDao {
 		return null;
 	}
 
+	@Override
+	public int retornarID(String nome) {
+		String sql = "SELECT *  FROM Cardapio WHERE prato = ?";
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+		int id = 0;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, nome);
+
+			result = pstmt.executeQuery();
+
+			if (result != null) {
+				if (result.next()) {
+					id = result.getInt("id_cardapio");
+
+				}
+			}
+			return id;
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+		return 0;
+	}
+
 }

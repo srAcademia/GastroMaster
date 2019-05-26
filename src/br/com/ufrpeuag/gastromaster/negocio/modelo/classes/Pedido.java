@@ -6,16 +6,18 @@ public class Pedido {
 	private Cardapio cardapio;
 	private Produto produto;
 	private double valor;
+	private Mesa mesa;
 
 	public Pedido() {
 
 	}
 
-	public Pedido(Cardapio cardapio, Produto produto,double valor) {
+	public Pedido(Cardapio cardapio, Produto produto,double valor,Mesa mesa) {
 
 		this.cardapio = cardapio;
 		this.produto = produto;
 		this.valor=valor;
+		this.mesa=mesa;
 		
 	}
 
@@ -54,10 +56,20 @@ public class Pedido {
 		return precoProd + precoCard;
 	}
 
+	public Mesa getMesa() {
+		return mesa;
+	}
+
+	public void setMesa(Mesa mesa) {
+		this.mesa = mesa;
+	}
+
 	@Override
 	public String toString() {
 		return "Pedido [id_pedido=" + id_pedido + ", cardapio=" + cardapio + ", produto=" + produto + ", valor=" + valor
-				+ "]\n";
+				+ ", mesa=" + mesa + "]/n";
 	}
+
+	
 
 }

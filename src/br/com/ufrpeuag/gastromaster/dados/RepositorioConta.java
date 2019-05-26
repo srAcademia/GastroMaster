@@ -110,6 +110,7 @@ public class RepositorioConta implements ContaDao {
 				prod.setQuantidade(result.getInt("quantidade"));
 				prod.setPreco(result.getDouble("preco"));
 				pedido.setProduto(prod);
+				pedido.setValor(result.getDouble("valor"));
 				c.setPedido(pedido);
 
 				// Garcom
@@ -159,8 +160,7 @@ public class RepositorioConta implements ContaDao {
 
 	@Override
 	public void alterar(Conta conta) {
-		String alterarSql = "UPDATE Conta SET pagamento= ? , data= ? , "
-				+ "cod_pedido= ? , cod_garcom= ? , "
+		String alterarSql = "UPDATE Conta SET pagamento= ? , data= ? , " + "cod_pedido= ? , cod_garcom= ? , "
 				+ "cod_mesa= ?," + " valor= ?  WHERE id_conta = ?";
 		PreparedStatement pstmt = null;
 
@@ -269,6 +269,7 @@ public class RepositorioConta implements ContaDao {
 				prod.setQuantidade(result.getInt("quantidade"));
 				prod.setPreco(result.getDouble("preco"));
 				pedido.setProduto(prod);
+				pedido.setValor(result.getDouble("valor"));
 				c.setPedido(pedido);
 
 				// Garcom
@@ -299,8 +300,9 @@ public class RepositorioConta implements ContaDao {
 
 				c.setValor(result.getDouble("valor"));
 				lista.add(c);
-				return lista;
+
 			}
+			return lista;
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {
@@ -351,7 +353,8 @@ public class RepositorioConta implements ContaDao {
 	}
 
 	@Override
-	public Conta recuperarPorMesa(Integer codigo) {
+	public List<Conta> recuperarPorMesa(Integer codigo) {
+		List<Conta> lista = new ArrayList<>();
 		String sql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
 				+ "JOIN Cardapio card on (p.cod_cardapio=card.id_cardapio)  \r\n"
 				+ "JOIN Produto prod on(p.cod_produto =Prod.id_produto) \r\n"
@@ -405,6 +408,7 @@ public class RepositorioConta implements ContaDao {
 				prod.setQuantidade(result.getInt("quantidade"));
 				prod.setPreco(result.getDouble("preco"));
 				pedido.setProduto(prod);
+				pedido.setValor(result.getDouble("valor"));
 				c.setPedido(pedido);
 
 				// Garcom
@@ -434,9 +438,10 @@ public class RepositorioConta implements ContaDao {
 				c.setMesa(m);
 
 				c.setValor(result.getDouble("valor"));
-
-				return c;
+				lista.add(c);
 			}
+			return lista;
+
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {

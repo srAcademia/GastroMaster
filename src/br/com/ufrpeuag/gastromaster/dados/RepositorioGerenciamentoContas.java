@@ -15,11 +15,11 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 
-public class RepositorioGenrenciamentoContas implements GerenciamentoContasDao {
+public class RepositorioGerenciamentoContas implements GerenciamentoContasDao {
 
 	private final Connection conn;
 
-	public RepositorioGenrenciamentoContas() throws SQLException {
+	public RepositorioGerenciamentoContas() throws SQLException {
 		conn = ConfiguracoesBanco.getSingleton().getConnection();
 	}
 
@@ -194,7 +194,6 @@ public class RepositorioGenrenciamentoContas implements GerenciamentoContasDao {
 			stmt = this.conn.createStatement();
 			result = stmt.executeQuery(sql);
 
-
 			while (result.next()) {
 
 				gc = new GerenciamentoContas();
@@ -230,9 +229,11 @@ public class RepositorioGenrenciamentoContas implements GerenciamentoContasDao {
 				gc.setValorTotal(result.getDouble("valorTotal"));
 				gc.setData(localDate);
 				lista.add(gc);
-				return lista;
 
 			}
+
+			return lista;
+
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {
@@ -247,6 +248,5 @@ public class RepositorioGenrenciamentoContas implements GerenciamentoContasDao {
 		}
 		return null;
 	}
-
 
 }

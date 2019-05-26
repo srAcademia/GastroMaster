@@ -1,4 +1,4 @@
-package br.com.ufrpeuag.gastromaster.ui;
+/*package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -71,11 +71,11 @@ public class MainPrincipal{
 		Mesa mesa = new Mesa();
 		Scanner scan = new Scanner(System.in);
 		do{
-			System.out.println("Digite 1 para gerenciar Funcionários.");
+			System.out.println("Digite 1 para gerenciar Funcionï¿½rios.");
 			System.out.println("Digite 2 para gerenciar Mesas.");
 			System.out.println("Digite 3 para gerenciar o Estoque.");
-			System.out.println("Digite 4 para gerenciar o Cardápio.");
-			System.out.println("Digite 5 para analisar dados do negócio.");
+			System.out.println("Digite 4 para gerenciar o Cardï¿½pio.");
+			System.out.println("Digite 5 para analisar dados do negï¿½cio.");
 			System.out.println("Digite 0 para sair.");
 			opcao = scan.nextInt();
 			
@@ -89,7 +89,7 @@ public class MainPrincipal{
 						gerente = mainGerente.gerenciarLogarGerente("12345");
 						if(gerente != null) {
 							System.out.println("Digite 1 para gerenciar Gerente.");
-							System.out.println("Digite 2 para gerenciar Garçom.");
+							System.out.println("Digite 2 para gerenciar Garï¿½om.");
 							opcao1 = scan.nextInt();
 							
 							switch(opcao1) {
@@ -98,9 +98,9 @@ public class MainPrincipal{
 										System.out.println("Digite 1 para cadastrar um novo gerente.");
 										System.out.println("Digite 2 para alterar um gerente.");
 										System.out.println("Digite 3 para deletar um gerente.");
-										System.out.println("Digite 4 para verificar a existência de um gerente.");
+										System.out.println("Digite 4 para verificar a existï¿½ncia de um gerente.");
 										System.out.println("Digite 5 para listar todos os gerentes.");
-										System.out.println("Digite 0 sair desta opção.");
+										System.out.println("Digite 0 sair desta opï¿½ï¿½o.");
 										opcao11 = scan.nextInt();
 										
 										switch(opcao11) {
@@ -122,18 +122,18 @@ public class MainPrincipal{
 											case 0:
 												break;
 											default:
-												System.out.println("Opção Inválida");
+												System.out.println("Opï¿½ï¿½o Invï¿½lida");
 										}
 									}while(opcao11 != 0);
 									break;
 								case 2:
 									do {
-										System.out.println("Digite 1 para cadastrar um novo garçom.");
-										System.out.println("Digite 2 para alterar um garçom.");
-										System.out.println("Digite 3 para deletar um garçom.");
-										System.out.println("Digite 4 para verificar a existência de um garçom.");
-										System.out.println("Digite 5 para listar todos os garçons.");
-										System.out.println("Digite 0 sair desta opção.");
+										System.out.println("Digite 1 para cadastrar um novo garï¿½om.");
+										System.out.println("Digite 2 para alterar um garï¿½om.");
+										System.out.println("Digite 3 para deletar um garï¿½om.");
+										System.out.println("Digite 4 para verificar a existï¿½ncia de um garï¿½om.");
+										System.out.println("Digite 5 para listar todos os garï¿½ons.");
+										System.out.println("Digite 0 sair desta opï¿½ï¿½o.");
 										opcao12 = scan.nextInt();
 										
 										switch(opcao12) {
@@ -155,13 +155,13 @@ public class MainPrincipal{
 											case 0:
 												break;
 											default:
-												System.out.println("Opção Inválida");
+												System.out.println("Opï¿½ï¿½o Invï¿½lida");
 										
 										}
 									}while(opcao12 != 0);
 									break;
 								default:
-									System.out.println("Opção Inválida");									
+									System.out.println("Opï¿½ï¿½o Invï¿½lida");									
 							}
 							
 						}
@@ -170,12 +170,12 @@ public class MainPrincipal{
 				case 2:
 					do {
 						System.out.println("Digite 1 para cadastrar uma mesa ao restaurante.");
-						System.out.println("Digite 2 para alterar o número de uma mesa.");
+						System.out.println("Digite 2 para alterar o nï¿½mero de uma mesa.");
 						System.out.println("Digite 3 para deletar uma mesa.");
 						System.out.println("Digite 4 para mudar a disponibilidade de uma mesa.");
-						System.out.println("Digite 5 para gerenciar uma mesa específica.");
+						System.out.println("Digite 5 para gerenciar uma mesa especï¿½fica.");
 						System.out.println("Digite 6 para listar todas as mesas do restaurante.");
-						System.out.println("Digite 0 sair desta opção.");
+						System.out.println("Digite 0 sair desta opï¿½ï¿½o.");
 						opcao2 = scan.nextInt();
 						
 						switch(opcao2) {
@@ -196,7 +196,7 @@ public class MainPrincipal{
 								if( mesa != null) {
 									//CHAMADA DE FAZER PEDIDO OU FECHAR CONTA
 									do {
-										System.out.println("Digite 1 para fazer um pedido à mesa.");
+										System.out.println("Digite 1 para fazer um pedido ï¿½ mesa.");
 										System.out.println("Digite 2 para deletar um pedido da mesa.");
 										System.out.println("Digite 3 para alterar um pedido da mesa.");
 										System.out.println("Digite 4 para listar todos os pedidos da mesa.");
@@ -207,7 +207,7 @@ public class MainPrincipal{
 											case 1:
 												//TA AQUI SO PRA RETORNAR, MAS SEMPRE QUE ENTRAR TEM QUE PEGAR LOGO ESSA PORRA
 												garcom = mainGarcom.gerenciarVerificarGarcom("1a8185");
-												pedido = mainPedido.gerenciarCadastroPedido("Camarão", "Coca-cola 2,5 litros");
+												pedido = mainPedido.gerenciarCadastroPedido("Camarï¿½o", "Coca-cola 2,5 litros");
 												if(pedido != null)
 												mainConta.gerenciarCadastroConta(garcom, mesa, pedido);
 												break;
@@ -215,7 +215,7 @@ public class MainPrincipal{
 												mainPedido.gerenciarRemocaoPedido(2);
 												break;
 											case 3:
-												mainPedido.gerenciarAlteracaoPedido(3, "Camarão", "");
+												mainPedido.gerenciarAlteracaoPedido(3, "Camarï¿½o", "");
 												break;
 											case 4:
 												mainPedido.gerenciarListarPedido();
@@ -223,7 +223,7 @@ public class MainPrincipal{
 											case 0:
 												break;
 											default:
-												System.out.println("Opção inválida.");
+												System.out.println("Opï¿½ï¿½o invï¿½lida.");
 											
 										}
 									}while(opcao22 != 0);
@@ -234,7 +234,7 @@ public class MainPrincipal{
 							case 0:
 								break;
 							default:
-								System.out.println("Opção Inválida");
+								System.out.println("Opï¿½ï¿½o Invï¿½lida");
 						}
 					}while(opcao2 != 0);
 					break;
@@ -243,11 +243,11 @@ public class MainPrincipal{
 						System.out.println("Digite 1 para cadastrar um produto no estoque.");
 						System.out.println("Digite 2 para alterar um produto.");
 						System.out.println("Digite 3 para deletar um produto.");
-						System.out.println("Digite 4 para verificar a existência de um produto.");
+						System.out.println("Digite 4 para verificar a existï¿½ncia de um produto.");
 						System.out.println("Digite 5 para adicionar uma quantidade a algum produto.");
-						System.out.println("Digite 6 para saber a quantidade de um produto específico.");
+						System.out.println("Digite 6 para saber a quantidade de um produto especï¿½fico.");
 						System.out.println("Digite 7 para listar todos os produtos.");
-						System.out.println("Digite 0 sair desta opção.");
+						System.out.println("Digite 0 sair desta opï¿½ï¿½o.");
 						opcao3 = scan.nextInt();
 						
 						switch(opcao3) {
@@ -274,29 +274,29 @@ public class MainPrincipal{
 							case 0:
 								break;
 							default:
-								System.out.println("Opção Inválida");
+								System.out.println("Opï¿½ï¿½o Invï¿½lida");
 						}
 					}while(opcao3 != 0);
 					break;
 				case 4:
 					do {
-						System.out.println("Digite 1 para cadastrar um prato ao cardápio.");
+						System.out.println("Digite 1 para cadastrar um prato ao cardï¿½pio.");
 						System.out.println("Digite 2 para alterar um prato.");
 						System.out.println("Digite 3 para deletar um prato.");
-						System.out.println("Digite 4 para verificar a existência de um prato.");
-						System.out.println("Digite 5 para listar todos os pratos do cardápio.");
-						System.out.println("Digite 0 sair desta opção.");
+						System.out.println("Digite 4 para verificar a existï¿½ncia de um prato.");
+						System.out.println("Digite 5 para listar todos os pratos do cardï¿½pio.");
+						System.out.println("Digite 0 sair desta opï¿½ï¿½o.");
 						opcao4 = scan.nextInt();
 						
 						switch(opcao4) {
 							case 1:
-								mainCardapio.gerenciarCadastroCardapio("Camarão", 32);
+								mainCardapio.gerenciarCadastroCardapio("Camarï¿½o", 32);
 								break;
 							case 2:
-								mainCardapio.gerenciarAlteracaoCardapio("Camarão", "", 30);
+								mainCardapio.gerenciarAlteracaoCardapio("Camarï¿½o", "", 30);
 								break;
 							case 3:
-								mainCardapio.gerenciarRemocaoCardapio("Camarão");
+								mainCardapio.gerenciarRemocaoCardapio("Camarï¿½o");
 								break;
 							case 4:
 								mainCardapio.gerenciarRecuperarCardapio(2);
@@ -306,7 +306,7 @@ public class MainPrincipal{
 							case 0:
 								break;
 							default:
-								System.out.println("Opção Inválida");
+								System.out.println("Opï¿½ï¿½o Invï¿½lida");
 						}
 					}while(opcao4 != 0);
 					break;
@@ -317,8 +317,9 @@ public class MainPrincipal{
 					System.out.println("Encerrando o sistema...");
 					break;
 				default:
-					System.out.println("Opção Inválida");
+					System.out.println("Opï¿½ï¿½o Invï¿½lida");
 			}
 		}while(opcao != 0);
 	}	
 }
+*/
