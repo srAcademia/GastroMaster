@@ -24,12 +24,8 @@ public class MesaValidacao {
 		if(mesa.getNumero() < 1) {
 			throw new NumeroInvalidoException();
 		}
-		List<Mesa> m = new ArrayList<>();
-		m = this.repMesa.listarTodos();
-		for (int i = 0; i < m.size(); i++) {
-			if(m.get(i).getNumero() == (mesa.getNumero())) {
-				throw new MesaCadastradaException();
-			}
+		if(repMesa.recuperarNumeroMesa(mesa.getNumero()) != null) {
+			throw new MesaCadastradaException();
 		}
 		if(mesa.getDisponibilidade() != 1 && mesa.getDisponibilidade() != 0) {
 			throw new MesaDisponibilidadeInvalidaException();
@@ -37,20 +33,16 @@ public class MesaValidacao {
 		repMesa.inserir(mesa);
 	}
 	
-	public void mesaRemocaoValidacao(Mesa mesa) throws MesaInexistenteException{
-		List<Mesa> m = new ArrayList<>();
-		m = this.repMesa.listarTodos();
-		for (int i = 0; i < m.size(); i++) {
-			if(m.get(i).getNumero() == (mesa.getNumero())) {
-				repMesa.deletar(mesa);
-			}
-		}
-		throw new MesaInexistenteException();
+	public void mesaRemocaoValidacao(Mesa mesa){
+		repMesa.deletar(mesa);
 	}
 	
-	public void mesaAlteracaoValidacao(Mesa mesa) throws MesaDisponibilidadeInvalidaException {
-		if(mesa.getDisponibilidade() != 1 && mesa.getDisponibilidade() != 0) {
-			throw new MesaDisponibilidadeInvalidaException();
+	public void mesaAlteracaoValidacao(Mesa mesa, int novoNumero) throws MesaCadastradaException {
+		if(novoNumero > 0) {
+			if(repMesa.recuperarNumeroMesa(novoNumero) != null) {
+				throw new MesaCadastradaException();
+			}
+			mesa.setNumero(novoNumero);
 		}
 		repMesa.alterar(mesa);
 	}
@@ -64,6 +56,21 @@ public class MesaValidacao {
 			}
 		}
 		throw new IDRecuperarMesaException();
+	}
+	
+	public Mesa mesaRecuperarNumeroValidacao(Integer numero) throws MesaInexistenteException{
+		List<Mesa> m = new ArrayList<>();
+		m = this.repMesa.listarTodos();
+		for (int i = 0; i < m.size(); i++) {
+			if(m.get(i).getNumero() == numero) {
+				return repMesa.recuperarNumeroMesa(numero);
+			}
+		}
+		throw new MesaInexistenteException();
+	}
+	
+	public void mesaMudarDisponibilidadeValidacao(Mesa mesa) {
+		repMesa.mudarDisponibilidade(mesa);
 	}
 	
 	public List<Mesa> mesaListarTodosValidacao() throws ListarTodosInvalidoException {

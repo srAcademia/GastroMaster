@@ -76,8 +76,11 @@ public class GerenteValidacao {
 		repGerente.deletar(gerente);
 	}
 	
-	public void gerenteAlteracaoValidacao(Gerente gerente, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha) throws CPFInvalidoException, DataNascimentoInvalidaException{
+	public void gerenteAlteracaoValidacao(Gerente gerente, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha) throws CPFInvalidoException, DataNascimentoInvalidaException, GerenteExistenteException{
 		if(nome.isEmpty() == false) {
+			if(repGerente.recuperarCPF(novoCPF) != null) {
+				throw new GerenteExistenteException();
+			}
 			gerente.setNome(nome);
 		}
 		if(novoCPF.isEmpty() == false) {

@@ -1,80 +1,94 @@
-/*package br.com.ufrpeuag.gastromaster.ui;
+package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
-import java.util.Scanner;
-
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
-import br.com.ufrpeuag.gastromaster.dados.RepositorioCardapio;
-import br.com.ufrpeuag.gastromaster.dados.RepositorioPedido;
-import br.com.ufrpeuag.gastromaster.dados.RepositorioProduto;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoVazioException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
 public class MainPedido {
-
-	private static Scanner src;
-
-	public static void main(String[] args) throws SQLException {
-		ConfiguracoesBanco.getSingleton().getConnection();
-		src = new Scanner(System.in);
-		int cod_produto = 0;
-		int cod_cardapio = 0;
-		RepositorioProduto rp = new RepositorioProduto();
-		RepositorioCardapio rc = new RepositorioCardapio();
-		RepositorioPedido rpedido = new RepositorioPedido();
-
-		Cardapio card = new Cardapio();
-		Produto prod = new Produto();
-		Pedido pedido = null;
-
-		// Adicionar
-		System.out.println(rc.listarTodos());
-		System.out.println("Digite um  cardapio:");
-		cod_produto = src.nextInt();
-		System.out.println(rp.listarTodos());
-		System.out.println("Digite um produto:");
-		cod_cardapio = src.nextInt();
-
-		card = rc.recuperar(cod_cardapio);
-		prod = rp.recuperar(cod_produto);
-		double valor = 0;
-		pedido = new Pedido(card, prod, valor);
-		pedido.setValor(pedido.calcularValorPedido(card.getPreco(), prod.getPreco()));
-		pedido.getCardapio().setId_cardapio(cod_cardapio);
-		pedido.getProduto().setId_produto(cod_produto);
-		rpedido.inserir(pedido);
-
-		// Recuperar
-		pedido = rpedido.recuperar(4);
-		System.out.println(pedido);
-
-		// Alterar
-		System.out.println(rc.listarTodos());
-		System.out.println("Digite um  cardapio:");
-		cod_produto = src.nextInt();
-		System.out.println(rp.listarTodos());
-		System.out.println("Digite um produto:");
-		cod_cardapio = src.nextInt();
-
-		card = rc.recuperar(cod_cardapio);
-		prod = rp.recuperar(cod_produto);
-
-		pedido = rpedido.recuperar(4);
-		pedido.getCardapio().setId_cardapio(cod_cardapio);
-		pedido.getProduto().setId_produto(cod_produto);
-		pedido.setValor(pedido.calcularValorPedido(card.getPreco(), prod.getPreco()));
-		rpedido.alterar(pedido);
-
-		// Deletar
-		pedido = rpedido.recuperar(3);
-		rpedido.deletar(pedido);
-
-		// Listar todos
-		System.out.println(rpedido.listarTodos());
-
+	
+	//INSERCAO
+	public Pedido gerenciarCadastroPedido(String nomeCard, String nomeProduto) throws SQLException, PratoInexistenteException, NomeInvalidoException, PedidoInvalidoException, PedidoVazioException, ProdutoInexistenteException {
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Cardapio cardapio = new Cardapio();
+			Produto produto = new Produto();
+			if(nomeCard.isEmpty() == false) {
+				cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nomeCard);
+			}
+			if(nomeProduto.isEmpty() == false) {
+				produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nomeProduto);
+			}
+			Pedido pedido = new Pedido(cardapio, produto, 0);
+			Fachada.getSingleton().pedidoCadastroValidacao(pedido);
+			return pedido;
+		}catch(PedidoInvalidoException | PedidoVazioException | PratoInexistenteException | NomeInvalidoException | ProdutoInexistenteException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+		return null;
+			
 	}
-
+	
+	//REMOCAO
+	public void gerenciarRemocaoPedido(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException, PedidoInexistenteException {
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Pedido pedido = new Pedido();
+			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(codigo);
+			Fachada.getSingleton().pedidoRemocaoValidacao(pedido);
+		}catch(IDRecuperacaoItemInvalidoException | PedidoInexistenteException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
+	
+	//ALTERACAO
+	public void gerenciarAlteracaoPedido(Integer codigo, String novoCardapio, String novoProduto) throws SQLException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Cardapio cardapio = new Cardapio();
+			Produto produto = new Produto();
+			Pedido pedido = new Pedido();
+			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(codigo);
+			if(novoCardapio.isEmpty() == false) {
+				cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(novoCardapio);
+				pedido.setCardapio(cardapio);
+			}
+			if(novoProduto.isEmpty() == false) {
+				produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(novoProduto);
+				pedido.setProduto(produto);
+			}
+			Fachada.getSingleton().pedidoAlteracaoValidacao(pedido);
+		}catch(IDRecuperacaoItemInvalidoException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
+	
+	//LISTAR TODOS
+	public void gerenciarListarPedido() throws SQLException, ListarTodosInvalidoException {
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			System.out.println(Fachada.getSingleton().pedidoListarTodosValidacao());
+		}catch(ListarTodosInvalidoException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
 }
-*/

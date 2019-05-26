@@ -95,7 +95,7 @@ public class MainGerente {
 	
 	//ALTERACAO
 	public void gerenciarAlteracaoGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha)
-			throws SQLException, CPFInvalidoException, DataNascimentoInvalidaException {
+			throws SQLException, CPFInvalidoException, RecuperarCPFException, DataNascimentoInvalidaException, GerenteExistenteException {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
 			Gerente gerente = new Gerente();
@@ -104,7 +104,7 @@ public class MainGerente {
 			end = Fachada.getSingleton().enderecoRecuperarValidacao(gerente.getEndereco().getId_endereco());
 			Fachada.getSingleton().enderecoAlteracaoValidacao(end, cidade, bairro, rua, numero, cep);
 			Fachada.getSingleton().gerenteAlteracaoValidacao(gerente, nome, cpf, novoCPF, dataNasc, telefone, email, salario, senha);
-		}catch( CPFInvalidoException | DataNascimentoInvalidaException ex) {
+		}catch( CPFInvalidoException | RecuperarCPFException | DataNascimentoInvalidaException | GerenteExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");

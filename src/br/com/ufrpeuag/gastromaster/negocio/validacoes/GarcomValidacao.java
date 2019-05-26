@@ -72,11 +72,14 @@ public class GarcomValidacao {
 		repGarcom.deletar(garcom);
 	}
 	
-	public void garcomAlteracaoValidacao(Garcom garcom, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario) throws CPFInvalidoException, DataNascimentoInvalidaException{
+	public void garcomAlteracaoValidacao(Garcom garcom, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario) throws CPFInvalidoException, DataNascimentoInvalidaException, GarcomExistenteException{
 		if(nome.isEmpty() == false) {
 			garcom.setNome(nome);
 		}
 		if(novoCPF.isEmpty() == false) {
+			if(repGarcom.recuperar(novoCPF) != null) {
+				throw new GarcomExistenteException(); 
+			}
 			garcom.setCpf(novoCPF);
 		}
 		if(dataNasc.isEmpty() == false) {
