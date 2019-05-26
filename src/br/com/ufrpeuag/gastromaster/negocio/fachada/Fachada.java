@@ -271,7 +271,7 @@ public class Fachada {
 		return this.mesa.mesaListarTodosValidacao();
 	}
 	
-	public void contaCadastroConta(Conta conta) {
-		this.conta.contaCadastroConta(conta);
+	public void contaCadastroContaValidacao(Conta conta) {
+		this.conta.contaCadastroContaValidacao(conta);
 	}
 }

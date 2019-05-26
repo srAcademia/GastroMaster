@@ -65,6 +65,7 @@ public class MainPrincipal{
 		MainCardapio mainCardapio = new MainCardapio();
 		MainMesa mainMesa = new MainMesa();
 		MainPedido mainPedido = new MainPedido();
+		MainConta mainConta = new MainConta();
 		Garcom garcom = new Garcom();
 		Pedido pedido = new Pedido();
 		Mesa mesa = new Mesa();
@@ -81,8 +82,8 @@ public class MainPrincipal{
 			switch(opcao) {
 				case 1:
 					System.out.println("Digite seu login:");
-					//gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "8998324", "30/01/2001", "87 9953-3012", "kelwinjonas@gmail.com", 9999999, "12345", "");
-					gerente = mainGerente.gerenciarVerificarGerente("2fe374");
+					//mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "8998324", "30/01/2001", "87 9953-3012", "kelwinjonas@gmail.com", 9999999, "12345", "");
+					gerente = mainGerente.gerenciarVerificarGerente("28a6cb");
 					if(gerente != null) {
 						System.out.println("Digite sua senha:");
 						gerente = mainGerente.gerenciarLogarGerente("12345");
@@ -205,9 +206,10 @@ public class MainPrincipal{
 										switch(opcao22) {
 											case 1:
 												//TA AQUI SO PRA RETORNAR, MAS SEMPRE QUE ENTRAR TEM QUE PEGAR LOGO ESSA PORRA
-												garcom = mainGarcom.gerenciarVerificarGarcom("1aa1b6");
+												garcom = mainGarcom.gerenciarVerificarGarcom("1a8185");
 												pedido = mainPedido.gerenciarCadastroPedido("Camarão", "Coca-cola 2,5 litros");
-												MainConta.gerenciarCadastroConta(garcom, mesa, pedido);
+												if(pedido != null)
+												mainConta.gerenciarCadastroConta(garcom, mesa, pedido);
 												break;
 											case 2:
 												mainPedido.gerenciarRemocaoPedido(2);
@@ -242,18 +244,18 @@ public class MainPrincipal{
 						System.out.println("Digite 2 para alterar um produto.");
 						System.out.println("Digite 3 para deletar um produto.");
 						System.out.println("Digite 4 para verificar a existência de um produto.");
-						System.out.println("Digite 5 para listar todos os produtos.");
+						System.out.println("Digite 5 para adicionar uma quantidade a algum produto.");
 						System.out.println("Digite 6 para saber a quantidade de um produto específico.");
-						System.out.println("Digite 7 para adicionar uma quantidade a algum produto.");
+						System.out.println("Digite 7 para listar todos os produtos.");
 						System.out.println("Digite 0 sair desta opção.");
 						opcao3 = scan.nextInt();
 						
 						switch(opcao3) {
 							case 1:
-								mainProduto.gerenciarCadastroProduto("Coca-cola 2 litros", 50, 7);
+								mainProduto.gerenciarCadastroProduto("Coca-cola 2,5 litros", 50, 7);
 								break;
 							case 2:
-								mainProduto.gerenciarAlteracaoProduto("Coca-cola 2,5 litros", "", 50, 0);
+								mainProduto.gerenciarAlteracaoProduto("Coca-cola 2,5 litros", "", 1, 0);
 								break;
 							case 3:
 								mainProduto.gerenciarRemocaoProduto("Coca-cola 2 litros");

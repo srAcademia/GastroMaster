@@ -25,47 +25,22 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
 public class MainConta {
 
-	public static void gerenciarCadastroConta(Garcom garcom, Mesa mesa, Pedido pedido) throws SQLException {
-	try {	
-		ConfiguracoesBanco.getSingleton().getConnection();	
-	   	LocalDate localDate = LocalDate.now();
-	    //java.sql.Date date = java.sql.Date.valueOf(localDate);
-	    //SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-	    Conta conta = new Conta(0, localDate, pedido, garcom, mesa, pedido.getValor());
-	    Fachada.getSingleton().contaCadastroConta(conta);
-	}catch(Exception ex) {
-		System.out.println("Erro Inesperado.");
+	public void gerenciarCadastroConta(Garcom garcom, Mesa mesa, Pedido pedido) throws SQLException {
+		try {	
+			ConfiguracoesBanco.getSingleton().getConnection();	
+		   	LocalDate localDate = LocalDate.now();
+		    //java.sql.Date date = java.sql.Date.valueOf(localDate);
+		    //SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+		    Conta conta = new Conta(0, localDate, pedido, garcom, mesa, pedido.getValor());
+		    Fachada.getSingleton().contaCadastroContaValidacao(conta);
+		}catch(Exception ex) {
+			System.out.println("Erro Inesperado.");
+		}
 	}
-	}
+	
+	//public void gerenciarRemocaoConta()
 		
 	/*
-		//Conta
-		
-		RepositorioConta rc = new RepositorioConta();
-		Pedido pedido = null;
-		Garcom g = null;
-		RepositorioPedido rpedido = new RepositorioPedido();
-		RepositorioGarcom rg = new  RepositorioGarcom();
-		RepositorioMesa rm = new RepositorioMesa();
-		Mesa m =null; 
-		Conta c = null;
-		
-		 c = new Conta(1,date,pedido,g,m,50);
-		
-		
-		pedido = rpedido.recuperar(2);
-		
-		RepositorioGarcom rg = new  RepositorioGarcom();
-		//Recuperar pelo identificador do garcom
-		g = rg.verificar("243e75");
-		m = rm.recuperar(1);
-		System.out.println(g);
-		System.out.println(m);
-		System.out.println(pedido);
-		c.setPedido(pedido);
-		c.setGarcom(g);
-		c.setMesa(m);
-		rc.inserir(c);
 		System.out.println(rm.listarTodos());
 		System.out.println("Digite id da mesa:");
 		int cod_mesa = src.nextInt();

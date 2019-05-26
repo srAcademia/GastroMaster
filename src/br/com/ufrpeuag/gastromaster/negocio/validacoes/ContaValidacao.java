@@ -13,7 +13,7 @@ public class ContaValidacao {
 		repConta = new RepositorioConta();
 	}
 	
-	public void contaCadastroConta(Conta conta) {
+	public void contaCadastroContaValidacao(Conta conta) {
 		repConta.inserir(conta);
 	}
 }

@@ -11,6 +11,8 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
@@ -29,11 +31,12 @@ public class MainPedido {
 			}
 			if(nomeProduto.isEmpty() == false) {
 				produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nomeProduto);
+				Fachada.getSingleton().produtoRemoverQuantProdutoValidacao(produto, 1);
 			}
 			Pedido pedido = new Pedido(cardapio, produto, 0);
 			Fachada.getSingleton().pedidoCadastroValidacao(pedido);
 			return pedido;
-		}catch(PedidoInvalidoException | PedidoVazioException | PratoInexistenteException | NomeInvalidoException | ProdutoInexistenteException ex) {
+		}catch(PedidoInvalidoException | PedidoVazioException | PratoInexistenteException | NomeInvalidoException | ProdutoInexistenteException | QuantidadeInvalidaException | QuantidadeProdutoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
