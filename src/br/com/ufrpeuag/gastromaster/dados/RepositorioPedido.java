@@ -46,7 +46,7 @@ public class RepositorioPedido implements PedidoDao {
 	public Pedido recuperar(Integer codigo) {
 
 		String sqlRecuperar = "select * " + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) "
-				+ "JOIN Cardapio c on (pe.cod_cardapio= c.id_cardapio) " + "where id_pedido = ?";
+				+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) JOIN Mesa m on (pe.cod_mesa = m.id_mesa) " + "where id_pedido = ?";
 
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
@@ -85,7 +85,6 @@ public class RepositorioPedido implements PedidoDao {
 
 				pedido.setValor(result.getDouble("valor"));
 
-				// Mesa
 				m.setId_mesa(result.getInt("id_mesa"));
 				m.setNumero(result.getInt("numero"));
 				m.setDisponibilidade(result.getInt("disponibilidade"));
@@ -169,7 +168,7 @@ public class RepositorioPedido implements PedidoDao {
 	public List<Pedido> listarTodos() {
 		List<Pedido> lista = new ArrayList<>();
 		String listarTodosSql = "select * " + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) "
-				+ "JOIN Cardapio c on (pe.cod_cardapio= c.id_cardapio)";
+				+ "JOIN Cardapio c on (pe.cod_cardapio= c.id_cardapio) JOIN Mesa m on (pe.cod_mesa = m.id_mesa) ";
 
 		ResultSet result = null;
 		Statement stmt = null;

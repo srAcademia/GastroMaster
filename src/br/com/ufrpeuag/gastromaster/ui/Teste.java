@@ -40,9 +40,9 @@ public class Teste {
     System.out.println(dataFormatada);
 		
 		*/
-		
+		/*
 		//Mesa
-	/*	RepositorioMesa rm = new RepositorioMesa();
+		RepositorioMesa rm = new RepositorioMesa();
 		Mesa m = new Mesa(2, 0);
 		rm.inserir(m);
 		
@@ -63,8 +63,8 @@ public class Teste {
 		g.setIdentificador(g.gerarIdentificador());
 		rg.inserir(g);*/
 		
-		/*
-		//Produto
+		
+		/*//Produto
 		RepositorioProduto rp= new RepositorioProduto();
 		
 		Produto p = new Produto("Vinho ", 3, 2.5);
@@ -92,31 +92,32 @@ public class Teste {
 		Produto prod = new Produto();
 		Pedido pedido = null;
 		
-		
+		/*
 		System.out.println(repCardapio.listarTodos());
 		System.out.println("Digite um  cardapio:");
 		int cod_produto = src.nextInt();
 		
 		System.out.println(rp.listarTodos());
 		System.out.println("Digite um produto:");
-		int cod_cardapio = src.nextInt();
+		int cod_cardapio = src.nextInt();*/
 		
 		
-		card = repCardapio.recuperar(cod_cardapio);
+		/*card = repCardapio.recuperar(cod_cardapio);
 		prod = rp.recuperar(cod_produto);
 		RepositorioMesa rm = new RepositorioMesa();
 		double valor = 0;
-		Mesa m = new Mesa();
-		
+		Mesa m = new Mesa();*/
+		/*
 		pedido = new Pedido(card, prod, valor,m);
 		
 		pedido.setValor(pedido.calcularValorPedido(card.getPreco(), prod.getPreco()));
 		pedido.getCardapio().setId_cardapio(cod_cardapio);
 		pedido.getProduto().setId_produto(cod_produto);
-		pedido.getMesa().setId_mesa(1);
+		pedido.getMesa().setId_mesa(1);*/
 		//rpedido.inserir(pedido);
-		
-		System.out.println(rpedido.retornarId(2,1,1));
+		/*System.out.println(rpedido.recuperar(1));
+		System.out.println(rpedido.listarTodos());*/
+		//System.out.println(rpedido.retornarId(2,1,1));
 		
 	/*	//Conta
 		RepositorioConta rc = new RepositorioConta();
