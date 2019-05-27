@@ -69,6 +69,20 @@ public class MainCardapio {
 		}
 	}
 	
+	//RECUPERAR ID
+	public Integer gerenciarRecuperarIDCardapio(String nome) throws SQLException, NomeInvalidoException, PratoInexistenteException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Integer id = Fachada.getSingleton().cardapioRetornarIDValidacao(nome);
+			return id;
+		}catch(NomeInvalidoException | PratoInexistenteException ex) {
+			System.out.println(ex.getMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+		return null;
+	}
+	
 	//LISTAR TODOS
 	public void gerenciarListarCardapio() throws SQLException, ListarTodosInvalidoException {
 		try {

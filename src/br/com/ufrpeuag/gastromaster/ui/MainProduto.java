@@ -69,6 +69,20 @@ public class MainProduto {
 		}
 	}
 	
+	//RECUPERAR ID
+	public Integer gerenciarRecuperarIDProduto(String nome) throws SQLException, NomeInvalidoException, ProdutoInexistenteException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Integer id = Fachada.getSingleton().produtoRetornarIDValidacao(nome);
+			return id;
+		}catch(NomeInvalidoException | ProdutoInexistenteException ex) {
+			System.out.println(ex.getMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+		return null;
+	}
+	
 	//RETORNAR QUANTIDADE 
 	public void gerenciarVerificarQuantidadeProduto(String nome)throws SQLException, ProdutoInexistenteException, NomeInvalidoException{
 		try {

@@ -94,6 +94,17 @@ public class ProdutoValidacao {
 		return repProduto.retornarQuantidadeProduto(produto);
 	}
 	
+	public Integer produtoRetornarIDValidacao(String nome) throws NomeInvalidoException, ProdutoInexistenteException{
+		if(nome== null || nome.isEmpty()) {
+			throw new NomeInvalidoException();
+		}
+		int id = repProduto.retornarID(nome);
+		if(id == 0) {
+			throw new ProdutoInexistenteException();
+		}
+		return id;
+	}
+	
 	public void produtoRemoverQuantProdutoValidacao(Produto produto, Integer quantidade) throws QuantidadeInvalidaException, QuantidadeProdutoInvalidaException {
 		if(produto.getQuantidade() < quantidade) {
 			throw new QuantidadeInvalidaException();

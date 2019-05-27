@@ -16,4 +16,12 @@ public class ContaValidacao {
 	public void contaCadastroContaValidacao(Conta conta) {
 		repConta.inserir(conta);
 	}
+	
+	public void contaRemocaoContaValidacao(Conta conta) {
+		repConta.deletar(conta);
+	}
+	
+	public Conta contaRecuperarContaValidacao(Integer codigo) {
+		return repConta.recuperar(codigo);
+	}
 }

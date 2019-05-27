@@ -15,13 +15,14 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeInvalidaException
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
 public class MainPedido {
 	
 	//INSERCAO
-	/*public Pedido gerenciarCadastroPedido(String nomeCard, String nomeProduto) throws SQLException, PratoInexistenteException, NomeInvalidoException, PedidoInvalidoException, PedidoVazioException, ProdutoInexistenteException {
+	public Pedido gerenciarCadastroPedido(String nomeCard, String nomeProduto, Mesa mesa) throws SQLException, PratoInexistenteException, NomeInvalidoException, PedidoInvalidoException, PedidoVazioException, ProdutoInexistenteException {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio();
@@ -33,7 +34,7 @@ public class MainPedido {
 				produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nomeProduto);
 				Fachada.getSingleton().produtoRemoverQuantProdutoValidacao(produto, 1);
 			}
-			Pedido pedido = new Pedido(cardapio, produto, 0);
+			Pedido pedido = new Pedido(cardapio, produto, 0, mesa);
 			Fachada.getSingleton().pedidoCadastroValidacao(pedido);
 			return pedido;
 		}catch(PedidoInvalidoException | PedidoVazioException | PratoInexistenteException | NomeInvalidoException | ProdutoInexistenteException | QuantidadeInvalidaException | QuantidadeProdutoInvalidaException ex) {
@@ -43,20 +44,38 @@ public class MainPedido {
 		}
 		return null;
 			
-	}*/
+	}
 	
 	//REMOCAO
-	public void gerenciarRemocaoPedido(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException, PedidoInexistenteException {
+	public void gerenciarRemocaoPedido(Pedido pedido) throws SQLException, PedidoInexistenteException {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
-			Pedido pedido = new Pedido();
-			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(codigo);
 			Fachada.getSingleton().pedidoRemocaoValidacao(pedido);
-		}catch(IDRecuperacaoItemInvalidoException | PedidoInexistenteException ex) {
+		}catch(PedidoInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
+	}
+	
+	//RETORNAR PEDIDO POR CODIGO
+	
+	//RETORNAR O CODIGO DO PEDIDO
+	public Pedido gerencairRecuperarCodigoPedido(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws SQLException, IDRecuperacaoItemInvalidoException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Integer id = Fachada.getSingleton().pedidoRecuperarCodigosValidacao(id_cardapio, id_produto, id_mesa);
+			System.out.println("codigo de produto com os parametros passados "+id);
+			Pedido pedido = new Pedido();
+			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(id);
+			System.out.println("pedido recuperado foi "+pedido);
+			return pedido;
+		}catch(IDRecuperacaoItemInvalidoException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+		return null;
 	}
 	
 	//ALTERACAO

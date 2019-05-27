@@ -67,6 +67,17 @@ public class CardapioValidacao {
 		throw new PratoInexistenteException();
 	}
 	
+	public Integer cardapioRetornarIDValidacao(String nome) throws NomeInvalidoException, PratoInexistenteException{
+		if(nome== null || nome.isEmpty()) {
+			throw new NomeInvalidoException();
+		}
+		int id = repCardapio.retornarID(nome);
+		if(id == 0) {
+			throw new PratoInexistenteException();
+		}
+		return id;
+	}
+	
 	public Cardapio cardapioRecuperarValidacao(Integer codigo) throws IDRecuperacaoItemInvalidoException{
 		List<Cardapio> cardapio = new ArrayList<>();
 		cardapio = this.repCardapio.listarTodos();
