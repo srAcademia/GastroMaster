@@ -273,4 +273,42 @@ public class RepositorioPedido implements PedidoDao {
 		return 0;
 	}
 
+	@Override
+	public int recuperarUltimoID() {
+		String recuperarUltimoIdSql = "SELECT *FROM Pedido WHERE id_pedido= (SELECT MAX(id_pedido) FROM Pedido);";
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+		int id = 0;
+		try {
+			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+			pstmt = conn.prepareStatement(recuperarUltimoIdSql);
+
+			result = pstmt.executeQuery();
+
+			if (result != null) {
+				if (result.next()) {
+					id = result.getInt("id_pedido");
+
+				}
+			}
+			return id;
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+		return 0;
+	}
+
+
 }
