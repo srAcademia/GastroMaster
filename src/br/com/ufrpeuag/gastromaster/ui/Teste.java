@@ -119,17 +119,17 @@ public class Teste {
 		System.out.println(rpedido.listarTodos());*/
 		//System.out.println(rpedido.retornarId(2,1,1));
 		
-	/*	//Conta
-		RepositorioConta rc = new RepositorioConta();
-		Pedido pedido = null;
+		//Conta
+		
+		/*Pedido pedido = null;
 		Garcom g = null;
 		RepositorioPedido rpedido = new RepositorioPedido();
 		RepositorioGarcom rg = new  RepositorioGarcom();
-		RepositorioMesa rm = new RepositorioMesa();
-		Mesa m =null; 
+		RepositorioMesa rm = new RepositorioMesa();*/
+		/*Mesa m =null; 
 		Conta c = null;
-		Conta c = new Conta(1,date,pedido,g,m,50);
-		pedido = rpedido.recuperar(2);
+		Conta c = new Conta(1,date,pedido,g,m,50);*/
+	/*	pedido = rpedido.recuperar(2);
 		g = rg.recuperar(1);
 		m = rm.recuperar(1);
 		System.out.println(g);
@@ -143,8 +143,12 @@ public class Teste {
 		System.out.println("Digite id da mesa:");
 		int cod_mesa = src.nextInt();
 		c = rc.recuperarPorMesa(cod_mesa);
-		System.out.println(c);
-		System.out.println(rc.fecharConta(c));
+		System.out.println(c);*/
+		/*System.out.println(rc.fecharConta(c));
 		rc.deletar(c);*/
+		Conta c = null;
+		RepositorioConta rc = new RepositorioConta();
+		System.out.println(rc.listarTodos());
+		//System.out.println(c);
 	}
 }

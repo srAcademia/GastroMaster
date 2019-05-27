@@ -1,10 +1,10 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioPedido;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.PedidoDao;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
@@ -31,15 +31,13 @@ public class PedidoValidacao {
 	}
 	
 	public void pedidoRemocaoValidacao(Pedido pedido) throws PedidoInexistenteException {
-		List<Pedido> ped = new ArrayList<>();
-		ped = this.repPedido.listarTodos();
-		for (int i = 0; i < ped.size(); i++) {
-			if(ped.get(i).getCardapio().getPrato().equals(pedido.getCardapio().getPrato()) && 
-					ped.get(i).getProduto().getNome().equals(pedido.getProduto().getNome())) {
-				repPedido.deletar(pedido);;
-			}
+		int id = repPedido.retornarId(pedido.getCardapio().getId_cardapio(), pedido.getProduto().getId_produto(), pedido.getMesa().getId_mesa());
+		if( id != 0) {
+			repPedido.deletar(pedido);
 		}
-		throw new PedidoInexistenteException();
+		else {
+			throw new PedidoInexistenteException();
+		}
 	}
 	
 	public void pedidoAlteracaoValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
@@ -69,7 +67,7 @@ public class PedidoValidacao {
 	}
 	
 	public List<Pedido> pedidoListarTodosValidacao() throws ListarTodosInvalidoException {
-		if(repPedido.listarTodos() == null) {
+		if(repPedido.listarTodos() == null || repPedido.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repPedido.listarTodos();
@@ -77,6 +75,17 @@ public class PedidoValidacao {
 	
 	public int pedidoRecuperarUltimoIDValidacao() {
 		return repPedido.recuperarUltimoID();
+	}
+	
+	public void pedidoRemoverTodosPedidosValidacao(Integer codigo) {
+		repPedido.deletarPedidosPelaMesa(codigo);
+	}
+	
+	public List<Pedido> pedidoListarPorMesaValidacao(Integer codigo)throws ConcluirPagamentoException{
+		if(repPedido.listarPorMesa(codigo) == null || repPedido.listarPorMesa(codigo).isEmpty()) {
+			throw new ConcluirPagamentoException();
+		}
+		return repPedido.listarPorMesa(codigo);
 	}
 
 }

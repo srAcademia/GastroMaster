@@ -1,8 +1,11 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
@@ -80,10 +83,8 @@ public class MainPedido {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
 			Integer id = Fachada.getSingleton().pedidoRecuperarCodigosValidacao(id_cardapio, id_produto, id_mesa);
-			System.out.println("codigo de produto com os parametros passados "+id);
 			Pedido pedido = new Pedido();
 			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(id);
-			System.out.println("pedido recuperado foi "+pedido);
 			return pedido;
 		}catch(IDRecuperacaoItemInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -124,6 +125,30 @@ public class MainPedido {
 			System.out.println(Fachada.getSingleton().pedidoListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
+	
+	//LISTAR POR MESA
+	public List<Pedido> gerenciarListarPorMesa(Integer codigo) throws SQLException, ConcluirPagamentoException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			List<Pedido> pedidos = new ArrayList<>();
+			pedidos = Fachada.getSingleton().pedidoListarPorMesaValidacao(codigo);
+			return pedidos;
+		}catch(ConcluirPagamentoException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+		return null;
+	}
+	
+	//REMOVER TODOS PEDIDOS
+	public void gerenciarRemoverTodosPedido(Integer codigo) throws SQLException {
+		try {
+			Fachada.getSingleton().pedidoRemoverTodosPedidosValidacao(codigo);
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}

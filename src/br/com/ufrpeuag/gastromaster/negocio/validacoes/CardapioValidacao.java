@@ -90,7 +90,7 @@ public class CardapioValidacao {
 	}
 	
 	public List<Cardapio> cardapioListarTodosValidacao() throws ListarTodosInvalidoException {
-		if(repCardapio.listarTodos() == null) {
+		if(repCardapio.listarTodos() == null || repCardapio.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repCardapio.listarTodos();

@@ -65,7 +65,7 @@ public class RepositorioConta implements ContaDao {
 				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n" + "WHERE id_conta = ?";
 
 		PreparedStatement pstmt = null;
-		ResultSet result = null;
+		ResultSet result = null; 
 		Conta c = null;
 		Mesa m = null;
 		Pedido pedido = null;
@@ -143,6 +143,7 @@ public class RepositorioConta implements ContaDao {
 
 				return c;
 			}
+			
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {
@@ -193,13 +194,13 @@ public class RepositorioConta implements ContaDao {
 
 	@Override
 	public void deletar(Conta conta) {
-		String deletarSql = "DELETE FROM Conta WHERE cod_mesa = ?";
+		String deletarSql = "DELETE FROM Conta WHERE id_conta = ?";
 		PreparedStatement pstmt = null;
 		try {
 
 			pstmt = this.conn.prepareStatement(deletarSql);
 
-			pstmt.setInt(1, conta.getMesa().getId_mesa());
+			pstmt.setInt(1, conta.getId_conta());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -360,7 +361,7 @@ public class RepositorioConta implements ContaDao {
 				+ "JOIN Produto prod on(p.cod_produto =Prod.id_produto) \r\n"
 				+ "JOIN Garcom g on (c.cod_garcom = g.id_garcom)\r\n"
 				+ "JOIN Endereco e on (g.cod_endereco=e.id_endereco)\r\n"
-				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n" + "WHERE cod_mesa = ?";
+				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n" + "WHERE c.cod_mesa = ?";
 
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
@@ -480,6 +481,29 @@ public class RepositorioConta implements ContaDao {
 				System.out.println(ex.getMessage());
 			}
 
+		}
+	}
+
+	@Override
+	public void deletarTodasContas(Conta conta) {
+		String deletarSql = "DELETE FROM Conta WHERE cod_mesa = ?";
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = this.conn.prepareStatement(deletarSql);
+
+			pstmt.setInt(1, conta.getMesa().getId_mesa());
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 	}
 

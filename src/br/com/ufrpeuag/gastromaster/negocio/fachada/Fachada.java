@@ -7,6 +7,8 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
@@ -254,6 +256,17 @@ public class Fachada {
 		return this.pedido.pedidoRecuperarCodigosValidacao(id_cardapio, id_produto, id_mesa);
 	}
 	
+	public int pedidoRecuperarUltimoIDValidacao() {
+		return this.pedido.pedidoRecuperarUltimoIDValidacao();
+	}
+	public List<Pedido> pedidoListarPorMesaValidacao(Integer codigo)throws ConcluirPagamentoException{
+		return this.pedido.pedidoListarPorMesaValidacao(codigo);
+	}
+	
+	public void pedidoRemoverTodosPedidosValidacao(Integer codigo) {
+		this.pedido.pedidoRemoverTodosPedidosValidacao(codigo);
+	}
+	
 	public void mesaCadastroMesaValidacao(Mesa mesa) throws MesaCadastradaException, NumeroInvalidoException, MesaDisponibilidadeInvalidaException{
 		this.mesa.mesaCadastroMesaValidacao(mesa);
 	}
@@ -294,7 +307,15 @@ public class Fachada {
 		return this.conta.contaRecuperarContaValidacao(codigo);
 	}
 	
-	public int pedidoRecuperarUltimoIDValidacao() {
-		return this.pedido.pedidoRecuperarUltimoIDValidacao();
+	public double contaGerarConta(Conta conta) {
+		return this.conta.contaGerarContaValidacao(conta);
+	}
+	
+	public List<Conta> contaRetornarTodasContaPorMesaValidacao(Integer codigo) throws ContaGerarException {
+		return this.conta.contaRetornarTodasContaPorMesaValidacao(codigo);
+	}
+	
+	public void contaRemoverTodasContaValidacao(Conta conta) {
+		this.conta.contaRemoverTodasContaValidacao(conta);
 	}
 }

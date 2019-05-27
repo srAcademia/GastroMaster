@@ -1,12 +1,16 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoVazioException;
@@ -39,6 +43,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SenhaInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
@@ -50,7 +55,8 @@ public class MainPrincipal{
 	DataNascimentoInvalidaException, EnderecoVazioException, NomeInvalidoException, GerenteExistenteException, IDInexistenteException, SalarioInvalidoException, IDRecuperacaoInvalidaException, LoginInvalidoException, 
 	SenhaInvalidaException, GerenteInexistenteException, EnderecoInexistenteException, RecuperarCPFException, ListarTodosInvalidoException, GarcomExistenteException, GarcomInexistenteException, PrecoInvalidoException, 
 	ProdutoExistenteException, QuantidadeProdutoInvalidaException, ProdutoInexistenteException, IDRecuperacaoItemInvalidoException, QuantidadeInvalidaException, PratoInexistenteException, MesaCadastradaException, 
-	MesaDisponibilidadeInvalidaException, IDRecuperarMesaException, MesaInexistenteException, PratoExistenteException, PedidoInvalidoException, PedidoVazioException, PedidoInexistenteException {
+	MesaDisponibilidadeInvalidaException, IDRecuperarMesaException, MesaInexistenteException, PratoExistenteException, PedidoInvalidoException, PedidoVazioException, PedidoInexistenteException, ContaGerarException, 
+	ConcluirPagamentoException {
 		
 		int opcao = -1;
 		int opcao1 = -1; int opcao11 = -1; int opcao12 = -1;
@@ -71,11 +77,11 @@ public class MainPrincipal{
 		Mesa mesa = new Mesa();
 		Scanner scan = new Scanner(System.in);
 		do{
-			System.out.println("Digite 1 para gerenciar Funcion·rios.");
+			System.out.println("Digite 1 para gerenciar Funcion√°rios.");
 			System.out.println("Digite 2 para gerenciar Mesas.");
 			System.out.println("Digite 3 para gerenciar o Estoque.");
-			System.out.println("Digite 4 para gerenciar o Card·pio.");
-			System.out.println("Digite 5 para analisar dados do negÛcio.");
+			System.out.println("Digite 4 para gerenciar o Card√°pio.");
+			System.out.println("Digite 5 para analisar dados do neg√≥cio.");
 			System.out.println("Digite 0 para sair.");
 			opcao = scan.nextInt();
 			
@@ -83,13 +89,13 @@ public class MainPrincipal{
 				case 1:
 					System.out.println("Digite seu login:");
 					//mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "8998324", "30/01/2001", "87 9953-3012", "kelwinjonas@gmail.com", 9999999, "12345", "");
-					gerente = mainGerente.gerenciarVerificarGerente("2199d7");
+					gerente = mainGerente.gerenciarVerificarGerente("27f11b");
 					if(gerente != null) {
 						System.out.println("Digite sua senha:");
 						gerente = mainGerente.gerenciarLogarGerente("12345");
 						if(gerente != null) {
 							System.out.println("Digite 1 para gerenciar Gerente.");
-							System.out.println("Digite 2 para gerenciar GarÁom.");
+							System.out.println("Digite 2 para gerenciar Gar√ßom.");
 							opcao1 = scan.nextInt();
 							
 							switch(opcao1) {
@@ -98,9 +104,9 @@ public class MainPrincipal{
 										System.out.println("Digite 1 para cadastrar um novo gerente.");
 										System.out.println("Digite 2 para alterar um gerente.");
 										System.out.println("Digite 3 para deletar um gerente.");
-										System.out.println("Digite 4 para verificar a existÍncia de um gerente.");
+										System.out.println("Digite 4 para verificar a exist√™ncia de um gerente.");
 										System.out.println("Digite 5 para listar todos os gerentes.");
-										System.out.println("Digite 0 sair desta opÁ„o.");
+										System.out.println("Digite 0 sair desta op√ß√£o.");
 										opcao11 = scan.nextInt();
 										
 										switch(opcao11) {
@@ -122,18 +128,18 @@ public class MainPrincipal{
 											case 0:
 												break;
 											default:
-												System.out.println("OpÁ„o Inv·lida");
+												System.out.println("Op√ß√£o Inv√°lida");
 										}
 									}while(opcao11 != 0);
 									break;
 								case 2:
 									do {
-										System.out.println("Digite 1 para cadastrar um novo garÁom.");
-										System.out.println("Digite 2 para alterar um garÁom.");
-										System.out.println("Digite 3 para deletar um garÁom.");
-										System.out.println("Digite 4 para verificar a existÍncia de um garÁom.");
-										System.out.println("Digite 5 para listar todos os garÁons.");
-										System.out.println("Digite 0 sair desta opÁ„o.");
+										System.out.println("Digite 1 para cadastrar um novo gar√ßom.");
+										System.out.println("Digite 2 para alterar um gar√ßom.");
+										System.out.println("Digite 3 para deletar um gar√ßom.");
+										System.out.println("Digite 4 para verificar a exist√™ncia de um gar√ßom.");
+										System.out.println("Digite 5 para listar todos os gar√ßons.");
+										System.out.println("Digite 0 sair desta op√ß√£o.");
 										opcao12 = scan.nextInt();
 										
 										switch(opcao12) {
@@ -155,13 +161,15 @@ public class MainPrincipal{
 											case 0:
 												break;
 											default:
-												System.out.println("OpÁ„o Inv·lida");
+												System.out.println("Op√ß√£o Inv√°lida");
 										
 										}
 									}while(opcao12 != 0);
 									break;
+								case 0:
+									break;
 								default:
-									System.out.println("OpÁ„o Inv·lida");									
+									System.out.println("Op√ß√£o Inv√°lida");									
 							}
 							
 						}
@@ -170,12 +178,12 @@ public class MainPrincipal{
 				case 2:
 					do {
 						System.out.println("Digite 1 para cadastrar uma mesa ao restaurante.");
-						System.out.println("Digite 2 para alterar o n˙mero de uma mesa.");
+						System.out.println("Digite 2 para alterar o n√∫mero de uma mesa.");
 						System.out.println("Digite 3 para deletar uma mesa.");
 						System.out.println("Digite 4 para mudar a disponibilidade de uma mesa.");
-						System.out.println("Digite 5 para gerenciar uma mesa especÌfica.");
+						System.out.println("Digite 5 para gerenciar uma mesa espec√≠fica.");
 						System.out.println("Digite 6 para listar todas as mesas do restaurante.");
-						System.out.println("Digite 0 sair desta opÁ„o.");
+						System.out.println("Digite 0 sair desta op√ß√£o.");
 						opcao2 = scan.nextInt();
 						
 						switch(opcao2) {
@@ -197,19 +205,20 @@ public class MainPrincipal{
 									//System.out.println(mesa.getId_mesa());
 									//CHAMADA DE FAZER PEDIDO OU FECHAR CONTA
 									do {
-										System.out.println("Digite 1 para fazer um pedido ‡ mesa.");
+										System.out.println("Digite 1 para fazer um pedido √† mesa.");
 										System.out.println("Digite 2 para deletar um pedido da mesa.");
 										System.out.println("Digite 3 para alterar um pedido da mesa.");
 										System.out.println("Digite 4 para listar todos os pedidos da mesa.");
 										System.out.println("Digite 5 para gerar a conta da mesa.");
+										System.out.println("Digite 6 para realizar o pagamento dos pedidos efetuados √† mesa.");
 										System.out.println("Digite 0 para sair da mesa.");
 										opcao22 = scan.nextInt();
 										
 										switch(opcao22) {
 											case 1:
 												//TA AQUI SO PRA RETORNAR, MAS SEMPRE QUE ENTRAR TEM QUE PEGAR LOGO ESSA PORRA
-												garcom = mainGarcom.gerenciarVerificarGarcom("181f7a");
-												int id = mainPedido.gerenciarCadastroPedido("Camar„o", "Coca-cola 2,5 litros", mesa);
+												garcom = mainGarcom.gerenciarVerificarGarcom("139edb");
+												int id = mainPedido.gerenciarCadastroPedido("Camar√£o", "Coca-cola 2,5 litros", mesa);
 												//System.out.println(id);
 												if(id != 0) {//AQUI FICARIA MELHOR UMA FUNCAO QUE RETORNA O ULTIMO PEDIDO MESMO
 													pedido = mainPedido.gerenciarRecuperarPedido((Integer) id);
@@ -217,25 +226,41 @@ public class MainPrincipal{
 												}
 												break;
 											case 2:
-												int id_cardapio = mainCardapio.gerenciarRecuperarIDCardapio("Camar„o");
+												int id_cardapio = mainCardapio.gerenciarRecuperarIDCardapio("Camar√£o");
 												int id_produto = mainProduto.gerenciarRecuperarIDProduto("Coca-cola 2,5 litros");
 												pedido = mainPedido.gerencairRecuperarCodigoPedido(id_cardapio, id_produto, (Integer) mesa.getId_mesa());
 												if(pedido != null) {
 													int id_conta = pedido.getId_pedido();
-													mainPedido.gerenciarRemocaoPedido(pedido);
+													System.out.println(id_conta);
 													mainConta.gerenciarRemocaoConta(id_conta);
+													mainPedido.gerenciarRemocaoPedido(pedido);
 												}
 												break;
 											case 3:
-												mainPedido.gerenciarAlteracaoPedido(3, "Camar„o", "");
+												mainPedido.gerenciarAlteracaoPedido(3, "Camar√£o", "");
 												break;
 											case 4:
 												mainPedido.gerenciarListarPedido();
 												break;
+											case 5:
+												List<Conta> contas = new ArrayList<>();
+												contas = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
+												if(contas != null) {
+													System.out.println("Conta da mesa: "+mainConta.gerenciarGerarConta(contas.get(0)));
+												}
+												break;
+											case 6:
+												List<Conta> contas1 = new ArrayList<>();
+												contas1 = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
+												if(contas1 != null) {
+													mainConta.gerenciarRemoverTodasConta(contas1.get(0));
+													mainPedido.gerenciarRemoverTodosPedido((Integer) mesa.getId_mesa());
+												}
+												break;
 											case 0:
 												break;
 											default:
-												System.out.println("OpÁ„o inv·lida.");
+												System.out.println("Op√ß√£o inv√°lida.");
 											
 										}
 									}while(opcao22 != 0);
@@ -246,7 +271,7 @@ public class MainPrincipal{
 							case 0:
 								break;
 							default:
-								System.out.println("OpÁ„o Inv·lida");
+								System.out.println("Op√ß√£o Inv√°lida");
 						}
 					}while(opcao2 != 0);
 					break;
@@ -255,11 +280,11 @@ public class MainPrincipal{
 						System.out.println("Digite 1 para cadastrar um produto no estoque.");
 						System.out.println("Digite 2 para alterar um produto.");
 						System.out.println("Digite 3 para deletar um produto.");
-						System.out.println("Digite 4 para verificar a existÍncia de um produto.");
+						System.out.println("Digite 4 para verificar a exist√™ncia de um produto.");
 						System.out.println("Digite 5 para adicionar uma quantidade a algum produto.");
-						System.out.println("Digite 6 para saber a quantidade de um produto especÌfico.");
+						System.out.println("Digite 6 para saber a quantidade de um produto espec√≠fico.");
 						System.out.println("Digite 7 para listar todos os produtos.");
-						System.out.println("Digite 0 sair desta opÁ„o.");
+						System.out.println("Digite 0 sair desta op√ß√£o.");
 						opcao3 = scan.nextInt();
 						
 						switch(opcao3) {
@@ -286,29 +311,29 @@ public class MainPrincipal{
 							case 0:
 								break;
 							default:
-								System.out.println("OpÁ„o Inv·lida");
+								System.out.println("Op√ß√£o Inv√°lida");
 						}
 					}while(opcao3 != 0);
 					break;
 				case 4:
 					do {
-						System.out.println("Digite 1 para cadastrar um prato ao card·pio.");
+						System.out.println("Digite 1 para cadastrar um prato ao card√°pio.");
 						System.out.println("Digite 2 para alterar um prato.");
 						System.out.println("Digite 3 para deletar um prato.");
-						System.out.println("Digite 4 para verificar a existÍncia de um prato.");
-						System.out.println("Digite 5 para listar todos os pratos do card·pio.");
-						System.out.println("Digite 0 sair desta opÁ„o.");
+						System.out.println("Digite 4 para verificar a exist√™ncia de um prato.");
+						System.out.println("Digite 5 para listar todos os pratos do card√°pio.");
+						System.out.println("Digite 0 sair desta op√ß√£o.");
 						opcao4 = scan.nextInt();
 						
 						switch(opcao4) {
 							case 1:
-								mainCardapio.gerenciarCadastroCardapio("Camar„o", 32);
+								mainCardapio.gerenciarCadastroCardapio("Camar√£o", 32);
 								break;
 							case 2:
-								mainCardapio.gerenciarAlteracaoCardapio("Camar„o", "", 30);
+								mainCardapio.gerenciarAlteracaoCardapio("Camar√£o", "", 30);
 								break;
 							case 3:
-								mainCardapio.gerenciarRemocaoCardapio("Camar„o");
+								mainCardapio.gerenciarRemocaoCardapio("Camar√£o");
 								break;
 							case 4:
 								mainCardapio.gerenciarRecuperarCardapio(2);
@@ -318,7 +343,7 @@ public class MainPrincipal{
 							case 0:
 								break;
 							default:
-								System.out.println("OpÁ„o Inv·lida");
+								System.out.println("Op√ß√£o Inv√°lida");
 						}
 					}while(opcao4 != 0);
 					break;
@@ -329,7 +354,7 @@ public class MainPrincipal{
 					System.out.println("Encerrando o sistema...");
 					break;
 				default:
-					System.out.println("OpÁ„o Inv·lida");
+					System.out.println("Op√ß√£o Inv√°lida");
 			}
 		}while(opcao != 0);
 	}	

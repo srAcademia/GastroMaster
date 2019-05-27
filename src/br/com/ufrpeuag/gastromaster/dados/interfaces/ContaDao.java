@@ -9,5 +9,6 @@ public interface ContaDao extends Dao<Conta> {
 	public double fecharConta(Conta conta);
 	public List<Conta> recuperarPorMesa(Integer codigo);
 	public void concluirPagamento(Conta conta);
+	public void deletarTodasContas(Conta conta);
 
 }

@@ -66,13 +66,13 @@ public class GerenteValidacao {
 		
 		
 		//Falta tratar o CPF e a data de Nascimento da forma correta
-		//Verificações para saber se o gerente pode ser cadastrado
-		//Necessário um método que verifique a já existencia do funcionario
+		//Verificaï¿½ï¿½es para saber se o gerente pode ser cadastrado
+		//Necessï¿½rio um mï¿½todo que verifique a jï¿½ existencia do funcionario
 		repGerente.inserir(gerente);
 	}
 	
 	public void gerenteRemocaoValidacao(Gerente gerente) throws GerenteInexistenteException{
-		//Necessário um método que verifique a inexistencia do funcionario
+		//Necessï¿½rio um mï¿½todo que verifique a inexistencia do funcionario
 		repGerente.deletar(gerente);
 	}
 	
@@ -130,7 +130,7 @@ public class GerenteValidacao {
 	}
 	
 	public List<Gerente> gerenteListarTodosValidacao() throws ListarTodosInvalidoException{
-		if (repGerente.listarTodos() == null) {
+		if (repGerente.listarTodos() == null || repGerente.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repGerente.listarTodos();

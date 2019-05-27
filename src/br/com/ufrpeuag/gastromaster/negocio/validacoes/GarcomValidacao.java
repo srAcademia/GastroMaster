@@ -109,7 +109,7 @@ public class GarcomValidacao {
 	}
 	
 	public List<Garcom> garcomListarTodosValidacao() throws ListarTodosInvalidoException{
-		if (repGarcom.listarTodos() == null) {
+		if (repGarcom.listarTodos() == null || repGarcom.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repGarcom.listarTodos();

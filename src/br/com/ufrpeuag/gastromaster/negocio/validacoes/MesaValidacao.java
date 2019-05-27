@@ -74,7 +74,7 @@ public class MesaValidacao {
 	}
 	
 	public List<Mesa> mesaListarTodosValidacao() throws ListarTodosInvalidoException {
-		if(repMesa.listarTodos() == null) {
+		if(repMesa.listarTodos() == null || repMesa.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repMesa.listarTodos();

@@ -2,7 +2,6 @@ package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
-import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
@@ -17,7 +16,6 @@ public class MainCardapio {
 	//INSERCAO
 	public void gerenciarCadastroCardapio(String nome, double preco) throws SQLException, NomeInvalidoException, PrecoInvalidoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio(nome, preco);
 			Fachada.getSingleton().cardapioCadastroValidacao(cardapio);
 		}catch(PratoExistenteException | NomeInvalidoException | PrecoInvalidoException ex) {
@@ -30,7 +28,6 @@ public class MainCardapio {
 	//REMOCAO
 	public void gerenciarRemocaoCardapio(String nome) throws SQLException, NomeInvalidoException, PratoInexistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio();
 			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nome);
 			Fachada.getSingleton().cardapioRemocaoValidacao(cardapio);
@@ -44,7 +41,6 @@ public class MainCardapio {
 	//ALTERACAO
 	public void gerenciarAlteracaoCardapio(String nome, String novoNome, double preco) throws SQLException, PratoInexistenteException, NomeInvalidoException, PratoExistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio();
 			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nome);
 			Fachada.getSingleton().cardapioAlteracaoValidacao(cardapio, nome, novoNome, preco);
@@ -58,7 +54,6 @@ public class MainCardapio {
 	//RECUPERAR
 	public void gerenciarRecuperarCardapio(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio();
 			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(codigo);
 			System.out.println(cardapio);
@@ -72,7 +67,6 @@ public class MainCardapio {
 	//RECUPERAR ID
 	public Integer gerenciarRecuperarIDCardapio(String nome) throws SQLException, NomeInvalidoException, PratoInexistenteException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Integer id = Fachada.getSingleton().cardapioRetornarIDValidacao(nome);
 			return id;
 		}catch(NomeInvalidoException | PratoInexistenteException ex) {
@@ -86,7 +80,6 @@ public class MainCardapio {
 	//LISTAR TODOS
 	public void gerenciarListarCardapio() throws SQLException, ListarTodosInvalidoException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().cardapioListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());

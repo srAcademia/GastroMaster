@@ -122,7 +122,7 @@ public class ProdutoValidacao {
 	}
 	
 	public List<Produto> produtoListarTodosValidacao() throws ListarTodosInvalidoException{
-		if (repProduto.listarTodos() == null) {
+		if (repProduto.listarTodos() == null || repProduto.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repProduto.listarTodos();
