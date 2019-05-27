@@ -83,7 +83,7 @@ public class MainPrincipal{
 				case 1:
 					System.out.println("Digite seu login:");
 					//mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "8998324", "30/01/2001", "87 9953-3012", "kelwinjonas@gmail.com", 9999999, "12345", "");
-					gerente = mainGerente.gerenciarVerificarGerente("290915");
+					gerente = mainGerente.gerenciarVerificarGerente("2199d7");
 					if(gerente != null) {
 						System.out.println("Digite sua senha:");
 						gerente = mainGerente.gerenciarLogarGerente("12345");
@@ -208,12 +208,11 @@ public class MainPrincipal{
 										switch(opcao22) {
 											case 1:
 												//TA AQUI SO PRA RETORNAR, MAS SEMPRE QUE ENTRAR TEM QUE PEGAR LOGO ESSA PORRA
-												garcom = mainGarcom.gerenciarVerificarGarcom("121f20");
-												pedido = mainPedido.gerenciarCadastroPedido("Camarão", "Coca-cola 2,5 litros", mesa);
-												if(pedido != null) {//AQUI FICARIA MELHOR UMA FUNCAO QUE RETORNA O ULTIMO PEDIDO MESMO
-													Integer id_cardapio = mainCardapio.gerenciarRecuperarIDCardapio("Camarão");
-													Integer id_produto = mainProduto.gerenciarRecuperarIDProduto("Coca-cola 2,5 litros");
-													pedido = mainPedido.gerencairRecuperarCodigoPedido(id_cardapio, id_produto, 1);//ERRO TA AQUI
+												garcom = mainGarcom.gerenciarVerificarGarcom("181f7a");
+												int id = mainPedido.gerenciarCadastroPedido("Camarão", "Coca-cola 2,5 litros", mesa);
+												//System.out.println(id);
+												if(id != 0) {//AQUI FICARIA MELHOR UMA FUNCAO QUE RETORNA O ULTIMO PEDIDO MESMO
+													pedido = mainPedido.gerenciarRecuperarPedido((Integer) id);
 													mainConta.gerenciarCadastroConta(garcom, mesa, pedido);
 												}
 												break;

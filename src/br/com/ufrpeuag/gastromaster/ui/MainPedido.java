@@ -22,7 +22,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 public class MainPedido {
 	
 	//INSERCAO
-	public Pedido gerenciarCadastroPedido(String nomeCard, String nomeProduto, Mesa mesa) throws SQLException, PratoInexistenteException, NomeInvalidoException, PedidoInvalidoException, PedidoVazioException, ProdutoInexistenteException {
+	public int gerenciarCadastroPedido(String nomeCard, String nomeProduto, Mesa mesa) throws SQLException, PratoInexistenteException, NomeInvalidoException, PedidoInvalidoException, PedidoVazioException, ProdutoInexistenteException {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio();
@@ -36,13 +36,15 @@ public class MainPedido {
 			}
 			Pedido pedido = new Pedido(cardapio, produto, 0, mesa);
 			Fachada.getSingleton().pedidoCadastroValidacao(pedido);
-			return pedido;
+			int id = 0;
+			id = Fachada.getSingleton().pedidoRecuperarUltimoIDValidacao();
+			return id;
 		}catch(PedidoInvalidoException | PedidoVazioException | PratoInexistenteException | NomeInvalidoException | ProdutoInexistenteException | QuantidadeInvalidaException | QuantidadeProdutoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-		return null;
+		return 0;
 			
 	}
 	
@@ -59,6 +61,19 @@ public class MainPedido {
 	}
 	
 	//RETORNAR PEDIDO POR CODIGO
+	public Pedido gerenciarRecuperarPedido(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException{
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();
+			Pedido pedido = new Pedido();
+			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(codigo);
+			return pedido;
+		}catch(IDRecuperacaoItemInvalidoException ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+		return null;
+	}
 	
 	//RETORNAR O CODIGO DO PEDIDO
 	public Pedido gerencairRecuperarCodigoPedido(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws SQLException, IDRecuperacaoItemInvalidoException{

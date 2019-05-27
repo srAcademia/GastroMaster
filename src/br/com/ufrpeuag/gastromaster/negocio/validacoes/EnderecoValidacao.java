@@ -9,7 +9,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoInexistenteException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
@@ -79,7 +78,7 @@ public class EnderecoValidacao {
 		throw new EnderecoInexistenteException();
 	}
 
-	public int enderecoRecuperarUltimoIDValidacao() throws IDInexistenteException {
+	public int enderecoRecuperarUltimoIDValidacao() {
 		return repEnd.recuperarUltimoID();
 	}
 

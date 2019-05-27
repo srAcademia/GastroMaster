@@ -13,7 +13,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperarMesaException;
@@ -100,7 +99,7 @@ public class Fachada {
 		return this.endereco.enderecoRecuperarValidacao(codigo);
 	}
 	
-	public int enderecoRecuperarUltimoIDValidacao() throws IDInexistenteException{
+	public int enderecoRecuperarUltimoIDValidacao(){
 		return this.endereco.enderecoRecuperarUltimoIDValidacao();
 	}
 	
@@ -293,5 +292,9 @@ public class Fachada {
 	
 	public Conta contaRecuperarContaValidacao(Integer codigo) {
 		return this.conta.contaRecuperarContaValidacao(codigo);
+	}
+	
+	public int pedidoRecuperarUltimoIDValidacao() {
+		return this.pedido.pedidoRecuperarUltimoIDValidacao();
 	}
 }
