@@ -199,6 +199,10 @@ public class Fachada {
 		return this.produto.produtoListarTodosValidacao();
 	}
 	
+	public Integer produtoRetornarIDValidacao(String nome) throws NomeInvalidoException, ProdutoInexistenteException{
+		return this.produto.produtoRetornarIDValidacao(nome);
+	}
+	
 	public void cardapioCadastroValidacao(Cardapio cardapio) throws PratoExistenteException, NomeInvalidoException, PrecoInvalidoException{
 		this.cardapio.cardapioCadastroValidacao(cardapio);
 	}
@@ -223,6 +227,10 @@ public class Fachada {
 		return this.cardapio.cardapioListarTodosValidacao();
 	}
 	
+	public Integer cardapioRetornarIDValidacao(String nome) throws NomeInvalidoException, PratoInexistenteException{
+		return this.cardapio.cardapioRetornarIDValidacao(nome);
+	}
+	
 	public void pedidoCadastroValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException{
 		this.pedido.pedidoCadastroValidacao(pedido);
 	}
@@ -241,6 +249,10 @@ public class Fachada {
 	
 	public List<Pedido> pedidoListarTodosValidacao() throws ListarTodosInvalidoException {
 		return this.pedido.pedidoListarTodosValidacao();
+	}
+	
+	public Integer pedidoRecuperarCodigosValidacao(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws PedidoInexistenteException {
+		return this.pedido.pedidoRecuperarCodigosValidacao(id_cardapio, id_produto, id_mesa);
 	}
 	
 	public void mesaCadastroMesaValidacao(Mesa mesa) throws MesaCadastradaException, NumeroInvalidoException, MesaDisponibilidadeInvalidaException{
@@ -273,5 +285,13 @@ public class Fachada {
 	
 	public void contaCadastroContaValidacao(Conta conta) {
 		this.conta.contaCadastroContaValidacao(conta);
+	}
+	
+	public void contaRemocaoContaValidacao(Conta conta) {
+		this.conta.contaRemocaoContaValidacao(conta);
+	}
+	
+	public Conta contaRecuperarContaValidacao(Integer codigo) {
+		return this.conta.contaRecuperarContaValidacao(codigo);
 	}
 }

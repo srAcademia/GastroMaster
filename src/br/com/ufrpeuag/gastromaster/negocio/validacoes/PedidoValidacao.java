@@ -54,14 +54,18 @@ public class PedidoValidacao {
 	}
 	
 	public Pedido pedidoRecuperarValidacao(Integer codigo)throws IDRecuperacaoItemInvalidoException {
-		List<Pedido> ped = new ArrayList<>();
-		ped = this.repPedido.listarTodos();
-		for (int i = 0; i < ped.size(); i++) {
-			if(ped.get(i).getId_pedido() == (codigo)) {
-				return repPedido.recuperar(codigo);
-			}
+		if(repPedido.recuperar(codigo) == null) {
+			throw new IDRecuperacaoItemInvalidoException();
 		}
-		throw new IDRecuperacaoItemInvalidoException();
+		return repPedido.recuperar(codigo);
+	}
+	
+	public Integer pedidoRecuperarCodigosValidacao(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws PedidoInexistenteException {
+		Integer id = repPedido.retornarId(id_cardapio, id_produto, id_mesa);
+		if(id == 0) {
+			throw new PedidoInexistenteException();
+		}
+		return id;
 	}
 	
 	public List<Pedido> pedidoListarTodosValidacao() throws ListarTodosInvalidoException {

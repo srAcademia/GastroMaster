@@ -31,14 +31,23 @@ public class MainConta {
 		   	LocalDate localDate = LocalDate.now();
 		    //java.sql.Date date = java.sql.Date.valueOf(localDate);
 		    //SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-		    Conta conta = new Conta(0, localDate, pedido, garcom, mesa, pedido.getValor());
+		   	Conta conta = new Conta(0, localDate, pedido, garcom, mesa, pedido.getValor());
 		    Fachada.getSingleton().contaCadastroContaValidacao(conta);
 		}catch(Exception ex) {
-			System.out.println("Erro Inesperado.");
+			System.out.println("Erro inesperado.");
 		}
 	}
 	
-	//public void gerenciarRemocaoConta()
+	public void gerenciarRemocaoConta(Integer codigo) throws SQLException {
+		try {
+			ConfiguracoesBanco.getSingleton().getConnection();	
+			Conta conta = new Conta();
+			conta = Fachada.getSingleton().contaRecuperarContaValidacao(codigo);
+			Fachada.getSingleton().contaRemocaoContaValidacao(conta);
+		}catch(Exception ex) {
+			System.out.println("Erro inesperado.");
+		}
+	}
 		
 	/*
 		System.out.println(rm.listarTodos());
