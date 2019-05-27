@@ -74,5 +74,9 @@ public class PedidoValidacao {
 		}
 		return repPedido.listarTodos();
 	}
+	
+	public int pedidoRecuperarUltimoIDValidacao() {
+		return repPedido.recuperarUltimoID();
+	}
 
 }
