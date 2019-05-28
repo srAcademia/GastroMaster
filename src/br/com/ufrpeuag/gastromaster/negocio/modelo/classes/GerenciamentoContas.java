@@ -1,5 +1,6 @@
 package br.com.ufrpeuag.gastromaster.negocio.modelo.classes;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 public class GerenciamentoContas {
@@ -52,8 +53,12 @@ public class GerenciamentoContas {
 	}
 	@Override
 	public String toString() {
+		 java.sql.Date date = java.sql.Date.valueOf(this.data);
+		    SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+		    String dataFormatada = formatador.format(date);
+		  
 		return "GerenciamentoContas [id_gerenc=" + id_gerenc + ", garcom=" + garcom + ", mesa=" + mesa + ", valorTotal="
-				+ valorTotal + ", data=" + data + "]\n";
+				+ valorTotal + ", data=" + dataFormatada + "]\n";
 	}
 	
 	

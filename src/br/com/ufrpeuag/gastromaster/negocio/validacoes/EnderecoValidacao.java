@@ -1,5 +1,6 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 public class EnderecoValidacao {
 	private IEnderecoDao repEnd;
 
-	public EnderecoValidacao() {
+	public EnderecoValidacao() throws SQLException {
 		repEnd = new RepositorioEndereco();
 	}
 

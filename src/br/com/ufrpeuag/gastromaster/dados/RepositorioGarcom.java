@@ -14,13 +14,23 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
 public class RepositorioGarcom implements IGarcomDao {
 
+	private PreparedStatement pstmt;
+	private Connection conn;
+	private ResultSet result;
+	private Statement stmt;
+
+	public RepositorioGarcom() throws SQLException {
+		this.conn = ConfiguracoesBanco.getSingleton().getConnection();
+	}
+
 	@Override
 	public void inserir(Garcom garcom) {
-		PreparedStatement pstmt = null;
+
+		String inserirSql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario,"
+				+ " identificador ,cod_endereco) VALUES(?,?,?,?,?,?,?,?)";
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario,"
-					+ " identificador ,cod_endereco) VALUES(?,?,?,?,?,?,?,?)";
+
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setString(1, garcom.getNome());
@@ -47,21 +57,17 @@ public class RepositorioGarcom implements IGarcomDao {
 
 	@Override
 	public Garcom recuperar(Integer codigo) {
+		Garcom g = null;
+		Endereco e = null;
 
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
-
+		String sql = "SELECT *\r\n" + "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n"
+				+ "where id_garcom = ?";
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT *\r\n"
-					+ "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where id_garcom = ?");
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, codigo);
 
 			result = pstmt.executeQuery();
-
-			Garcom g = null;
-			Endereco e = null;
 
 			if (result.next()) {
 
@@ -104,9 +110,8 @@ public class RepositorioGarcom implements IGarcomDao {
 	public void alterar(Garcom garcom) {
 		String alterarSql = "UPDATE Garcom SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
 				+ "email = ?," + "salario = ? , identificador = ?" + " WHERE id_garcom = ?";
-		PreparedStatement pstmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
@@ -137,10 +142,8 @@ public class RepositorioGarcom implements IGarcomDao {
 	@Override
 	public void deletar(Garcom garcom) {
 		String deletarSql = "DELETE FROM Garcom WHERE id_garcom = ?";
-		PreparedStatement pstmt = null;
-		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
+		try {
 			pstmt = conn.prepareStatement(deletarSql);
 
 			pstmt.setInt(1, garcom.getId_garcom());
@@ -161,16 +164,15 @@ public class RepositorioGarcom implements IGarcomDao {
 
 	@Override
 	public List<Garcom> listarTodos() {
+		Garcom g = null;
+		Endereco e = null;
+
 		List<Garcom> lista = new ArrayList<>();
 		String listarTodosSql = "Select * FROM Garcom join endereco  on cod_endereco = id_endereco ";
-		ResultSet result = null;
-		Statement stmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(listarTodosSql);
-			Garcom g = null;
-			Endereco e = null;
 
 			while (result.next()) {
 
@@ -198,8 +200,8 @@ public class RepositorioGarcom implements IGarcomDao {
 			}
 			return lista;
 
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
 
 		} finally {
 
@@ -217,21 +219,17 @@ public class RepositorioGarcom implements IGarcomDao {
 
 	@Override
 	public Garcom recuperar(String cpf) {
+		Garcom g = null;
+		Endereco e = null;
 
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+		String sqlRecuperarCpf = "SELECT * from Garcom g join Endereco e on g.cod_endereco=e.id_endereco where cpf = ?";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT *\r\n"
-					+ "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where cpf = ?;");
+			pstmt = conn.prepareStatement(sqlRecuperarCpf);
 			pstmt.setString(1, cpf);
 
 			result = pstmt.executeQuery();
-
-			Garcom g = null;
-			Endereco e = null;
 
 			if (result.next()) {
 
@@ -273,20 +271,16 @@ public class RepositorioGarcom implements IGarcomDao {
 
 	@Override
 	public Garcom verificar(String identificador) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+		Garcom g = null;
+		Endereco e = null;
+		String sqlVerificado = "SELECT * from Garcom g join Endereco e on g.cod_endereco = e.id_endereco where identificador = ?;";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT *\r\n"
-					+ "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where identificador = ?;");
+			pstmt = conn.prepareStatement(sqlVerificado);
 			pstmt.setString(1, identificador);
 
 			result = pstmt.executeQuery();
-
-			Garcom g = null;
-			Endereco e = null;
 
 			if (result.next()) {
 
@@ -323,7 +317,6 @@ public class RepositorioGarcom implements IGarcomDao {
 
 		}
 		return null;
-
 	}
 
 }

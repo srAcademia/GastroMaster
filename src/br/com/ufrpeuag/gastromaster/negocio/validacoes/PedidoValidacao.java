@@ -1,5 +1,6 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioPedido;
@@ -15,7 +16,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 public class PedidoValidacao {
 	private IPedidoDao repPedido;
 	
-	public PedidoValidacao() {
+	public PedidoValidacao() throws SQLException {
 		repPedido = new RepositorioPedido();
 	}
 	

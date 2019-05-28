@@ -1,5 +1,6 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 public class CardapioValidacao {
 	private ICardapioDao repCardapio;
 	
-	public CardapioValidacao() {
+	public CardapioValidacao() throws SQLException {
 		repCardapio = new RepositorioCardapio();
 	}
 	

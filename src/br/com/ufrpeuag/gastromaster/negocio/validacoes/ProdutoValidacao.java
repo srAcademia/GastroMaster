@@ -1,5 +1,6 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 public class ProdutoValidacao {
 	private IProdutoDao repProduto;
 	
-	public ProdutoValidacao() {
+	public ProdutoValidacao() throws SQLException {
 		repProduto = new RepositorioProduto();
 	}
 	

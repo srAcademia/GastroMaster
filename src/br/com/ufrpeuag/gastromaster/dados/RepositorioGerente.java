@@ -13,14 +13,23 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 
 public class RepositorioGerente implements IGerenteDao {
+	
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet result;
+	private Statement stmt;
+
+	public RepositorioGerente() throws SQLException {
+		conn = ConfiguracoesBanco.getSingleton().getConnection();
+	}
 
 	@Override
 	public void inserir(Gerente gerente) {
-		PreparedStatement pstmt = null;
+
+		String inserirSql = "INSERT INTO Gerente (nome, cpf, dataNasc, telefone, email, salario,senha,identificador,cod_endereco)"
+				+ " VALUES(?,?,?,?,?,?,?,?,?)";
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Gerente (nome, cpf, dataNasc, telefone, email, salario,senha,identificador,cod_endereco)"
-					+ " VALUES(?,?,?,?,?,?,?,?,?)";
+
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setString(1, gerente.getNome());
@@ -48,24 +57,18 @@ public class RepositorioGerente implements IGerenteDao {
 
 	@Override
 	public Gerente recuperar(Integer codigo) {
-
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+		Gerente g = null;
+		Endereco e = null;
+		String sqlRecuperar = "SELECT * from Gerente g join Endereco e on g.cod_endereco=e.id_endereco where id_gerente = ? ;";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT *\r\n"
-					+ "from Gerente g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where id_gerente = ?");
+			pstmt = conn.prepareStatement(sqlRecuperar);
 			pstmt.setInt(1, codigo);
-			System.out.println(codigo);
 			result = pstmt.executeQuery();
 
-			Gerente g = null;
-			Endereco e = null;
-
 			if (result.next()) {
-			
+
 				g = new Gerente();
 				e = new Endereco();
 				g.setId_gerente(result.getInt("id_gerente"));
@@ -106,9 +109,7 @@ public class RepositorioGerente implements IGerenteDao {
 	public void alterar(Gerente gerente) {
 		String alterarSql = "UPDATE Gerente SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
 				+ "email = ?," + "salario = ?," + "senha = ?, identificador = ? " + " WHERE id_gerente = ?";
-		PreparedStatement pstmt = null;
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
@@ -140,9 +141,8 @@ public class RepositorioGerente implements IGerenteDao {
 	@Override
 	public void deletar(Gerente gerente) {
 		String deletarSql = "DELETE FROM Gerente WHERE id_gerente = ?";
-		PreparedStatement pstmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(deletarSql);
 
@@ -164,16 +164,15 @@ public class RepositorioGerente implements IGerenteDao {
 
 	@Override
 	public List<Gerente> listarTodos() {
+		Gerente g = null;
+		Endereco e = null;
+
 		List<Gerente> lista = new ArrayList<>();
 		String listarTodosSql = "Select * FROM Gerente join endereco  on cod_endereco = id_endereco ";
-		ResultSet result = null;
-		Statement stmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(listarTodosSql);
-			Gerente g = null;
-			Endereco e = null;
 
 			while (result.next()) {
 
@@ -202,8 +201,8 @@ public class RepositorioGerente implements IGerenteDao {
 			}
 			return lista;
 
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
 
 		} finally {
 
@@ -219,24 +218,18 @@ public class RepositorioGerente implements IGerenteDao {
 		return null;
 	}
 
-	
 	@Override
 	public Gerente recuperarCPF(String cpf) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+		Gerente g = null;
+		Endereco e = null;
 
+		String sqlRecuperarCpf = "SELECT * from Gerente g join Endereco e on g.cod_endereco=e.id_endereco where cpf = ? ;";
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT *\r\n"
-					+ "from Gerente g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where cpf = ?;");
+			pstmt = conn.prepareStatement(sqlRecuperarCpf);
 			pstmt.setString(1, cpf);
 
 			result = pstmt.executeQuery();
-
-			Gerente g = null;
-			Endereco e = null;
-
 			if (result.next()) {
 
 				g = new Gerente();
@@ -275,22 +268,20 @@ public class RepositorioGerente implements IGerenteDao {
 		return null;
 
 	}
+
 	@Override
 	public Gerente verificar(String identificador) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+
+		Gerente g = null;
+		Endereco e = null;
+
+		String verificarIdentificador = "SELECT * from Gerente g join Endereco e on g.cod_endereco=e.id_endereco where identificador = ?;";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT *\r\n"
-					+ "from Gerente g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where identificador = ?;");
+			pstmt = conn.prepareStatement(verificarIdentificador);
 			pstmt.setString(1, identificador);
-
 			result = pstmt.executeQuery();
-
-			Gerente g = null;
-			Endereco e = null;
 
 			if (result.next()) {
 
@@ -333,20 +324,17 @@ public class RepositorioGerente implements IGerenteDao {
 
 	@Override
 	public Gerente logar(String senha) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+		Gerente g = null;
+		Endereco e = null;
+
+		String sqlLogar = "SELECT * from Gerente g join Endereco e on g.cod_endereco=e.id_endereco where senha = ? ; ";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT *\r\n"
-					+ "from Gerente g join Endereco e on g.cod_endereco=e.id_endereco\r\n" + "where senha = ?;");
+			pstmt = conn.prepareStatement(sqlLogar);
 			pstmt.setString(1, senha);
 
 			result = pstmt.executeQuery();
-
-			Gerente g = null;
-			Endereco e = null;
 
 			if (result.next()) {
 
@@ -386,5 +374,4 @@ public class RepositorioGerente implements IGerenteDao {
 		return null;
 
 	}
-
 }
