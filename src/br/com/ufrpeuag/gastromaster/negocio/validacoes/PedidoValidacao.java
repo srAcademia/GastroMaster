@@ -3,7 +3,7 @@ package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioPedido;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.PedidoDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IPedidoDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
@@ -13,7 +13,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 
 public class PedidoValidacao {
-	private PedidoDao repPedido;
+	private IPedidoDao repPedido;
 	
 	public PedidoValidacao() {
 		repPedido = new RepositorioPedido();

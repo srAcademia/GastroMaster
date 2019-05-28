@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioProduto;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.ProdutoDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IProdutoDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
@@ -16,7 +16,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaEx
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
 public class ProdutoValidacao {
-	private ProdutoDao repProduto;
+	private IProdutoDao repProduto;
 	
 	public ProdutoValidacao() {
 		repProduto = new RepositorioProduto();

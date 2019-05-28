@@ -2,7 +2,7 @@ package br.com.ufrpeuag.gastromaster.dados.interfaces;
 
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
-public interface ProdutoDao extends Dao<Produto> {
+public interface IProdutoDao extends IDao<Produto> {
 	
 	public void removerQuantProduto(Produto produto,Integer quantidade);
 	public void adicionarQuantProduto(Produto produto,Integer quantidade);

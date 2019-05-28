@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.GerenteDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IGerenteDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 
-public class RepositorioGerente implements GerenteDao {
+public class RepositorioGerente implements IGerenteDao {
 
 	@Override
 	public void inserir(Gerente gerente) {

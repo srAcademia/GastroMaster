@@ -2,7 +2,6 @@ package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
-import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaCadastradaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaDisponibilidadeInvalidaException;
@@ -16,7 +15,6 @@ public class MainMesa {
 	//INSERCAO
 	public void gerenciarCadastroMesa(int numero, int disponibilidade) throws SQLException, MesaCadastradaException, NumeroInvalidoException, MesaDisponibilidadeInvalidaException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Mesa mesa = new Mesa(numero, disponibilidade);
 			Fachada.getSingleton().mesaCadastroMesaValidacao(mesa);
 		}catch(MesaCadastradaException | NumeroInvalidoException |MesaDisponibilidadeInvalidaException ex) {
@@ -30,7 +28,6 @@ public class MainMesa {
 	//REMOCAO
 	public void gerenciarRemocaoMesa(int numero) throws SQLException, MesaInexistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Mesa mesa = new Mesa();
 			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
 			Fachada.getSingleton().mesaRemocaoValidacao(mesa);
@@ -44,7 +41,6 @@ public class MainMesa {
 	
 	public Mesa gerenciarGerenciamentoMesa(int numero) throws SQLException, MesaInexistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Mesa mesa = new Mesa();
 			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
 			return mesa;
@@ -61,7 +57,6 @@ public class MainMesa {
 	//ALTERAR
 	public void gerenciarAlteracaoMesa(int numero, int novoNumero) throws SQLException, MesaCadastradaException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Mesa mesa = new Mesa();
 			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
 			Fachada.getSingleton().mesaAlteracaoValidacao(mesa, novoNumero);
@@ -75,7 +70,6 @@ public class MainMesa {
 	//MUDAR DISPONIBILIDADE
 	public void gerenciarMudarDisponibilidadeMesa(int numero) throws SQLException, MesaInexistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Mesa mesa = new Mesa();
 			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
 			Fachada.getSingleton().mesaMudarDisponibilidadeValidacao(mesa);;
@@ -89,7 +83,6 @@ public class MainMesa {
 	//LISTAR TODOS
 	public void gerenciarListarMesa() throws SQLException, ListarTodosInvalidoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().mesaListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());

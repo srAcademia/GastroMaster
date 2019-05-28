@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioEndereco;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.EnderecoDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IEnderecoDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
@@ -14,7 +14,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 
 public class EnderecoValidacao {
-	private EnderecoDao repEnd;
+	private IEnderecoDao repEnd;
 
 	public EnderecoValidacao() {
 		repEnd = new RepositorioEndereco();

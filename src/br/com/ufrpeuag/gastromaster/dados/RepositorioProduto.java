@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.ProdutoDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IProdutoDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
-public class RepositorioProduto implements ProdutoDao {
+public class RepositorioProduto implements IProdutoDao {
 
 	@Override
 	public void inserir(Produto produto) {

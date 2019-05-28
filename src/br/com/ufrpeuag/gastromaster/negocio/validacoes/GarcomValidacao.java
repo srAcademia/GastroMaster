@@ -5,8 +5,8 @@ import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioEndereco;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioGarcom;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.EnderecoDao;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.GarcomDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IEnderecoDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IGarcomDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
@@ -21,8 +21,8 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
 public class GarcomValidacao {
-	private GarcomDao repGarcom;
-	private EnderecoDao repEndereco;
+	private IGarcomDao repGarcom;
+	private IEnderecoDao repEndereco;
 	Endereco end = new Endereco();
 	int id;
 	

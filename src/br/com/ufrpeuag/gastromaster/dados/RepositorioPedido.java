@@ -8,13 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.PedidoDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IPedidoDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
-public class RepositorioPedido implements PedidoDao {
+public class RepositorioPedido implements IPedidoDao {
 
 	@Override
 	public void inserir(Pedido pedido) {

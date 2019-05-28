@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioCardapio;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.CardapioDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.ICardapioDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
@@ -14,7 +14,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.PrecoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 
 public class CardapioValidacao {
-	private CardapioDao repCardapio;
+	private ICardapioDao repCardapio;
 	
 	public CardapioValidacao() {
 		repCardapio = new RepositorioCardapio();

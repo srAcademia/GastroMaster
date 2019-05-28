@@ -5,8 +5,8 @@ import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioEndereco;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioGerente;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.EnderecoDao;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.GerenteDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IEnderecoDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IGerenteDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
@@ -22,8 +22,8 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 
 public class GerenteValidacao {
-	private GerenteDao repGerente;
-	private EnderecoDao repEndereco;
+	private IGerenteDao repGerente;
+	private IEnderecoDao repEndereco;
 	Endereco end = new Endereco();
 	int id;
 	

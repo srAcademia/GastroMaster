@@ -9,13 +9,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.GerenciamentoContasDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IGerenciamentoContasDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 
-public class RepositorioGerenciamentoContas implements GerenciamentoContasDao {
+public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 
 	private final Connection conn;
 

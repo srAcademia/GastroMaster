@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioMesa;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.MesaDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IMesaDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperarMesaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaCadastradaException;
@@ -14,7 +14,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 
 public class MesaValidacao {
-	private MesaDao repMesa;
+	private IMesaDao repMesa;
 	
 	public MesaValidacao() {
 		repMesa = new RepositorioMesa();

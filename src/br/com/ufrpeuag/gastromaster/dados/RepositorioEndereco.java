@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.EnderecoDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IEnderecoDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 
-public class RepositorioEndereco implements EnderecoDao {
+public class RepositorioEndereco implements IEnderecoDao {
 
 	@Override
 	public void inserir(Endereco end) {

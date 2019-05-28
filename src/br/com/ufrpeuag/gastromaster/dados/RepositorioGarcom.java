@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.GarcomDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IGarcomDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
-public class RepositorioGarcom implements GarcomDao {
+public class RepositorioGarcom implements IGarcomDao {
 
 	@Override
 	public void inserir(Garcom garcom) {

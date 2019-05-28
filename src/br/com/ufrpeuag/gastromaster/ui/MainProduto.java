@@ -1,7 +1,6 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
-import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
@@ -17,7 +16,6 @@ public class MainProduto {
 	//INSERCAO
 	public void gerenciarCadastroProduto(String nome, int quantidade, double preco) throws SQLException, NomeInvalidoException, PrecoInvalidoException, ProdutoExistenteException, QuantidadeProdutoInvalidaException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();;
 			Produto produto = new Produto(nome, quantidade, preco);
 			Fachada.getSingleton().produtoCadastroValidacao(produto);
 		}catch(NomeInvalidoException | QuantidadeProdutoInvalidaException | ProdutoExistenteException | PrecoInvalidoException ex) {
@@ -30,7 +28,6 @@ public class MainProduto {
 	//REMOCAO
 	public void gerenciarRemocaoProduto(String nome) throws SQLException, ProdutoInexistenteException, NomeInvalidoException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();;
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
 			Fachada.getSingleton().produtoRemocaoValidacao(produto);
@@ -44,7 +41,6 @@ public class MainProduto {
 	//ALTERACAO
 	public void gerenciarAlteracaoProduto(String nome, String novoNome, int quantidade, double preco)throws SQLException, NomeInvalidoException, ProdutoInexistenteException, ProdutoExistenteException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();;
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
 			Fachada.getSingleton().produtoAlteracaoValidacao(produto, nome, novoNome, quantidade, preco);
@@ -58,7 +54,6 @@ public class MainProduto {
 	//RECUPERAR
 	public void gerenciarRecuperarProduto(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException {
 		try {	
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
 			System.out.println(produto);
@@ -72,7 +67,6 @@ public class MainProduto {
 	//RECUPERAR ID
 	public Integer gerenciarRecuperarIDProduto(String nome) throws SQLException, NomeInvalidoException, ProdutoInexistenteException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Integer id = Fachada.getSingleton().produtoRetornarIDValidacao(nome);
 			return id;
 		}catch(NomeInvalidoException | ProdutoInexistenteException ex) {
@@ -86,7 +80,6 @@ public class MainProduto {
 	//RETORNAR QUANTIDADE 
 	public void gerenciarVerificarQuantidadeProduto(String nome)throws SQLException, ProdutoInexistenteException, NomeInvalidoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
 			int quant = Fachada.getSingleton().produtoRetornarQuantidadeProdutoValidacao(produto);
@@ -101,7 +94,6 @@ public class MainProduto {
 	//REMOVER ALGUMA QUANTIDADE
 	public void gerenciarRemoverQuantidadeProduto(Integer codigo, int quantidade) throws SQLException, QuantidadeInvalidaException, QuantidadeProdutoInvalidaException, IDRecuperacaoItemInvalidoException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
 			Fachada.getSingleton().produtoRemoverQuantProdutoValidacao(produto, quantidade);
@@ -115,7 +107,6 @@ public class MainProduto {
 	//ADICIONAR ALGUMA QUANTIDADE
 	public void gerenciarAdcionarQuantidadeProduto(Integer codigo, int quantidade) throws SQLException, QuantidadeProdutoInvalidaException, IDRecuperacaoItemInvalidoException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
 			Fachada.getSingleton().produtoAdicionarQuantProdutoValidacao(produto, quantidade);
@@ -129,7 +120,6 @@ public class MainProduto {
 	//TESTE DE MOSTRAR TODOS
 	public void gerenciarListarProduto() throws SQLException, ListarTodosInvalidoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().produtoListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());

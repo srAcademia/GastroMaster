@@ -2,7 +2,6 @@ package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 
-import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
@@ -31,7 +30,6 @@ public class MainGerente {
 	public void gerenciarCadastroGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String dataNasc, String telefone, String email, double salario, String senha, String identificador)
 			throws SQLException, BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException, CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, GerenteExistenteException, IDInexistenteException, SalarioInvalidoException, IDRecuperacaoInvalidaException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();	
 			Endereco end  = new Endereco(cidade, bairro, rua, numero, cep);
 			Gerente gerente = new Gerente(nome, cpf, dataNasc, telefone, email, salario, senha, identificador, end);
 			Fachada.getSingleton().enderecoCadastroValidacao(end);
@@ -49,7 +47,6 @@ public class MainGerente {
 	//VERIFICAR SE E GERENTE
 	public Gerente gerenciarVerificarGerente(String identificador) throws SQLException, LoginInvalidoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();	
 			Gerente gerente = new Gerente();
 			gerente = Fachada.getSingleton().gerenteVerificarValidacao(identificador);
 			return gerente;
@@ -64,7 +61,6 @@ public class MainGerente {
 	
 	public Gerente gerenciarLogarGerente(String senha) throws SQLException, SenhaInvalidaException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();	
 			Gerente gerente = new Gerente();
 			gerente = Fachada.getSingleton().gerenteLogarValidacao(senha);
 			return gerente;
@@ -79,7 +75,6 @@ public class MainGerente {
 	//REMOCAO
 	public void gerenciarRemocaoGerente(String CPF) throws SQLException, GerenteInexistenteException, EnderecoInexistenteException, CPFInvalidoException, RecuperarCPFException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Gerente gerente = new Gerente();
 			Endereco end = new Endereco();
 			gerente = Fachada.getSingleton().gerenteRecuperarCPFValidacao(CPF);
@@ -97,7 +92,6 @@ public class MainGerente {
 	public void gerenciarAlteracaoGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha)
 			throws SQLException, CPFInvalidoException, RecuperarCPFException, DataNascimentoInvalidaException, GerenteExistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Gerente gerente = new Gerente();
 			Endereco end = new Endereco();
 			gerente = Fachada.getSingleton().gerenteRecuperarCPFValidacao(cpf);
@@ -114,7 +108,6 @@ public class MainGerente {
 	//RECUPERAR
 	public void gerenciarRecuperarGerente(Integer codigo) throws SQLException, IDRecuperacaoInvalidaException {
 		try{
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Gerente gerente = new Gerente();
 			gerente = Fachada.getSingleton().gerenteRecuperarValidacao(codigo);
 			System.out.println(gerente);;
@@ -128,7 +121,6 @@ public class MainGerente {
 	//LISTAR TODOS
 	public void gerenciarListarGerente() throws SQLException, ListarTodosInvalidoException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().gerenteListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());

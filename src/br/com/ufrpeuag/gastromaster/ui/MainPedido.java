@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
@@ -27,7 +26,6 @@ public class MainPedido {
 	//INSERCAO
 	public int gerenciarCadastroPedido(String nomeCard, String nomeProduto, Mesa mesa) throws SQLException, PratoInexistenteException, NomeInvalidoException, PedidoInvalidoException, PedidoVazioException, ProdutoInexistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio();
 			Produto produto = new Produto();
 			if(nomeCard.isEmpty() == false) {
@@ -54,7 +52,6 @@ public class MainPedido {
 	//REMOCAO
 	public void gerenciarRemocaoPedido(Pedido pedido) throws SQLException, PedidoInexistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Fachada.getSingleton().pedidoRemocaoValidacao(pedido);
 		}catch(PedidoInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -66,7 +63,6 @@ public class MainPedido {
 	//RETORNAR PEDIDO POR CODIGO
 	public Pedido gerenciarRecuperarPedido(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Pedido pedido = new Pedido();
 			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(codigo);
 			return pedido;
@@ -81,7 +77,6 @@ public class MainPedido {
 	//RETORNAR O CODIGO DO PEDIDO
 	public Pedido gerencairRecuperarCodigoPedido(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws SQLException, IDRecuperacaoItemInvalidoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Integer id = Fachada.getSingleton().pedidoRecuperarCodigosValidacao(id_cardapio, id_produto, id_mesa);
 			Pedido pedido = new Pedido();
 			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(id);
@@ -97,7 +92,6 @@ public class MainPedido {
 	//ALTERACAO
 	public void gerenciarAlteracaoPedido(Integer codigo, String novoCardapio, String novoProduto) throws SQLException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Cardapio cardapio = new Cardapio();
 			Produto produto = new Produto();
 			Pedido pedido = new Pedido();
@@ -121,7 +115,6 @@ public class MainPedido {
 	//LISTAR TODOS
 	public void gerenciarListarPedido() throws SQLException, ListarTodosInvalidoException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().pedidoListarTodosValidacao());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -133,7 +126,6 @@ public class MainPedido {
 	//LISTAR POR MESA
 	public List<Pedido> gerenciarListarPorMesa(Integer codigo) throws SQLException, ConcluirPagamentoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			List<Pedido> pedidos = new ArrayList<>();
 			pedidos = Fachada.getSingleton().pedidoListarPorMesaValidacao(codigo);
 			return pedidos;

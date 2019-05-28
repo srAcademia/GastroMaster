@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.MesaDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IMesaDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 
-public class RepositorioMesa implements MesaDao {
+public class RepositorioMesa implements IMesaDao {
 
 	@Override
 	public void inserir(Mesa mesa) {

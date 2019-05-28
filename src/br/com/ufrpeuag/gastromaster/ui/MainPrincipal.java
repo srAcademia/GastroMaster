@@ -96,6 +96,8 @@ public class MainPrincipal{
 						if(gerente != null) {
 							System.out.println("Digite 1 para gerenciar Gerente.");
 							System.out.println("Digite 2 para gerenciar Garçom.");
+							System.out.println("Digite 0 sair desta opção.");
+
 							opcao1 = scan.nextInt();
 							
 							switch(opcao1) {
@@ -201,7 +203,8 @@ public class MainPrincipal{
 								break;
 							case 5:
 								mesa = mainMesa.gerenciarGerenciamentoMesa(1);
-								if( mesa != null) {
+								garcom = mainGarcom.gerenciarVerificarGarcom("139edb");
+								if( mesa != null && garcom != null) {
 									//System.out.println(mesa.getId_mesa());
 									//CHAMADA DE FAZER PEDIDO OU FECHAR CONTA
 									do {
@@ -216,11 +219,8 @@ public class MainPrincipal{
 										
 										switch(opcao22) {
 											case 1:
-												//TA AQUI SO PRA RETORNAR, MAS SEMPRE QUE ENTRAR TEM QUE PEGAR LOGO ESSA PORRA
-												garcom = mainGarcom.gerenciarVerificarGarcom("139edb");
 												int id = mainPedido.gerenciarCadastroPedido("Camarão", "Coca-cola 2,5 litros", mesa);
-												//System.out.println(id);
-												if(id != 0) {//AQUI FICARIA MELHOR UMA FUNCAO QUE RETORNA O ULTIMO PEDIDO MESMO
+												if(id != 0) {
 													pedido = mainPedido.gerenciarRecuperarPedido((Integer) id);
 													mainConta.gerenciarCadastroConta(garcom, mesa, pedido);
 												}

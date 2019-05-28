@@ -27,7 +27,6 @@ public class MainGarcom {
 	public void gerenciarCadastroGarcom (String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String dataNasc, String telefone, String email, double salario, String identificador)
 			throws SQLException, BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException, CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, GarcomExistenteException, IDInexistenteException, SalarioInvalidoException, IDRecuperacaoInvalidaException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Endereco end  = new Endereco(cidade, bairro, rua, numero, cep);
 			Garcom garcom = new Garcom(nome, cpf, dataNasc, telefone, email, salario, identificador, end);
 			Fachada.getSingleton().enderecoCadastroValidacao(end);
@@ -45,7 +44,6 @@ public class MainGarcom {
 	//RECUPERAR
 	public void gerenciarRecuperarGarcom(Integer codigo) throws SQLException, IDRecuperacaoInvalidaException {
 		try{
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Garcom garcom = new Garcom();
 			garcom = Fachada.getSingleton().garcomRecuperarValidacao(codigo);
 			System.out.println(garcom);
@@ -59,7 +57,6 @@ public class MainGarcom {
 	//REMOCAO
 	public void gerenciarRemocaoGarcom(String CPF) throws SQLException, GarcomInexistenteException, EnderecoInexistenteException, CPFInvalidoException, RecuperarCPFException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Garcom garcom = new Garcom();
 			Endereco end = new Endereco();
 			garcom = Fachada.getSingleton().garcomRecuperarCPFValidacao(CPF);
@@ -77,7 +74,6 @@ public class MainGarcom {
 	public void gerenciarAlteracaoGarcom(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario)
 			throws SQLException, CPFInvalidoException, DataNascimentoInvalidaException, RecuperarCPFException, GarcomExistenteException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();
 			Garcom garcom = new Garcom();
 			Endereco end = new Endereco();
 			garcom = Fachada.getSingleton().garcomRecuperarCPFValidacao(cpf);
@@ -106,7 +102,6 @@ public class MainGarcom {
 	//VERIFICA SE E GARCOM
 	public Garcom gerenciarVerificarGarcom(String identificador) throws SQLException, LoginInvalidoException{
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();	
 			Garcom garcom = new Garcom();
 			garcom = Fachada.getSingleton().garcomVerificarValidacao(identificador);
 			return garcom;

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.ContaDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IContaDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
@@ -18,7 +18,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
-public class RepositorioConta implements ContaDao {
+public class RepositorioConta implements IContaDao {
 
 	private final Connection conn;
 

@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ufrpeuag.gastromaster.dados.interfaces.CardapioDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.ICardapioDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 
-public class RepositorioCardapio implements CardapioDao {
+public class RepositorioCardapio implements ICardapioDao {
 
 	@Override
 	public void inserir(Cardapio cardapio) {

@@ -2,7 +2,7 @@ package br.com.ufrpeuag.gastromaster.dados.interfaces;
 
 import java.util.List;
 
-public interface Dao<D> {
+public interface IDao<D> {
 
 	public void inserir(D d);
 

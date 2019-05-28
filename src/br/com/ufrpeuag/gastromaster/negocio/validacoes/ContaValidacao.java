@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioConta;
-import br.com.ufrpeuag.gastromaster.dados.interfaces.ContaDao;
+import br.com.ufrpeuag.gastromaster.dados.interfaces.IContaDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
 
 public class ContaValidacao {
-	private ContaDao repConta;
+	private IContaDao repConta;
 	
 	public ContaValidacao() throws SQLException {
 		repConta = new RepositorioConta();

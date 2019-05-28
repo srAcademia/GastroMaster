@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 
-public interface PedidoDao extends Dao<Pedido> {
+public interface IPedidoDao extends IDao<Pedido> {
 
 	public int retornarId(Integer id_cardapio,Integer id_produto, Integer id_mesa);
 	public int recuperarUltimoID();
