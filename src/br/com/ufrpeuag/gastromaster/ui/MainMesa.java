@@ -17,6 +17,7 @@ public class MainMesa {
 		try {
 			Mesa mesa = new Mesa(numero, disponibilidade);
 			Fachada.getSingleton().mesaCadastroMesaValidacao(mesa);
+			System.out.println("Mesa cadastrado.");
 		}catch(MesaCadastradaException | NumeroInvalidoException |MesaDisponibilidadeInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -31,6 +32,7 @@ public class MainMesa {
 			Mesa mesa = new Mesa();
 			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
 			Fachada.getSingleton().mesaRemocaoValidacao(mesa);
+			System.out.println("Mesa removida.");
 		}catch(MesaInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -60,6 +62,7 @@ public class MainMesa {
 			Mesa mesa = new Mesa();
 			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
 			Fachada.getSingleton().mesaAlteracaoValidacao(mesa, novoNumero);
+			System.out.println("Mesa alterada.");
 		}catch(MesaCadastradaException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {

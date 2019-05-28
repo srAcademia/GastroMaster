@@ -2,6 +2,7 @@ package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,6 +41,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoInexistenteException
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.RelatorioVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SenhaInvalidaException;
@@ -61,7 +63,7 @@ public class MainPrincipal {
 			IDRecuperacaoItemInvalidoException, QuantidadeInvalidaException, PratoInexistenteException,
 			MesaCadastradaException, MesaDisponibilidadeInvalidaException, IDRecuperarMesaException,
 			MesaInexistenteException, PratoExistenteException, PedidoInvalidoException, PedidoVazioException,
-			PedidoInexistenteException, ContaGerarException, ConcluirPagamentoException {
+			PedidoInexistenteException, ContaGerarException, ConcluirPagamentoException, RelatorioVazioException {
 
 		int opcao = -1;
 		int opcao1 = -1;
@@ -81,6 +83,7 @@ public class MainPrincipal {
 		MainMesa mainMesa = new MainMesa();
 		MainPedido mainPedido = new MainPedido();
 		MainConta mainConta = new MainConta();
+		MainGerenciamento mainGerenciamento = new MainGerenciamento();
 		Garcom garcom = new Garcom();
 		Pedido pedido = new Pedido();
 		Mesa mesa = new Mesa();
@@ -97,9 +100,9 @@ public class MainPrincipal {
 			switch (opcao) {
 			case 1:
 				System.out.println("Digite seu login:");
-				mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "8998324", "30/01/2001", "87 9953-3012",
-				"kelwinjonas@gmail.com", 9999999, "12345", "");
-				gerente = mainGerente.gerenciarVerificarGerente("2761b5");
+				//mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "13189229414", "30/01/2001", "87 9953-3012",
+				//"kelwinjonas@gmail.com", 9999999, "12345", "");
+				gerente = mainGerente.gerenciarVerificarGerente("236ff8");
 				if (gerente != null) {
 					System.out.println("Digite sua senha:");
 					gerente = mainGerente.gerenciarLogarGerente("12345");
@@ -124,7 +127,7 @@ public class MainPrincipal {
 								switch (opcao11) {
 								case 1:
 									mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva",
-											9, "553233", "Milena", "8998324", "30/01/2001", "87 9953-3012",
+											9, "553233", "Milena", "13189229414", "30/01/2001", "87 9953-3012",
 											"kelwinjonas@gmail.com", 9999999, "12345", "");
 									break;
 								case 2:
@@ -160,7 +163,7 @@ public class MainPrincipal {
 								switch (opcao12) {
 								case 1:
 									mainGarcom.gerenciarCadastroGarcom("Garanhuns", "Boa Vista", "Jose Duca da Silva",
-											9, "553233", "Kelwin", "12312", "30/01/2001", "87 9953-3012",
+											9, "553233", "Kelwin", "13189229414", "30/01/2001", "87 9953-3012",
 											"kelwinjonas@gmail.com", 9999999, "");
 									break;
 								case 2:
@@ -198,9 +201,8 @@ public class MainPrincipal {
 					System.out.println("Digite 1 para cadastrar uma mesa ao restaurante.");
 					System.out.println("Digite 2 para alterar o número de uma mesa.");
 					System.out.println("Digite 3 para deletar uma mesa.");
-					System.out.println("Digite 4 para mudar a disponibilidade de uma mesa.");
-					System.out.println("Digite 5 para gerenciar uma mesa específica.");
-					System.out.println("Digite 6 para listar todas as mesas do restaurante.");
+					System.out.println("Digite 4 para gerenciar uma mesa específica.");
+					System.out.println("Digite 5 para listar todas as mesas do restaurante.");
 					System.out.println("Digite 0 sair desta opção.");
 					opcao2 = scan.nextInt();
 
@@ -215,14 +217,9 @@ public class MainPrincipal {
 						mainMesa.gerenciarRemocaoMesa(2);
 						break;
 					case 4:
-						mainMesa.gerenciarMudarDisponibilidadeMesa(1);
-						break;
-					case 5:
 						mesa = mainMesa.gerenciarGerenciamentoMesa(1);
-						garcom = mainGarcom.gerenciarVerificarGarcom("139edb");
+						garcom = mainGarcom.gerenciarVerificarGarcom("1164f4");
 						if (mesa != null && garcom != null) {
-							// System.out.println(mesa.getId_mesa());
-							// CHAMADA DE FAZER PEDIDO OU FECHAR CONTA
 							do {
 								System.out.println("Digite 1 para fazer um pedido à mesa.");
 								System.out.println("Digite 2 para deletar um pedido da mesa.");
@@ -230,6 +227,7 @@ public class MainPrincipal {
 								System.out.println("Digite 4 para listar todos os pedidos da mesa.");
 								System.out.println("Digite 5 para gerar a conta da mesa.");
 								System.out.println("Digite 6 para realizar o pagamento dos pedidos efetuados à mesa.");
+								System.out.println("Digite 7 para mudar a disponibilidade da mesa.");
 								System.out.println("Digite 0 para sair da mesa.");
 								opcao22 = scan.nextInt();
 
@@ -249,7 +247,6 @@ public class MainPrincipal {
 											(Integer) mesa.getId_mesa());
 									if (pedido != null) {
 										int id_conta = pedido.getId_pedido();
-										System.out.println(id_conta);
 										mainConta.gerenciarRemocaoConta(id_conta);
 										mainPedido.gerenciarRemocaoPedido(pedido);
 									}
@@ -272,9 +269,14 @@ public class MainPrincipal {
 									List<Conta> contas1 = new ArrayList<>();
 									contas1 = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
 									if (contas1 != null) {
+										mainGerenciamento.gerenciarCadastroGerenciamento(garcom, mesa, mainConta.gerenciarGerarConta(contas1.get(0)), contas1.get(0).getData());
 										mainConta.gerenciarRemoverTodasConta(contas1.get(0));
 										mainPedido.gerenciarRemoverTodosPedido((Integer) mesa.getId_mesa());
+										mainMesa.gerenciarMudarDisponibilidadeMesa(mesa.getNumero());
 									}
+									break;
+								case 7:
+									mainMesa.gerenciarMudarDisponibilidadeMesa(mesa.getNumero());
 									break;
 								case 0:
 									break;
@@ -285,7 +287,7 @@ public class MainPrincipal {
 							} while (opcao22 != 0);
 						}
 						break;
-					case 6:
+					case 5:
 						mainMesa.gerenciarListarMesa();
 					case 0:
 						break;
@@ -367,7 +369,7 @@ public class MainPrincipal {
 				} while (opcao4 != 0);
 				break;
 			case 5:
-				System.out.println("entrou 5");
+				mainGerenciamento.gerenciarListarGerenciamento();
 				break;
 			case 0:
 				System.out.println("Encerrando o sistema...");

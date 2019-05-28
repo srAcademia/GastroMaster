@@ -32,9 +32,11 @@ public class PedidoValidacao {
 	}
 	
 	public void pedidoRemocaoValidacao(Pedido pedido) throws PedidoInexistenteException {
-		int id = repPedido.retornarId(pedido.getCardapio().getId_cardapio(), pedido.getProduto().getId_produto(), pedido.getMesa().getId_mesa());
-		if( id != 0) {
-			repPedido.deletar(pedido);
+		if(!pedido.equals(null)) {
+			int id = repPedido.retornarId(pedido.getCardapio().getId_cardapio(), pedido.getProduto().getId_produto(), pedido.getMesa().getId_mesa());
+			if( id != 0) {
+				repPedido.deletar(pedido);
+			}
 		}
 		else {
 			throw new PedidoInexistenteException();

@@ -39,6 +39,7 @@ public class MainPedido {
 			Fachada.getSingleton().pedidoCadastroValidacao(pedido);
 			int id = 0;
 			id = Fachada.getSingleton().pedidoRecuperarUltimoIDValidacao();
+			System.out.println("Pedido efetuado.");
 			return id;
 		}catch(PedidoInvalidoException | PedidoVazioException | PratoInexistenteException | NomeInvalidoException | ProdutoInexistenteException | QuantidadeInvalidaException | QuantidadeProdutoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -53,6 +54,7 @@ public class MainPedido {
 	public void gerenciarRemocaoPedido(Pedido pedido) throws SQLException, PedidoInexistenteException {
 		try {
 			Fachada.getSingleton().pedidoRemocaoValidacao(pedido);
+			System.out.println("Pedido cancelado.");
 		}catch(PedidoInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -75,13 +77,13 @@ public class MainPedido {
 	}
 	
 	//RETORNAR O CODIGO DO PEDIDO
-	public Pedido gerencairRecuperarCodigoPedido(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws SQLException, IDRecuperacaoItemInvalidoException{
+	public Pedido gerencairRecuperarCodigoPedido(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws SQLException, PedidoInexistenteException{
 		try {
 			Integer id = Fachada.getSingleton().pedidoRecuperarCodigosValidacao(id_cardapio, id_produto, id_mesa);
 			Pedido pedido = new Pedido();
 			pedido = Fachada.getSingleton().pedidoRecuperarValidacao(id);
 			return pedido;
-		}catch(IDRecuperacaoItemInvalidoException ex) {
+		}catch(PedidoInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
@@ -105,6 +107,7 @@ public class MainPedido {
 				pedido.setProduto(produto);
 			}
 			Fachada.getSingleton().pedidoAlteracaoValidacao(pedido);
+			System.out.println("Pedido alterado.");
 		}catch(IDRecuperacaoItemInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -141,6 +144,7 @@ public class MainPedido {
 	public void gerenciarRemoverTodosPedido(Integer codigo) throws SQLException {
 		try {
 			Fachada.getSingleton().pedidoRemoverTodosPedidosValidacao(codigo);
+			System.out.println("Conta paga.");
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}

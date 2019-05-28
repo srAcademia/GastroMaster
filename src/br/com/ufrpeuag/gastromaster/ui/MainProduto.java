@@ -18,6 +18,7 @@ public class MainProduto {
 		try {
 			Produto produto = new Produto(nome, quantidade, preco);
 			Fachada.getSingleton().produtoCadastroValidacao(produto);
+			System.out.println("Produto cadastrado.");
 		}catch(NomeInvalidoException | QuantidadeProdutoInvalidaException | ProdutoExistenteException | PrecoInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -31,6 +32,7 @@ public class MainProduto {
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
 			Fachada.getSingleton().produtoRemocaoValidacao(produto);
+			System.out.println("Produto removido.");
 		}catch(ProdutoInexistenteException | NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -44,6 +46,7 @@ public class MainProduto {
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
 			Fachada.getSingleton().produtoAlteracaoValidacao(produto, nome, novoNome, quantidade, preco);
+			System.out.println("Produto alterado.");
 		}catch(NomeInvalidoException | ProdutoExistenteException | ProdutoInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {

@@ -18,6 +18,7 @@ public class MainCardapio {
 		try {
 			Cardapio cardapio = new Cardapio(nome, preco);
 			Fachada.getSingleton().cardapioCadastroValidacao(cardapio);
+			System.out.println("Prato cadastrado.");
 		}catch(PratoExistenteException | NomeInvalidoException | PrecoInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -31,6 +32,7 @@ public class MainCardapio {
 			Cardapio cardapio = new Cardapio();
 			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nome);
 			Fachada.getSingleton().cardapioRemocaoValidacao(cardapio);
+			System.out.println("Prato removido.");
 		}catch(PratoInexistenteException | NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -44,6 +46,7 @@ public class MainCardapio {
 			Cardapio cardapio = new Cardapio();
 			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nome);
 			Fachada.getSingleton().cardapioAlteracaoValidacao(cardapio, nome, novoNome, preco);
+			System.out.println("Prato alterado.");
 		}catch(PratoInexistenteException | NomeInvalidoException | PratoExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -56,7 +59,6 @@ public class MainCardapio {
 		try {
 			Cardapio cardapio = new Cardapio();
 			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(codigo);
-			System.out.println(cardapio);
 		}catch(IDRecuperacaoItemInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {

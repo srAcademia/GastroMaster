@@ -34,17 +34,17 @@ public class GerenteValidacao {
 	}
 	
 	public void gerenteCadastroValidacao(Gerente gerente) throws CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, SalarioInvalidoException, GerenteExistenteException{
+		if(CpfValidacao.isCPF(gerente.getCpf()) == false) {
+			id = repEndereco.recuperarUltimoID();
+			end = repEndereco.recuperar(id);
+			repEndereco.deletar(end);
+			throw new CPFInvalidoException();
+		}
 		if(repGerente.recuperarCPF(gerente.getCpf()) != null) {
 			id = repEndereco.recuperarUltimoID();
 			end = repEndereco.recuperar(id);
 			repEndereco.deletar(end);
 			throw new GerenteExistenteException();
-		}
-		if(gerente.getCpf() == null) {
-			id = repEndereco.recuperarUltimoID();
-			end = repEndereco.recuperar(id);
-			repEndereco.deletar(end);
-			throw new CPFInvalidoException();
 		}
 		if(gerente.getNome() == null || gerente.getNome().isEmpty()) {
 			id = repEndereco.recuperarUltimoID();
@@ -52,7 +52,7 @@ public class GerenteValidacao {
 			repEndereco.deletar(end);
 			throw new NomeInvalidoException();
 		}
-		if(gerente.getDataNasc() == null || gerente.getDataNasc().isEmpty()) {
+		if(DataValidacao.ValidarData(gerente.getDataNasc()) == false) {
 			id = repEndereco.recuperarUltimoID();
 			end = repEndereco.recuperar(id);
 			repEndereco.deletar(end);
@@ -65,30 +65,34 @@ public class GerenteValidacao {
 			throw new SalarioInvalidoException();
 		}
 		
-		
-		//Falta tratar o CPF e a data de Nascimento da forma correta
-		//Verifica��es para saber se o gerente pode ser cadastrado
-		//Necess�rio um m�todo que verifique a j� existencia do funcionario
 		repGerente.inserir(gerente);
 	}
 	
 	public void gerenteRemocaoValidacao(Gerente gerente) throws GerenteInexistenteException{
-		//Necess�rio um m�todo que verifique a inexistencia do funcionario
+		if(repGerente.recuperarCPF(gerente.getCpf()) == null) {
+			throw new GerenteInexistenteException();
+		}
+		
 		repGerente.deletar(gerente);
 	}
 	
 	public void gerenteAlteracaoValidacao(Gerente gerente, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha) throws CPFInvalidoException, DataNascimentoInvalidaException, GerenteExistenteException{
 		if(nome.isEmpty() == false) {
-			if(repGerente.recuperarCPF(novoCPF) != null) {
-				throw new GerenteExistenteException();
-			}
 			gerente.setNome(nome);
 		}
 		if(novoCPF.isEmpty() == false) {
+			if(CpfValidacao.isCPF(novoCPF) == false) {
+				throw new CPFInvalidoException();
+			}
+			if(repGerente.recuperarCPF(novoCPF) != null) {
+				throw new GerenteExistenteException();
+			}
 			gerente.setCpf(novoCPF);
 		}
 		if(dataNasc.isEmpty() == false) {
-			gerente.setDataNasc(dataNasc);
+			if(DataValidacao.ValidarData(dataNasc) == false) {
+				throw new DataNascimentoInvalidaException();
+			}
 		}
 		if(telefone.isEmpty() == false) {
 			gerente.setTelefone(telefone);

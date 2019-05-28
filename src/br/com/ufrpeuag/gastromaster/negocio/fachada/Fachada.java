@@ -36,6 +36,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoInexistenteException
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.RelatorioVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SenhaInvalidaException;
@@ -43,6 +44,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
@@ -51,6 +53,7 @@ import br.com.ufrpeuag.gastromaster.negocio.validacoes.CardapioValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.ContaValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.EnderecoValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GarcomValidacao;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenciamentoValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenteValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.MesaValidacao;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.PedidoValidacao;
@@ -66,6 +69,7 @@ public class Fachada {
 	private PedidoValidacao pedido;
 	private MesaValidacao mesa;
 	private ContaValidacao conta;
+	private GerenciamentoValidacao gerenciamento;
 	
 	public static Fachada getSingleton() throws SQLException {
 		if (singleton == null) {
@@ -83,6 +87,7 @@ public class Fachada {
 		pedido = new PedidoValidacao();
 		mesa = new MesaValidacao();
 		conta = new ContaValidacao();
+		gerenciamento = new GerenciamentoValidacao();
 	}
 	
 	public void enderecoCadastroValidacao(Endereco endereco) throws BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException{
@@ -317,5 +322,13 @@ public class Fachada {
 	
 	public void contaRemoverTodasContaValidacao(Conta conta) {
 		this.conta.contaRemoverTodasContaValidacao(conta);
+	}
+	
+	public void gerenciamentoCadastroValidacao(GerenciamentoContas gerenciamento) {
+		this.gerenciamento.gerenciamentoCadastroValidacao(gerenciamento);
+	}
+	
+	public List<GerenciamentoContas> gerenciamentoListarTodosValidacao() throws RelatorioVazioException {
+		return this.gerenciamento.gerenciamentoListarTodosValidacao();
 	}
 }

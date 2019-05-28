@@ -33,7 +33,7 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public void inserir(Conta conta) {
-		String inserirSql = "INSERT INTO  Conta(pagamento , data, cod_pedido , cod_garcom , cod_mesa, valor) VALUES(?,?,?,?,?)";
+		String inserirSql = "INSERT INTO  Conta(data, cod_pedido , cod_garcom , cod_mesa, valor) VALUES(?,?,?,?,?)";
 
 		try {
 			pstmt = this.conn.prepareStatement(inserirSql);
@@ -168,7 +168,7 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public void alterar(Conta conta) {
-		String alterarSql = "UPDATE Conta SET pagamento= ? , data= ? , " + "cod_pedido= ? , cod_garcom= ? , "
+		String alterarSql = "UPDATE Conta SET data= ? , " + "cod_pedido= ? , cod_garcom= ? , "
 				+ "cod_mesa= ?," + " valor= ?  WHERE id_conta = ?";
 
 		try {

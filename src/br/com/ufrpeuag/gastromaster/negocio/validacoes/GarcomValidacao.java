@@ -33,7 +33,7 @@ public class GarcomValidacao {
 	}
 	
 	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, SalarioInvalidoException, GarcomExistenteException{
-		if(garcom.getCpf() == null) {
+		if(CpfValidacao.isCPF(garcom.getCpf()) == false) {
 			id = repEndereco.recuperarUltimoID();
 			end = repEndereco.recuperar(id);
 			repEndereco.deletar(end);
@@ -51,7 +51,7 @@ public class GarcomValidacao {
 			repEndereco.deletar(end);
 			throw new NomeInvalidoException();
 		}
-		if(garcom.getDataNasc() == null || garcom.getDataNasc().isEmpty()) {
+		if(DataValidacao.ValidarData(garcom.getDataNasc()) == false) {
 			id = repEndereco.recuperarUltimoID();
 			end = repEndereco.recuperar(id);
 			repEndereco.deletar(end);
@@ -78,12 +78,18 @@ public class GarcomValidacao {
 			garcom.setNome(nome);
 		}
 		if(novoCPF.isEmpty() == false) {
+			if(CpfValidacao.isCPF(novoCPF) == false) {
+				throw new CPFInvalidoException();
+			}
 			if(repGarcom.recuperar(novoCPF) != null) {
 				throw new GarcomExistenteException(); 
 			}
 			garcom.setCpf(novoCPF);
 		}
 		if(dataNasc.isEmpty() == false) {
+			if(DataValidacao.ValidarData(dataNasc) == false) {
+				throw new DataNascimentoInvalidaException();
+			}
 			garcom.setDataNasc(dataNasc);
 		}
 		if(telefone.isEmpty() == false) {

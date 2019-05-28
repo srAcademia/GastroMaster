@@ -37,6 +37,7 @@ public class MainGerente {
 			gerente.getEndereco().setId_endereco(id);
 			gerente.setIdentificador(gerente.gerarIdentificador());
 			Fachada.getSingleton().gerenteCadastroValidacao(gerente);
+			System.out.println("Gerente cadastrado.");
 		}catch(BairroInvalidoException | CEPInvalidoException | CidadeInvalidaException | NumeroInvalidoException | RuaInvalidaException | CPFInvalidoException | DataNascimentoInvalidaException | NomeInvalidoException | GerenteExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -81,6 +82,7 @@ public class MainGerente {
 			end = Fachada.getSingleton().enderecoRecuperarValidacao(gerente.getEndereco().getId_endereco());
 			Fachada.getSingleton().gerenteRemocaoValidacao(gerente);
 			Fachada.getSingleton().enderecoRemocaoValidacao(end);
+			System.out.println("Gerente removido.");
 		}catch(GerenteInexistenteException | EnderecoInexistenteException | CPFInvalidoException | RecuperarCPFException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -98,6 +100,7 @@ public class MainGerente {
 			end = Fachada.getSingleton().enderecoRecuperarValidacao(gerente.getEndereco().getId_endereco());
 			Fachada.getSingleton().enderecoAlteracaoValidacao(end, cidade, bairro, rua, numero, cep);
 			Fachada.getSingleton().gerenteAlteracaoValidacao(gerente, nome, cpf, novoCPF, dataNasc, telefone, email, salario, senha);
+			System.out.println("Gerente alterado.");
 		}catch( CPFInvalidoException | RecuperarCPFException | DataNascimentoInvalidaException | GerenteExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
