@@ -15,13 +15,21 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
 public class RepositorioPedido implements IPedidoDao {
+	private PreparedStatement pstmt;
+	private Connection conn;
+	private ResultSet result;
+	private Statement stmt;
+
+	public RepositorioPedido() throws SQLException {
+		this.conn = ConfiguracoesBanco.getSingleton().getConnection();
+	}
 
 	@Override
 	public void inserir(Pedido pedido) {
-		PreparedStatement pstmt = null;
+		String inserirSql = "INSERT INTO Pedido (cod_produto, cod_cardapio, valor,cod_mesa) VALUES(?,?,?,?)";
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Pedido (cod_produto, cod_cardapio, valor,cod_mesa) VALUES(?,?,?,?)";
+			
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setInt(1, pedido.getProduto().getId_produto());
@@ -49,15 +57,11 @@ public class RepositorioPedido implements IPedidoDao {
 				+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) JOIN Mesa m on (pe.cod_mesa = m.id_mesa) "
 				+ "where id_pedido = ?";
 
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
-
 		Cardapio c = null;
 		Produto p = null;
 		Pedido pedido = null;
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(sqlRecuperar);
 			pstmt.setInt(1, codigo);
@@ -113,9 +117,7 @@ public class RepositorioPedido implements IPedidoDao {
 	@Override
 	public void alterar(Pedido pedido) {
 		String alterarSql = "UPDATE Pedido SET cod_produto =?, cod_cardapio = ? , valor= ?, cod_mesa = ?  WHERE id_pedido = ?";
-		PreparedStatement pstmt = null;
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
@@ -143,9 +145,8 @@ public class RepositorioPedido implements IPedidoDao {
 	@Override
 	public void deletar(Pedido pedido) {
 		String deletarSql = "DELETE FROM Pedido WHERE id_pedido = ?";
-		PreparedStatement pstmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(deletarSql);
 
@@ -171,15 +172,12 @@ public class RepositorioPedido implements IPedidoDao {
 		String listarTodosSql = "select * " + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) "
 				+ "JOIN Cardapio c on (pe.cod_cardapio= c.id_cardapio) JOIN Mesa m on (pe.cod_mesa = m.id_mesa) ";
 
-		ResultSet result = null;
-		Statement stmt = null;
-
 		Cardapio c = null;
 		Produto p = null;
 		Pedido pedido = null;
+		Mesa m = null;
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(listarTodosSql);
 
@@ -188,7 +186,7 @@ public class RepositorioPedido implements IPedidoDao {
 				c = new Cardapio();
 				p = new Produto();
 				pedido = new Pedido();
-				Mesa m = new Mesa();
+				m = new Mesa();
 				pedido.setId_pedido(result.getInt("id_pedido"));
 
 				c.setId_cardapio(result.getInt("Id_cardapio"));
@@ -236,11 +234,10 @@ public class RepositorioPedido implements IPedidoDao {
 	public int retornarId(Integer id_cardapio, Integer id_produto, Integer id_mesa) {
 
 		String sql = "SELECT *  FROM Pedido WHERE (cod_cardapio= ? ) and (cod_produto = ? ) and (cod_mesa = ? )";
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+
 		int id = 0;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id_cardapio);
@@ -276,11 +273,8 @@ public class RepositorioPedido implements IPedidoDao {
 	@Override
 	public int recuperarUltimoID() {
 		String recuperarUltimoIdSql = "SELECT *FROM Pedido WHERE id_pedido= (SELECT MAX(id_pedido) FROM Pedido);";
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
 		int id = 0;
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(recuperarUltimoIdSql);
 
@@ -313,9 +307,7 @@ public class RepositorioPedido implements IPedidoDao {
 	@Override
 	public void deletarPedidosPelaMesa(Integer id_mesa) {
 		String deletarSql = "DELETE FROM Pedido WHERE cod_mesa = ?";
-		PreparedStatement pstmt = null;
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(deletarSql);
 
@@ -337,17 +329,16 @@ public class RepositorioPedido implements IPedidoDao {
 
 	@Override
 	public List<Pedido> listarPorMesa(Integer id_mesa) {
-		List<Pedido> lista = new ArrayList<>();
-		String sql = "select * \r\n" + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) \r\n"
-				+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) \r\n"
-				+ "JOIN Mesa m on (pe.cod_mesa = m.id_mesa) \r\n" + "where pe.cod_mesa = ? ;";
-
-		ResultSet result = null;
-		Statement stmt = null;
-
 		Cardapio c = null;
 		Produto p = null;
 		Pedido pedido = null;
+		Mesa m = null;
+
+		List<Pedido> lista = new ArrayList<>();
+
+		String sql = "select * \r\n" + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) \r\n"
+				+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) \r\n"
+				+ "JOIN Mesa m on (pe.cod_mesa = m.id_mesa) \r\n" + "where pe.cod_mesa = ? ;";
 
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
@@ -359,7 +350,7 @@ public class RepositorioPedido implements IPedidoDao {
 				c = new Cardapio();
 				p = new Produto();
 				pedido = new Pedido();
-				Mesa m = new Mesa();
+				m = new Mesa();
 
 				pedido.setId_pedido(result.getInt("id_pedido"));
 

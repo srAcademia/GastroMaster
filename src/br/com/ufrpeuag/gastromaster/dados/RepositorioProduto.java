@@ -13,14 +13,22 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
 public class RepositorioProduto implements IProdutoDao {
 
+	private PreparedStatement pstmt;
+	private Connection conn;
+	private ResultSet result;
+	private Statement stmt;
+
+	public RepositorioProduto() throws SQLException {
+		this.conn = ConfiguracoesBanco.getSingleton().getConnection();
+	}
+
 	@Override
 	public void inserir(Produto produto) {
-		PreparedStatement pstmt = null;
-		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Produto(nome, quantidade,preco) VALUES(?,?,?)";
-			pstmt = conn.prepareStatement(inserirSql);
+		String inserirSql = "INSERT INTO Produto(nome, quantidade,preco) VALUES(?,?,?)";
 
+		try {
+
+			pstmt = conn.prepareStatement(inserirSql);
 			pstmt.setString(1, produto.getNome());
 			pstmt.setInt(2, produto.getQuantidade());
 			pstmt.setDouble(3, produto.getPreco());
@@ -41,18 +49,16 @@ public class RepositorioProduto implements IProdutoDao {
 
 	@Override
 	public Produto recuperar(Integer codigo) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+		Produto p = null;
+
+		String sqlRecuperar = "SELECT * from Produto where id_produto = ?;";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT * from Produto where id_produto = ?");
+			pstmt = conn.prepareStatement(sqlRecuperar);
 			pstmt.setInt(1, codigo);
 
 			result = pstmt.executeQuery();
-
-			Produto p = null;
 
 			if (result.next()) {
 
@@ -83,9 +89,7 @@ public class RepositorioProduto implements IProdutoDao {
 	public void alterar(Produto produto) {
 		String alterarSql = "UPDATE Produto SET " + "nome = ? , " + "quantidade = ?," + "preco = ? "
 				+ " WHERE id_produto = ?";
-		PreparedStatement pstmt = null;
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
@@ -112,10 +116,8 @@ public class RepositorioProduto implements IProdutoDao {
 	@Override
 	public void deletar(Produto produto) {
 		String deletarSql = "DELETE FROM Produto WHERE id_produto = ?";
-		PreparedStatement pstmt = null;
-		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
+		try {
 			pstmt = conn.prepareStatement(deletarSql);
 
 			pstmt.setInt(1, produto.getId_produto());
@@ -136,15 +138,15 @@ public class RepositorioProduto implements IProdutoDao {
 
 	@Override
 	public List<Produto> listarTodos() {
+		Produto p = null;
+
 		List<Produto> lista = new ArrayList<>();
 		String listarTodosSql = "Select * FROM Produto";
-		ResultSet result = null;
-		Statement stmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(listarTodosSql);
-			Produto p = null;
 
 			while (result.next()) {
 
@@ -179,9 +181,8 @@ public class RepositorioProduto implements IProdutoDao {
 	@Override
 	public void removerQuantProduto(Produto produto, Integer quantidade) {
 		String alterarSql = "UPDATE Produto SET quantidade = ? WHERE id_produto = ?";
-		PreparedStatement pstmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
@@ -209,12 +210,8 @@ public class RepositorioProduto implements IProdutoDao {
 
 		int quant = 0;
 		String sql = "SELECT quantidade FROM Produto WHERE id_produto= ?";
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, produto.getId_produto());
 
@@ -245,19 +242,16 @@ public class RepositorioProduto implements IProdutoDao {
 
 	@Override
 	public Produto retornarProduto(String nome) {
+		Produto p = null;
+
 		String sql = "SELECT *  FROM Produto WHERE nome = ?";
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, nome);
 
 			result = pstmt.executeQuery();
-
-			Produto p = null;
 
 			if (result.next()) {
 
@@ -287,9 +281,7 @@ public class RepositorioProduto implements IProdutoDao {
 	@Override
 	public void adicionarQuantProduto(Produto produto, Integer quantidade) {
 		String alterarSql = "UPDATE Produto SET quantidade = ? WHERE id_produto = ?";
-		PreparedStatement pstmt = null;
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
@@ -316,8 +308,7 @@ public class RepositorioProduto implements IProdutoDao {
 	public int retornarID(String nome) {
 
 		String sql = "SELECT *  FROM Produto WHERE nome = ?";
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+
 		int id = 0;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();

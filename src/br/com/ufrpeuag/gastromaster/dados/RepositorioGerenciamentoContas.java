@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,25 +19,30 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 
 public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 
-	private final Connection conn;
+	private PreparedStatement pstmt;
+	private Connection conn;
+	private ResultSet result;
+	private Statement stmt;
 
 	public RepositorioGerenciamentoContas() throws SQLException {
-		conn = ConfiguracoesBanco.getSingleton().getConnection();
+		this.conn = ConfiguracoesBanco.getSingleton().getConnection();
 	}
 
 	@Override
 	public void inserir(GerenciamentoContas g) {
-		PreparedStatement pstmt = null;
+		String inserirSql = "INSERT INTO  GerenciamentoContas(cod_garcom , cod_mesa, valorTotal , data) VALUES(?,?,?,?)";
+		
 		try {
-			String inserirSql = "INSERT INTO  Conta(cod_garcom , cod_mesa, valorTotal , data) VALUES(?,?,?,?)";
 			pstmt = this.conn.prepareStatement(inserirSql);
 
-			String data = "" + g.getData();
+			java.sql.Date date = java.sql.Date.valueOf(g.getData());
+			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+			String dataFormatada = formatador.format(date);
 
 			pstmt.setInt(1, g.getGarcom().getId_garcom());
 			pstmt.setInt(2, g.getMesa().getId_mesa());
 			pstmt.setDouble(3, g.getValorTotal());
-			pstmt.setString(4, data);
+			pstmt.setString(4, dataFormatada);
 
 			pstmt.executeUpdate();
 
@@ -53,15 +60,16 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 
 	@Override
 	public GerenciamentoContas recuperar(Integer codigo) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+	
 		Mesa m = null;
 		Garcom g = null;
 		Endereco e = null;
 		GerenciamentoContas gc = null;
 		String data;
+		
 		String sql = "SELECT * FROM GerenciamentoContas gc JOIN Garcom g"
-				+ " ON (gc.cod_garcom = g.id_garcom)  JOIN  Mesa m ON (gc.cod_mesa = m.id_mesa) "
+				+ " ON (gc.cod_garcom = g.id_garcom) JOIN Endereco e on (e.id_endereco =g.cod_endereco) "
+				+ " JOIN  Mesa m ON (gc.cod_mesa = m.id_mesa) "
 				+ "WHERE id_gerenc = ?";
 		try {
 
@@ -76,9 +84,12 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 				m = new Mesa();
 				g = new Garcom();
 				e = new Endereco();
+				
 				data = result.getString("data");
-				LocalDate localDate = LocalDate.parse(data);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				LocalDate localDate = LocalDate.parse(data, formatter);
 
+				gc.setId_gerenc(result.getInt("id_gerenc"));
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
@@ -127,17 +138,20 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 	public void alterar(GerenciamentoContas g) {
 		String alterarSql = "UPDATE GerenciamentoContas SET " + " cod_garcom= ? , " + "cod_mesa= ?," + " valorTotal= ?,"
 				+ "data = ? " + "WHERE id_gerenc = ?";
-		PreparedStatement pstmt = null;
-
+	
 		try {
 
 			pstmt = this.conn.prepareStatement(alterarSql);
-			String data = "" + g.getData();
-
+			
+			java.sql.Date date = java.sql.Date.valueOf(g.getData());
+			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+			String dataFormatada = formatador.format(date);
+			
 			pstmt.setInt(1, g.getGarcom().getId_garcom());
 			pstmt.setInt(2, g.getMesa().getId_mesa());
 			pstmt.setDouble(3, g.getValorTotal());
-			pstmt.setString(4, data);
+			pstmt.setString(4, dataFormatada);
+			pstmt.setInt(5, g.getId_gerenc());
 
 			pstmt.executeUpdate();
 
@@ -157,7 +171,6 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 	@Override
 	public void deletar(GerenciamentoContas g) {
 		String deletarSql = "DELETE FROM GerenciamentoContas  WHERE id_gerenc = ?";
-		PreparedStatement pstmt = null;
 		try {
 
 			pstmt = this.conn.prepareStatement(deletarSql);
@@ -180,15 +193,15 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 	@Override
 	public List<GerenciamentoContas> listarTodos() {
 		List<GerenciamentoContas> lista = new ArrayList<>();
-		ResultSet result = null;
-		Statement stmt = null;
 		Mesa m = null;
 		Garcom g = null;
 		Endereco e = null;
 		GerenciamentoContas gc = null;
 		String data;
 		String sql = "SELECT * FROM GerenciamentoContas gc JOIN Garcom g"
-				+ " ON (gc.cod_garcom = g.id_garcom)  JOIN  Mesa m ON (gc.cod_mesa = m.id_mesa) ";
+				+ " ON (gc.cod_garcom = g.id_garcom) "
+				+ "JOIN Endereco e on (e.id_endereco =g.cod_endereco) "
+				+ "JOIN  Mesa m ON (gc.cod_mesa = m.id_mesa) ";
 		try {
 
 			stmt = this.conn.createStatement();
@@ -200,9 +213,12 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 				m = new Mesa();
 				g = new Garcom();
 				e = new Endereco();
+				
 				data = result.getString("data");
-				LocalDate localDate = LocalDate.parse(data);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				LocalDate localDate = LocalDate.parse(data, formatter);
 
+				gc.setId_gerenc(result.getInt("id_gerenc"));
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));

@@ -13,12 +13,20 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 
 public class RepositorioMesa implements IMesaDao {
 
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet result;
+	private Statement stmt;
+
+	public RepositorioMesa() throws SQLException {
+		conn = ConfiguracoesBanco.getSingleton().getConnection();
+	}
+
 	@Override
 	public void inserir(Mesa mesa) {
-		PreparedStatement pstmt = null;
+		String inserirSql = "INSERT INTO Mesa(numero, disponibilidade) VALUES(?,?)";
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Mesa(numero, disponibilidade) VALUES(?,?)";
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setInt(1, mesa.getNumero());
@@ -40,18 +48,16 @@ public class RepositorioMesa implements IMesaDao {
 
 	@Override
 	public Mesa recuperar(Integer codigo) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+		Mesa m = null;
+
+		String sqlRecuperar = "SELECT * from Mesa where id_mesa = ?";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
-			pstmt = conn.prepareStatement("SELECT * from Mesa where id_mesa = ?");
+			pstmt = conn.prepareStatement(sqlRecuperar);
 			pstmt.setInt(1, codigo);
 
 			result = pstmt.executeQuery();
-
-			Mesa m = null;
 
 			if (result.next()) {
 
@@ -79,10 +85,9 @@ public class RepositorioMesa implements IMesaDao {
 
 	@Override
 	public void alterar(Mesa mesa) {
-		String alterarSql = "UPDATE Mesa SET " + "numero = ? , " + "disponibilidade = ? " + " WHERE id_mesa = ?";
-		PreparedStatement pstmt = null;
+		String alterarSql = "UPDATE Mesa SET numero = ? , disponibilidade = ? WHERE id_mesa = ?";
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
 
@@ -108,9 +113,8 @@ public class RepositorioMesa implements IMesaDao {
 	@Override
 	public void deletar(Mesa mesa) {
 		String deletarSql = "DELETE FROM Mesa WHERE id_mesa = ?";
-		PreparedStatement pstmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(deletarSql);
 
@@ -132,15 +136,14 @@ public class RepositorioMesa implements IMesaDao {
 
 	@Override
 	public List<Mesa> listarTodos() {
+		Mesa m = null;
 		List<Mesa> lista = new ArrayList<>();
 		String listarTodosSql = "Select * FROM Mesa";
-		ResultSet result = null;
-		Statement stmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(listarTodosSql);
-			Mesa m = null;
+
 			while (result.next()) {
 
 				m = new Mesa();
@@ -172,18 +175,15 @@ public class RepositorioMesa implements IMesaDao {
 
 	@Override
 	public Mesa recuperarNumeroMesa(Integer numero) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
 
+		Mesa m = null;
+
+		String sqlRecuperarNumMesa = "SELECT * from Mesa where numero = ? ;";
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-
-			pstmt = conn.prepareStatement("SELECT * from Mesa where numero = ?");
+			pstmt = conn.prepareStatement(sqlRecuperarNumMesa);
 			pstmt.setInt(1, numero);
 
 			result = pstmt.executeQuery();
-
-			Mesa m = null;
 
 			if (result.next()) {
 
@@ -212,20 +212,20 @@ public class RepositorioMesa implements IMesaDao {
 	@Override
 	public void mudarDisponibilidade(Mesa mesa) {
 		String alterarSql = "UPDATE Mesa SET  disponibilidade = ? " + " WHERE id_mesa = ?";
-		PreparedStatement pstmt = null;
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(alterarSql);
-			if(mesa.getDisponibilidade() == 1) {
+			
+			if (mesa.getDisponibilidade() == 1) {
 				pstmt.setInt(1, 0);
 				pstmt.setInt(2, mesa.getId_mesa());
 
-			}else {
+			} else {
 				pstmt.setInt(1, 1);
 				pstmt.setInt(2, mesa.getId_mesa());
 			}
-			
+
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {

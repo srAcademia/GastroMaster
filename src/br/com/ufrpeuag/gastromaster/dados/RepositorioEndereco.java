@@ -13,12 +13,21 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 
 public class RepositorioEndereco implements IEnderecoDao {
 
+	private PreparedStatement pstmt;
+	private Connection conn;
+	private ResultSet result;
+	private Statement stmt;
+
+	public RepositorioEndereco() throws SQLException {
+		this.conn = ConfiguracoesBanco.getSingleton().getConnection();
+
+	}
+
 	@Override
 	public void inserir(Endereco end) {
-		PreparedStatement pstmt = null;
+		String inserirSql = "INSERT INTO Endereco (cidade, bairro, rua, numero, cep) VALUES(?,?,?,?,?)";
+
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String inserirSql = "INSERT INTO Endereco (cidade, bairro, rua, numero, cep) VALUES(?,?,?,?,?)";
 			pstmt = conn.prepareStatement(inserirSql);
 
 			pstmt.setString(1, end.getCidade());
@@ -43,15 +52,13 @@ public class RepositorioEndereco implements IEnderecoDao {
 
 	@Override
 	public Endereco recuperar(Integer codigo) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
-
+		Endereco e = null;
+		String sqlRecuperar = "SELECT * from Endereco where id_endereco = ?;";
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			pstmt = conn.prepareStatement("SELECT * from Endereco where id_endereco = ?;");
+			pstmt = conn.prepareStatement(sqlRecuperar);
 			pstmt.setInt(1, codigo);
 			result = pstmt.executeQuery();
-			Endereco e = null;
+
 			if (result.next()) {
 
 				e = new Endereco();
@@ -81,12 +88,10 @@ public class RepositorioEndereco implements IEnderecoDao {
 
 	@Override
 	public void alterar(Endereco end) {
-		PreparedStatement pstmt = null;
 		String alterarSql = "UPDATE Endereco SET " + "cidade = ? , " + "bairro = ?, " + "rua = ?," + "numero = ?,"
 				+ "cep = ?" + " WHERE id_endereco = ?;";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 			pstmt = conn.prepareStatement(alterarSql);
 
 			pstmt.setString(1, end.getCidade());
@@ -113,9 +118,7 @@ public class RepositorioEndereco implements IEnderecoDao {
 	@Override
 	public void deletar(Endereco end) {
 		String deletarSql = "DELETE FROM Endereco WHERE id_endereco = ?";
-		PreparedStatement pstmt = null;
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 
 			pstmt = conn.prepareStatement(deletarSql);
 
@@ -137,16 +140,15 @@ public class RepositorioEndereco implements IEnderecoDao {
 	@Override
 	public List<Endereco> listarTodos() {
 		List<Endereco> lista = new ArrayList<>();
+
+		Endereco e = null;
+
 		String listarTodosSql = "Select * FROM Endereco";
-		ResultSet result = null;
-		Statement stmt = null;
 		try {
 			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
 			stmt = conn.createStatement();
 
 			result = stmt.executeQuery(listarTodosSql);
-
-			Endereco e = null;
 
 			while (result.next()) {
 
@@ -164,8 +166,8 @@ public class RepositorioEndereco implements IEnderecoDao {
 			}
 			return lista;
 
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
 
 		} finally {
 
@@ -183,25 +185,30 @@ public class RepositorioEndereco implements IEnderecoDao {
 
 	@Override
 	public int recuperarUltimoID() {
-		Connection conn;
+		String recuperarUltimoIdSql = "SELECT *FROM Endereco WHERE id_endereco= (SELECT MAX(id_endereco) FROM Endereco);";
+
 		int id = 0;
 		try {
-			conn = ConfiguracoesBanco.getSingleton().getConnection();
-			String recuperarUltimoIdSql = "SELECT *FROM Endereco WHERE id_endereco= (SELECT MAX(id_endereco) FROM Endereco);";
-			PreparedStatement pstmt = conn.prepareStatement(recuperarUltimoIdSql);
-			ResultSet rs = pstmt.executeQuery();
+			pstmt = conn.prepareStatement(recuperarUltimoIdSql);
+			result = pstmt.executeQuery();
 
-			if (rs != null) {
-				if (rs.next()) {
-					id = (rs.getInt("id_endereco"));
+			if (result != null) {
+				if (result.next()) {
+					id = (result.getInt("id_endereco"));
 				}
 			}
-			rs.close();
-			pstmt.close();
 
 			return id;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
+		} finally {
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		}
 		return 0;
 	}

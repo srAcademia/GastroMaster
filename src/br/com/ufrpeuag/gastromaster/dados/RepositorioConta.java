@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,10 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
 public class RepositorioConta implements IContaDao {
 
-	private final Connection conn;
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet result;
+	private Statement stmt;
 
 	public RepositorioConta() throws SQLException {
 		conn = ConfiguracoesBanco.getSingleton().getConnection();
@@ -28,15 +33,18 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public void inserir(Conta conta) {
-		PreparedStatement pstmt = null;
+		String inserirSql = "INSERT INTO  Conta(pagamento , data, cod_pedido , cod_garcom , cod_mesa, valor) VALUES(?,?,?,?,?,?)";
+
 		try {
-			String inserirSql = "INSERT INTO  Conta(pagamento , data, cod_pedido , cod_garcom , cod_mesa, valor) VALUES(?,?,?,?,?,?)";
 			pstmt = this.conn.prepareStatement(inserirSql);
 
-			String data = "" + conta.getData();
+			// Data transformar para string
+			java.sql.Date date = java.sql.Date.valueOf(conta.getData());
+			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+			String dataFormatada = formatador.format(date);
 
 			pstmt.setInt(1, conta.getPagamento());
-			pstmt.setString(2, data);
+			pstmt.setString(2, dataFormatada);
 			pstmt.setInt(3, conta.getPedido().getId_pedido());
 			pstmt.setInt(4, conta.getGarcom().getId_garcom());
 			pstmt.setInt(5, conta.getMesa().getId_mesa());
@@ -64,8 +72,6 @@ public class RepositorioConta implements IContaDao {
 				+ "JOIN Endereco e on (g.cod_endereco=e.id_endereco)\r\n"
 				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n" + "WHERE id_conta = ?";
 
-		PreparedStatement pstmt = null;
-		ResultSet result = null; 
 		Conta c = null;
 		Mesa m = null;
 		Pedido pedido = null;
@@ -92,7 +98,9 @@ public class RepositorioConta implements IContaDao {
 				e = new Endereco();
 
 				data = result.getString("data");
-				LocalDate localDate = LocalDate.parse(data);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				LocalDate localDate = LocalDate.parse(data, formatter);
+
 				c.setId_conta(result.getInt("id_conta"));
 				c.setPagamento(result.getInt("pagamento"));
 				c.setData(localDate);
@@ -143,7 +151,7 @@ public class RepositorioConta implements IContaDao {
 
 				return c;
 			}
-			
+
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {
@@ -163,15 +171,18 @@ public class RepositorioConta implements IContaDao {
 	public void alterar(Conta conta) {
 		String alterarSql = "UPDATE Conta SET pagamento= ? , data= ? , " + "cod_pedido= ? , cod_garcom= ? , "
 				+ "cod_mesa= ?," + " valor= ?  WHERE id_conta = ?";
-		PreparedStatement pstmt = null;
 
 		try {
 
 			pstmt = this.conn.prepareStatement(alterarSql);
-			String data = "" + conta.getData();
+
+			// Data transformar para string
+			java.sql.Date date = java.sql.Date.valueOf(conta.getData());
+			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+			String dataFormatada = formatador.format(date);
 
 			pstmt.setInt(1, conta.getPagamento());
-			pstmt.setString(2, data);
+			pstmt.setString(2, dataFormatada);
 			pstmt.setInt(3, conta.getPedido().getId_pedido());
 			pstmt.setInt(4, conta.getGarcom().getId_garcom());
 			pstmt.setInt(5, conta.getMesa().getId_mesa());
@@ -195,7 +206,6 @@ public class RepositorioConta implements IContaDao {
 	@Override
 	public void deletar(Conta conta) {
 		String deletarSql = "DELETE FROM Conta WHERE id_conta = ?";
-		PreparedStatement pstmt = null;
 		try {
 
 			pstmt = this.conn.prepareStatement(deletarSql);
@@ -217,17 +227,6 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public List<Conta> listarTodos() {
-		List<Conta> lista = new ArrayList<>();
-		String listarTodosSql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
-				+ "JOIN Cardapio card on (p.cod_cardapio=card.id_cardapio)  \r\n"
-				+ "JOIN Produto prod on(p.cod_produto =Prod.id_produto) \r\n"
-				+ "JOIN Garcom g on (c.cod_garcom = g.id_garcom)\r\n"
-				+ "JOIN Endereco e on (g.cod_endereco=e.id_endereco)\r\n"
-				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n";
-
-		ResultSet result = null;
-		Statement stmt = null;
-
 		Conta c = null;
 		Mesa m = null;
 		Pedido pedido = null;
@@ -236,6 +235,16 @@ public class RepositorioConta implements IContaDao {
 		Cardapio card = null;
 		Endereco e = null;
 		String data;
+
+		List<Conta> lista = new ArrayList<>();
+
+		String listarTodosSql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
+				+ "JOIN Cardapio card on (p.cod_cardapio=card.id_cardapio)  \r\n"
+				+ "JOIN Produto prod on(p.cod_produto =Prod.id_produto) \r\n"
+				+ "JOIN Garcom g on (c.cod_garcom = g.id_garcom)\r\n"
+				+ "JOIN Endereco e on (g.cod_endereco=e.id_endereco)\r\n"
+				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n";
+
 		try {
 
 			stmt = this.conn.createStatement();
@@ -252,7 +261,9 @@ public class RepositorioConta implements IContaDao {
 				e = new Endereco();
 
 				data = result.getString("data");
-				LocalDate localDate = LocalDate.parse(data);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				LocalDate localDate = LocalDate.parse(data, formatter);
+
 				c.setId_conta(result.getInt("id_conta"));
 				c.setPagamento(result.getInt("pagamento"));
 				c.setData(localDate);
@@ -321,8 +332,6 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public double fecharConta(Conta conta) {
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
 		String sql = "SELECT *\r\n" + "FROM Conta\r\n" + "WHERE cod_mesa = ? ;";
 
 		double valor = 0;
@@ -355,16 +364,6 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public List<Conta> recuperarPorMesa(Integer codigo) {
-		List<Conta> lista = new ArrayList<>();
-		String sql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
-				+ "JOIN Cardapio card on (p.cod_cardapio=card.id_cardapio)  \r\n"
-				+ "JOIN Produto prod on(p.cod_produto =Prod.id_produto) \r\n"
-				+ "JOIN Garcom g on (c.cod_garcom = g.id_garcom)\r\n"
-				+ "JOIN Endereco e on (g.cod_endereco=e.id_endereco)\r\n"
-				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n" + "WHERE c.cod_mesa = ?";
-
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
 		Conta c = null;
 		Mesa m = null;
 		Pedido pedido = null;
@@ -373,6 +372,16 @@ public class RepositorioConta implements IContaDao {
 		Cardapio card = null;
 		Endereco e = null;
 		String data;
+
+		List<Conta> lista = new ArrayList<>();
+
+		String sql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
+				+ "JOIN Cardapio card on (p.cod_cardapio=card.id_cardapio)  \r\n"
+				+ "JOIN Produto prod on(p.cod_produto =Prod.id_produto) \r\n"
+				+ "JOIN Garcom g on (c.cod_garcom = g.id_garcom)\r\n"
+				+ "JOIN Endereco e on (g.cod_endereco=e.id_endereco)\r\n"
+				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n" + "WHERE c.cod_mesa = ?";
+
 		try {
 
 			pstmt = this.conn.prepareStatement(sql);
@@ -391,7 +400,9 @@ public class RepositorioConta implements IContaDao {
 				e = new Endereco();
 
 				data = result.getString("data");
-				LocalDate localDate = LocalDate.parse(data);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				LocalDate localDate = LocalDate.parse(data, formatter);
+
 				c.setId_conta(result.getInt("id_conta"));
 				c.setPagamento(result.getInt("pagamento"));
 				c.setData(localDate);
@@ -461,7 +472,6 @@ public class RepositorioConta implements IContaDao {
 	@Override
 	public void concluirPagamento(Conta conta) {
 		String alterarSql = "UPDATE Conta SET pagamento = ?  WHERE id_conta = ?";
-		PreparedStatement pstmt = null;
 
 		try {
 
@@ -487,7 +497,6 @@ public class RepositorioConta implements IContaDao {
 	@Override
 	public void deletarTodasContas(Conta conta) {
 		String deletarSql = "DELETE FROM Conta WHERE cod_mesa = ?";
-		PreparedStatement pstmt = null;
 		try {
 
 			pstmt = this.conn.prepareStatement(deletarSql);

@@ -1,5 +1,6 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class GerenteValidacao {
 	Endereco end = new Endereco();
 	int id;
 	
-	public GerenteValidacao() {
+	public GerenteValidacao() throws SQLException {
 		repGerente = new RepositorioGerente();
 		repEndereco = new RepositorioEndereco();
 	}
