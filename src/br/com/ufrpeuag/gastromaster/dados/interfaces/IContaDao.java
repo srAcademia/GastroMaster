@@ -8,7 +8,6 @@ public interface IContaDao extends IDao<Conta> {
 	
 	public double fecharConta(Conta conta);
 	public List<Conta> recuperarPorMesa(Integer codigo);
-	public void concluirPagamento(Conta conta);
 	public void deletarTodasContas(Conta conta);
 
 }

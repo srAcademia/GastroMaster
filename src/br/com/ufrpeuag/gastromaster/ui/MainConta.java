@@ -18,7 +18,7 @@ public class MainConta {
 	public void gerenciarCadastroConta(Garcom garcom, Mesa mesa, Pedido pedido) throws SQLException {
 		try {	
 		   	LocalDate localDate = LocalDate.now();
-		   	Conta conta = new Conta(0, localDate, pedido, garcom, mesa, pedido.getValor());
+		   	Conta conta = new Conta(localDate, pedido, garcom, mesa, pedido.getValor());
 		    Fachada.getSingleton().contaCadastroContaValidacao(conta);
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");

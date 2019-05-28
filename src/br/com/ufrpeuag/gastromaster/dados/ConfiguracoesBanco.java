@@ -86,7 +86,6 @@ public class ConfiguracoesBanco {
 
 		String conta ="CREATE TABLE IF NOT EXISTS Conta("
 				+ "id_conta INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ "pagamento INTEGER,"
 				+ "data TEXT,"
 				+ "cod_pedido INTEGER,"
 				+ "cod_garcom INTEGER,"
