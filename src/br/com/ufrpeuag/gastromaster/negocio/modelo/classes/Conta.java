@@ -6,11 +6,8 @@ import java.time.LocalDate;
 
 public class Conta {
 
-	public static final int NAO_PAGO = 0;
-	public static final int PAGO = 1;
 
 	private int id_conta;
-	private int pagamento;
 	private LocalDate data;
 	private Pedido pedido;
 	private Garcom garcom;
@@ -21,9 +18,8 @@ public class Conta {
 
 	}
 	
-	public Conta(int pagamento, LocalDate data, Pedido pedido, Garcom garcom, Mesa mesa, double valor) {
+	public Conta(LocalDate data, Pedido pedido, Garcom garcom, Mesa mesa, double valor) {
 		super();
-		this.pagamento = pagamento;
 		this.data = data;
 		this.pedido = pedido;
 		this.garcom = garcom;
@@ -38,14 +34,6 @@ public class Conta {
 
 	public void setId_conta(int id_conta) {
 		this.id_conta = id_conta;
-	}
-
-	public int getPagamento() {
-		return pagamento;
-	}
-
-	public void setPagamento(int pagamento) {
-		this.pagamento = pagamento;
 	}
 
 	public LocalDate getData() {
@@ -95,7 +83,7 @@ public class Conta {
 	    SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 	    String dataFormatada = formatador.format(date);
 	  
-		return "Conta [id_conta=" + id_conta + ", pagamento=" + pagamento + ", data=" + dataFormatada + ", pedido=" + pedido
+		return "Conta [id_conta=" + id_conta  + ", data=" + dataFormatada + ", pedido=" + pedido
 				+ ", garcom=" + garcom + ", mesa=" + mesa + ", valor=" + valor + "]\n";
 	}
 	

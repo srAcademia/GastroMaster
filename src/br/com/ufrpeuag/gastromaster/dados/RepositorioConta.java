@@ -33,7 +33,7 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public void inserir(Conta conta) {
-		String inserirSql = "INSERT INTO  Conta(pagamento , data, cod_pedido , cod_garcom , cod_mesa, valor) VALUES(?,?,?,?,?,?)";
+		String inserirSql = "INSERT INTO  Conta(pagamento , data, cod_pedido , cod_garcom , cod_mesa, valor) VALUES(?,?,?,?,?)";
 
 		try {
 			pstmt = this.conn.prepareStatement(inserirSql);
@@ -43,12 +43,12 @@ public class RepositorioConta implements IContaDao {
 			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 			String dataFormatada = formatador.format(date);
 
-			pstmt.setInt(1, conta.getPagamento());
-			pstmt.setString(2, dataFormatada);
-			pstmt.setInt(3, conta.getPedido().getId_pedido());
-			pstmt.setInt(4, conta.getGarcom().getId_garcom());
-			pstmt.setInt(5, conta.getMesa().getId_mesa());
-			pstmt.setDouble(6, conta.getValor());
+			
+			pstmt.setString(1, dataFormatada);
+			pstmt.setInt(2, conta.getPedido().getId_pedido());
+			pstmt.setInt(3, conta.getGarcom().getId_garcom());
+			pstmt.setInt(4, conta.getMesa().getId_mesa());
+			pstmt.setDouble(5, conta.getValor());
 			pstmt.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -102,7 +102,6 @@ public class RepositorioConta implements IContaDao {
 				LocalDate localDate = LocalDate.parse(data, formatter);
 
 				c.setId_conta(result.getInt("id_conta"));
-				c.setPagamento(result.getInt("pagamento"));
 				c.setData(localDate);
 
 				// Pedido
@@ -181,13 +180,13 @@ public class RepositorioConta implements IContaDao {
 			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 			String dataFormatada = formatador.format(date);
 
-			pstmt.setInt(1, conta.getPagamento());
-			pstmt.setString(2, dataFormatada);
-			pstmt.setInt(3, conta.getPedido().getId_pedido());
-			pstmt.setInt(4, conta.getGarcom().getId_garcom());
-			pstmt.setInt(5, conta.getMesa().getId_mesa());
-			pstmt.setDouble(6, conta.getValor());
-			pstmt.setDouble(7, conta.getId_conta());
+		
+			pstmt.setString(1, dataFormatada);
+			pstmt.setInt(2, conta.getPedido().getId_pedido());
+			pstmt.setInt(3, conta.getGarcom().getId_garcom());
+			pstmt.setInt(4, conta.getMesa().getId_mesa());
+			pstmt.setDouble(5, conta.getValor());
+			pstmt.setDouble(6, conta.getId_conta());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -265,7 +264,6 @@ public class RepositorioConta implements IContaDao {
 				LocalDate localDate = LocalDate.parse(data, formatter);
 
 				c.setId_conta(result.getInt("id_conta"));
-				c.setPagamento(result.getInt("pagamento"));
 				c.setData(localDate);
 
 				// Pedido
@@ -404,7 +402,6 @@ public class RepositorioConta implements IContaDao {
 				LocalDate localDate = LocalDate.parse(data, formatter);
 
 				c.setId_conta(result.getInt("id_conta"));
-				c.setPagamento(result.getInt("pagamento"));
 				c.setData(localDate);
 
 				// Pedido
@@ -467,31 +464,6 @@ public class RepositorioConta implements IContaDao {
 
 		}
 		return null;
-	}
-
-	@Override
-	public void concluirPagamento(Conta conta) {
-		String alterarSql = "UPDATE Conta SET pagamento = ?  WHERE id_conta = ?";
-
-		try {
-
-			pstmt = this.conn.prepareStatement(alterarSql);
-
-			pstmt.setInt(1, 1);
-			pstmt.setInt(2, conta.getId_conta());
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-
-			try {
-				pstmt.close();
-			} catch (SQLException ex) {
-				System.out.println(ex.getMessage());
-			}
-
-		}
 	}
 
 	@Override
