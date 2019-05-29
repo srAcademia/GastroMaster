@@ -55,7 +55,7 @@ public class PedidoValidacao {
 	}
 	
 	public Pedido pedidoRecuperarValidacao(Integer codigo)throws IDRecuperacaoItemInvalidoException {
-		if(repPedido.recuperar(codigo) == null) {
+		if(repPedido.recuperar(codigo).equals(null)) {
 			throw new IDRecuperacaoItemInvalidoException();
 		}
 		return repPedido.recuperar(codigo);

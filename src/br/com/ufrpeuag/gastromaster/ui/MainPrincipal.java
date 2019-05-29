@@ -102,7 +102,7 @@ public class MainPrincipal {
 				System.out.println("Digite seu login:");
 				//mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "13189229414", "30/01/2001", "87 9953-3012",
 				//"kelwinjonas@gmail.com", 9999999, "12345", "");
-				gerente = mainGerente.gerenciarVerificarGerente("236ff8");
+				gerente = mainGerente.gerenciarVerificarGerente("260c75");
 				if (gerente != null) {
 					System.out.println("Digite sua senha:");
 					gerente = mainGerente.gerenciarLogarGerente("12345");
@@ -218,22 +218,21 @@ public class MainPrincipal {
 						break;
 					case 4:
 						mesa = mainMesa.gerenciarGerenciamentoMesa(1);
-						garcom = mainGarcom.gerenciarVerificarGarcom("1164f4");
+						garcom = mainGarcom.gerenciarVerificarGarcom("134bdd");
 						if (mesa != null && garcom != null) {
 							do {
 								System.out.println("Digite 1 para fazer um pedido à mesa.");
 								System.out.println("Digite 2 para deletar um pedido da mesa.");
-								System.out.println("Digite 3 para alterar um pedido da mesa.");
-								System.out.println("Digite 4 para listar todos os pedidos da mesa.");
-								System.out.println("Digite 5 para gerar a conta da mesa.");
-								System.out.println("Digite 6 para realizar o pagamento dos pedidos efetuados à mesa.");
-								System.out.println("Digite 7 para mudar a disponibilidade da mesa.");
+								System.out.println("Digite 3 para listar todos os pedidos da mesa.");
+								System.out.println("Digite 4 para gerar a conta da mesa.");
+								System.out.println("Digite 5 para realizar o pagamento dos pedidos efetuados à mesa.");
+								System.out.println("Digite 6 para mudar a disponibilidade da mesa.");
 								System.out.println("Digite 0 para sair da mesa.");
 								opcao22 = scan.nextInt();
 
 								switch (opcao22) {
 								case 1:
-									int id = mainPedido.gerenciarCadastroPedido("Camarão", "Coca-cola 2,5 litros",
+									Integer id = mainPedido.gerenciarCadastroPedido("Camarão", "Coca-cola 2,5 litros",
 											mesa);
 									if (id != 0) {
 										pedido = mainPedido.gerenciarRecuperarPedido((Integer) id);
@@ -241,23 +240,21 @@ public class MainPrincipal {
 									}
 									break;
 								case 2:
-									int id_cardapio = mainCardapio.gerenciarRecuperarIDCardapio("Camarão");
-									int id_produto = mainProduto.gerenciarRecuperarIDProduto("Coca-cola 2,5 litros");
+									Integer id_cardapio = mainCardapio.gerenciarRecuperarIDCardapio("Camarão");
+									Integer id_produto = mainProduto.gerenciarRecuperarIDProduto("Coca-cola 2,5 litros");
 									pedido = mainPedido.gerencairRecuperarCodigoPedido(id_cardapio, id_produto,
 											(Integer) mesa.getId_mesa());
 									if (pedido != null) {
-										int id_conta = pedido.getId_pedido();
+										Integer id_conta = pedido.getId_pedido();
+										mainProduto.gerenciarAdcionarQuantidadeProduto(pedido.getProduto().getId_produto(), 1);
 										mainConta.gerenciarRemocaoConta(id_conta);
 										mainPedido.gerenciarRemocaoPedido(pedido);
 									}
 									break;
 								case 3:
-									mainPedido.gerenciarAlteracaoPedido(3, "Camarão", "");
-									break;
-								case 4:
 									mainPedido.gerenciarListarPedido();
 									break;
-								case 5:
+								case 4:
 									List<Conta> contas = new ArrayList<>();
 									contas = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
 									if (contas != null) {
@@ -265,7 +262,7 @@ public class MainPrincipal {
 												"Conta da mesa: " + mainConta.gerenciarGerarConta(contas.get(0)));
 									}
 									break;
-								case 6:
+								case 5:
 									List<Conta> contas1 = new ArrayList<>();
 									contas1 = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
 									if (contas1 != null) {
@@ -275,7 +272,7 @@ public class MainPrincipal {
 										mainMesa.gerenciarMudarDisponibilidadeMesa(mesa.getNumero());
 									}
 									break;
-								case 7:
+								case 6:
 									mainMesa.gerenciarMudarDisponibilidadeMesa(mesa.getNumero());
 									break;
 								case 0:
@@ -319,7 +316,7 @@ public class MainPrincipal {
 						mainProduto.gerenciarRemocaoProduto("Coca-cola 2 litros");
 						break;
 					case 4:
-						mainProduto.gerenciarRecuperarProduto(3);
+						mainProduto.gerenciarRecuperarProduto(1);
 						break;
 					case 5:
 						mainProduto.gerenciarAdcionarQuantidadeProduto(3, 5);
@@ -369,7 +366,15 @@ public class MainPrincipal {
 				} while (opcao4 != 0);
 				break;
 			case 5:
-				mainGerenciamento.gerenciarListarGerenciamento();
+				System.out.println("Digite seu login:");
+				gerente = mainGerente.gerenciarVerificarGerente("260c75");
+				if (gerente != null) {
+					System.out.println("Digite sua senha:");
+					gerente = mainGerente.gerenciarLogarGerente("12345");
+					if (gerente != null) {
+						mainGerenciamento.gerenciarListarGerenciamento();
+					}
+				}
 				break;
 			case 0:
 				System.out.println("Encerrando o sistema...");

@@ -38,6 +38,7 @@ public class MainGerente {
 			gerente.setIdentificador(gerente.gerarIdentificador());
 			Fachada.getSingleton().gerenteCadastroValidacao(gerente);
 			System.out.println("Gerente cadastrado.");
+			System.out.println("ID gerado do gerente: "+gerente.getIdentificador());
 		}catch(BairroInvalidoException | CEPInvalidoException | CidadeInvalidaException | NumeroInvalidoException | RuaInvalidaException | CPFInvalidoException | DataNascimentoInvalidaException | NomeInvalidoException | GerenteExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {

@@ -330,7 +330,7 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public double fecharConta(Conta conta) {
-		String sql = "SELECT *\r\n" + "FROM Conta\r\n" + "WHERE cod_mesa = ? ;";
+		String sql = "SELECT * FROM Conta WHERE cod_mesa = ?;";
 
 		double valor = 0;
 		try {

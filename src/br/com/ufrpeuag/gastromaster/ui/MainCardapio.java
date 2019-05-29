@@ -59,6 +59,7 @@ public class MainCardapio {
 		try {
 			Cardapio cardapio = new Cardapio();
 			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(codigo);
+			System.out.println(cardapio);
 		}catch(IDRecuperacaoItemInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {

@@ -34,7 +34,8 @@ public class MainGarcom {
 			garcom.getEndereco().setId_endereco(id);
 			garcom.setIdentificador(garcom.gerarIdentificador());
 			Fachada.getSingleton().garcomCadastroValidacao(garcom);
-			System.out.println("Garçom cadastrado.");
+			System.out.println("Garï¿½om cadastrado.");
+			System.out.println("ID gerado do garÃ§om: "+garcom.getIdentificador());
 		}catch(BairroInvalidoException | CEPInvalidoException | CidadeInvalidaException | NumeroInvalidoException | RuaInvalidaException | CPFInvalidoException | DataNascimentoInvalidaException | NomeInvalidoException | GarcomExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -64,7 +65,7 @@ public class MainGarcom {
 			end = Fachada.getSingleton().enderecoRecuperarValidacao(garcom.getEndereco().getId_endereco());
 			Fachada.getSingleton().garcomRemocaoValidacao(garcom);
 			Fachada.getSingleton().enderecoRemocaoValidacao(end);
-			System.out.println("Garçom removido.");
+			System.out.println("Garï¿½om removido.");
 		}catch(GarcomInexistenteException | EnderecoInexistenteException | CPFInvalidoException | RecuperarCPFException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -82,7 +83,7 @@ public class MainGarcom {
 			end = Fachada.getSingleton().enderecoRecuperarValidacao(garcom.getEndereco().getId_endereco());		
 			Fachada.getSingleton().enderecoAlteracaoValidacao(end, cidade, bairro, rua, numero, cep);
 			Fachada.getSingleton().garcomAlteracaoValidacao(garcom, nome, cpf, novoCPF, dataNasc, telefone, email, salario);
-			System.out.println("Garçom alterado.");
+			System.out.println("Garï¿½om alterado.");
 		}catch(CPFInvalidoException | RecuperarCPFException | DataNascimentoInvalidaException | GarcomExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
