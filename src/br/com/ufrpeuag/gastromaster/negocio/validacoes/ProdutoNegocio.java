@@ -1,7 +1,6 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioProduto;
@@ -16,113 +15,119 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeInvalidaException
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 
-public class ProdutoValidacao {
+public class ProdutoNegocio {
 	private IProdutoDao repProduto;
-	
-	public ProdutoValidacao() throws SQLException {
+
+	public ProdutoNegocio() throws SQLException {
 		repProduto = new RepositorioProduto();
 	}
-	
-	public void produtoCadastroValidacao(Produto produto) throws PrecoInvalidoException, ProdutoExistenteException, QuantidadeProdutoInvalidaException, NomeInvalidoException {
-		if(repProduto.retornarProduto(produto.getNome()) != null) {
+
+	public void cadastrarProduto(Produto produto) throws PrecoInvalidoException, ProdutoExistenteException,
+			QuantidadeProdutoInvalidaException, NomeInvalidoException {
+
+		if (repProduto.retornarProduto(produto.getNome()) != null) {
 			throw new ProdutoExistenteException();
 		}
-		if(produto.getNome() == null || produto.getNome().isEmpty()) {
+		if (produto.getNome() == null || produto.getNome().isEmpty()) {
 			throw new NomeInvalidoException();
 		}
-		if(produto.getQuantidade() < 0) {
+		if (produto.getQuantidade() < 0) {
 			throw new QuantidadeProdutoInvalidaException();
 		}
-		if(produto.getPreco() <= 0) {
+		if (produto.getPreco() <= 0) {
 			throw new PrecoInvalidoException();
 		}
 		repProduto.inserir(produto);
 	}
-	
-	public void produtoRemocaoValidacao(Produto produto) throws ProdutoInexistenteException{
-		if(repProduto.retornarProduto(produto.getNome()) == null) {
+
+	public void deletarProduto(Produto produto) throws ProdutoInexistenteException {
+
+		if (repProduto.retornarProduto(produto.getNome()) == null) {
 			throw new ProdutoInexistenteException();
 		}
 		repProduto.deletar(produto);
 	}
-	
-	public void produtoAlteracaoValidacao(Produto produto, String nome, String novoNome, int quantidade, double preco)throws ProdutoExistenteException{
-		if(novoNome.isEmpty() == false) {
-			if(repProduto.retornarProduto(novoNome) != null) {
+
+	public void alterarProduto(Produto produto, String nome, String novoNome, int quantidade, double preco)
+			throws ProdutoExistenteException {
+		
+		if (novoNome.isEmpty() == false) {
+			if (repProduto.retornarProduto(novoNome) != null) {
 				throw new ProdutoExistenteException();
 			}
 			produto.setNome(novoNome);
 		}
-		if(quantidade > 0) {
+		if (quantidade > 0) {
 			produto.setQuantidade(quantidade);
 		}
-		if(preco > 0) {
+		if (preco > 0) {
 			produto.setPreco(preco);
 		}
 		repProduto.alterar(produto);
 	}
-	
-	public Produto produtoRetornarProdutoValidacao(String nome)throws ProdutoInexistenteException, NomeInvalidoException{
-		if(nome.equals(null)) {
+
+	public Produto recuperarProdutoNome(String nome) throws ProdutoInexistenteException, NomeInvalidoException {
+
+		if (nome.equals(null)) {
 			throw new NomeInvalidoException();
 		}
-		
-		List<Produto> produto = new ArrayList<>();
-		produto = this.repProduto.listarTodos();
-		for (int i = 0; i < produto.size(); i++) {
-			if(produto.get(i).getNome().equals(nome)) {
-				return repProduto.retornarProduto(nome);
-			}
+		if (repProduto.retornarProduto(nome) == null) {
+			throw new ProdutoInexistenteException();
 		}
-		throw new ProdutoInexistenteException();
+		return repProduto.retornarProduto(nome);
 	}
-	
-	public Produto produtoRecuperarValidacao(Integer codigo) throws IDRecuperacaoItemInvalidoException{
-		List<Produto> produto = new ArrayList<>();
-		produto = this.repProduto.listarTodos();
-		for (int i = 0; i < produto.size(); i++) {
-			if(produto.get(i).getId_produto() == (codigo)) {
-				return repProduto.recuperar(codigo);
-			}
+
+	public Produto recuperarProdutoPorID(Integer codigo) throws IDRecuperacaoItemInvalidoException {
+
+		if (repProduto.recuperar(codigo) == null) {
+			throw new IDRecuperacaoItemInvalidoException();
 		}
-		throw new IDRecuperacaoItemInvalidoException();
+		return repProduto.recuperar(codigo);
 	}
-	
-	public int produtoRetornarQuantidadeProdutoValidacao(Produto produto) throws ProdutoInexistenteException{
-		if(repProduto.retornarProduto(produto.getNome()) == null) {
+
+	public int recuperarQuantidadeProduto(Produto produto) throws ProdutoInexistenteException {
+
+		if (repProduto.retornarProduto(produto.getNome()) == null) {
 			throw new ProdutoInexistenteException();
 		}
 		return repProduto.retornarQuantidadeProduto(produto);
 	}
-	
-	public Integer produtoRetornarIDValidacao(String nome) throws NomeInvalidoException, ProdutoInexistenteException{
-		if(nome== null || nome.isEmpty()) {
+
+	public Integer recuperarIDPeloNome(String nome) throws NomeInvalidoException, ProdutoInexistenteException {
+
+		if (nome == null || nome.isEmpty()) {
 			throw new NomeInvalidoException();
 		}
-		int id = repProduto.retornarID(nome);
-		if(id == 0) {
+
+		if ((int) repProduto.retornarID(nome) == 0) {
 			throw new ProdutoInexistenteException();
 		}
-		return id;
+		return repProduto.retornarID(nome);
 	}
-	
-	public void produtoRemoverQuantProdutoValidacao(Produto produto, Integer quantidade) throws QuantidadeInvalidaException, QuantidadeProdutoInvalidaException {
-		if(produto.getQuantidade() < quantidade) {
+
+	public void removerQuantidadeProduto(Produto produto, Integer quantidade)
+			throws QuantidadeInvalidaException, QuantidadeProdutoInvalidaException {
+
+		if (produto.getQuantidade() < quantidade) {
 			throw new QuantidadeInvalidaException();
 		}
-		if(quantidade.equals(null) || quantidade < 0) {
+		if (quantidade.equals(null) || quantidade < 0) {
 			throw new QuantidadeProdutoInvalidaException();
 		}
 		repProduto.removerQuantProduto(produto, quantidade);
 	}
-	public void produtoAdicionarQuantProdutoValidacao(Produto produto, Integer quantidade) throws QuantidadeProdutoInvalidaException {
-		if(quantidade.equals(null) || quantidade < 0) {
+
+	public void adicionarQuantidadeProduto(Produto produto, Integer quantidade)
+			throws QuantidadeProdutoInvalidaException {
+
+		if (quantidade.equals(null) || quantidade < 0) {
 			throw new QuantidadeProdutoInvalidaException();
 		}
 		repProduto.adicionarQuantProduto(produto, quantidade);
 	}
-	
-	public List<Produto> produtoListarTodosValidacao() throws ListarTodosInvalidoException{
+
+	public List<Produto> listarTodosProdutos() throws ListarTodosInvalidoException {
+
 		if (repProduto.listarTodos() == null || repProduto.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}

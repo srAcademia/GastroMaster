@@ -2,7 +2,6 @@ package br.com.ufrpeuag.gastromaster.negocio.fachada;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
@@ -10,7 +9,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ExceptionRecuperarUltimoID;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
@@ -42,293 +41,302 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SenhaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.CardapioValidacao;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.ContaValidacao;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.EnderecoValidacao;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.GarcomValidacao;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenciamentoValidacao;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenteValidacao;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.MesaValidacao;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.PedidoValidacao;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.ProdutoValidacao;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.CardapioNegocio;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.ContaNegocio;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.GarcomNegocio;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenciamentoNegocio;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenteNegocio;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.MesaNegocio;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.PedidoNegocio;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.ProdutoNegocio;
 
 public class Fachada {
+
 	private static Fachada singleton = null;
-	private EnderecoValidacao endereco;
-	private GarcomValidacao garcom;
-	private GerenteValidacao gerente;
-	private ProdutoValidacao produto;
-	private CardapioValidacao cardapio;
-	private PedidoValidacao pedido;
-	private MesaValidacao mesa;
-	private ContaValidacao conta;
-	private GerenciamentoValidacao gerenciamento;
-	
+	private GarcomNegocio garcom;
+	private GerenteNegocio gerente;
+	private ProdutoNegocio produto;
+	private CardapioNegocio cardapio;
+	private PedidoNegocio pedido;
+	private MesaNegocio mesa;
+	private ContaNegocio conta;
+	private GerenciamentoNegocio gerenciamento;
+
 	public static Fachada getSingleton() throws SQLException {
 		if (singleton == null) {
 			singleton = new Fachada();
 		}
 		return singleton;
 	}
-	
-	private Fachada () throws SQLException {
-		endereco = new EnderecoValidacao();
-		garcom = new GarcomValidacao();
-		gerente = new GerenteValidacao();
-		produto = new ProdutoValidacao();
-		cardapio = new CardapioValidacao();
-		pedido = new PedidoValidacao();
-		mesa = new MesaValidacao();
-		conta = new ContaValidacao();
-		gerenciamento = new GerenciamentoValidacao();
+
+	private Fachada() throws SQLException {
+		garcom = new GarcomNegocio();
+		gerente = new GerenteNegocio();
+		produto = new ProdutoNegocio();
+		cardapio = new CardapioNegocio();
+		pedido = new PedidoNegocio();
+		mesa = new MesaNegocio();
+		conta = new ContaNegocio();
+		gerenciamento = new GerenciamentoNegocio();
 	}
-	
-	public void enderecoCadastroValidacao(Endereco endereco) throws BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException{
-		this.endereco.enderecoCadastroValidacao(endereco);
+
+	// Garçom
+
+	public void cadastrarGarcom(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException,
+			NomeInvalidoException, GarcomExistenteException, SalarioInvalidoException, RuaInvalidaException,
+			NumeroInvalidoException, CidadeInvalidaException, CEPInvalidoException, BairroInvalidoException {
+		this.garcom.cadastrarGarcom(garcom);
 	}
-	
-	public void enderecoRemocaoValidacao(Endereco endereco) throws EnderecoInexistenteException{
-		this.endereco.enderecoRemocaoValidacao(endereco);
+
+	public void deletarGarcom(Garcom garcom) throws GarcomInexistenteException {
+		this.garcom.deletarGarcom(garcom);
 	}
-	
-	public void enderecoAlteracaoValidacao(Endereco endereco, String cidade, String bairro, String rua, int numero, String cep){
-		this.endereco.enderecoAlteracaoValidacao(endereco, cidade, bairro, rua, numero, cep);
+
+	public Garcom recuperarGarcomID(Integer codigo) throws IDRecuperacaoInvalidaException {
+		return this.garcom.recuperarGarcomID(codigo);
 	}
-	
-	public Endereco enderecoRecuperarValidacao(Integer codigo) throws EnderecoInexistenteException{
-		return this.endereco.enderecoRecuperarValidacao(codigo);
+
+	public List<Garcom> ListarTodosGarcons() throws ListarTodosInvalidoException {
+		return this.garcom.listarTodosGarcons();
 	}
-	
-	public int enderecoRecuperarUltimoIDValidacao(){
-		return this.endereco.enderecoRecuperarUltimoIDValidacao();
+
+	public Garcom recuperarGarcomPorCPF(String CPF) throws CPFInvalidoException, RecuperarCPFException {
+		return this.garcom.recuperarPorCpfGarcom(CPF);
 	}
-	
-	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, GarcomExistenteException, SalarioInvalidoException{
-		this.garcom.garcomCadastroValidacao(garcom);
+
+	public Garcom verificarIdentificadorGarcom(String identificador) throws LoginInvalidoException {
+		return this.garcom.verificarIndetificadorGarcom(identificador);
 	}
-	
-	public void garcomRemocaoValidacao(Garcom garcom) throws GarcomInexistenteException{
-		this.garcom.garcomRemocaoValidacao(garcom);
+
+	public void alterarGarcom(Garcom garcom) throws CPFInvalidoException, RecuperarCPFException,
+			DataNascimentoInvalidaException, GarcomExistenteException {
+		this.garcom.alterarGarcom(garcom);
 	}
-	
-	public void garcomAlteracaoValidacao(Garcom garcom, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario) throws CPFInvalidoException, RecuperarCPFException, DataNascimentoInvalidaException, GarcomExistenteException {
-		this.garcom.garcomAlteracaoValidacao(garcom, nome, cpf, novoCPF, dataNasc, telefone, email, salario);
+
+	// Gerente
+
+	public void cadastrarGerente(Gerente gerente)
+			throws CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException,
+			GerenteExistenteException, SalarioInvalidoException, SenhaInvalidaException, BairroInvalidoException,
+			CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException {
+		this.gerente.cadastrarGerente(gerente);
 	}
-	
-	public Garcom garcomRecuperarValidacao(Integer codigo) throws IDRecuperacaoInvalidaException{
-		return this.garcom.garcomRecuperarValidacao(codigo);
+
+	public void deletarGerente(Gerente gerente) throws GerenteInexistenteException {
+		this.gerente.deletarGerente(gerente);
 	}
-	
-	public List<Garcom> garcomListarTodosValidacao() throws ListarTodosInvalidoException{
-		return this.garcom.garcomListarTodosValidacao();
+
+	public void alterarGerente(Gerente gerente)
+			throws CPFInvalidoException, DataNascimentoInvalidaException, GerenteExistenteException {
+		this.gerente.alterarGerente(gerente);
 	}
-	
-	public Garcom garcomRecuperarCPFValidacao(String CPF) throws CPFInvalidoException, RecuperarCPFException{
-		return this.garcom.garcomRecuperarCPFValidacao(CPF);
+
+	public Gerente recuperarGerenteID(Integer codigo) throws IDRecuperacaoInvalidaException {
+		return this.gerente.recuperarGerenteID(codigo);
 	}
-	
-	public Garcom garcomVerificarValidacao(String identificador) throws LoginInvalidoException {
-		return this.garcom.garcomVerificarValidacao(identificador);
+
+	public Gerente recuperarCpfPorGerente(String CPF) throws CPFInvalidoException, RecuperarCPFException {
+		return this.gerente.recuperarCpfPorGerente(CPF);
 	}
-	
-	public void gerenteCadastroValidacao(Gerente gerente) throws CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, GerenteExistenteException, SalarioInvalidoException{
-		this.gerente.gerenteCadastroValidacao(gerente);
+
+	public List<Gerente> listarTodosGerentes() throws ListarTodosInvalidoException {
+		return this.gerente.listarTodosGerentes();
 	}
-	
-	public void gerenteRemocaoValidacao(Gerente gerente) throws GerenteInexistenteException{
-		this.gerente.gerenteRemocaoValidacao(gerente);
+
+	public Gerente verificarIdentificadorGerente(String identificador) throws LoginInvalidoException {
+		return this.gerente.verificarIdentificadorGerente(identificador);
 	}
-	
-	public void gerenteAlteracaoValidacao(Gerente gerente, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha) throws CPFInvalidoException, DataNascimentoInvalidaException, GerenteExistenteException{
-		this.gerente.gerenteAlteracaoValidacao(gerente, nome, cpf, novoCPF, dataNasc, telefone, email, salario, senha);
+
+	public Gerente logarGerente(String senha) throws SenhaInvalidaException {
+		return this.gerente.logarGerente(senha);
 	}
-	
-	public Gerente gerenteRecuperarValidacao(Integer codigo) throws IDRecuperacaoInvalidaException{
-		return this.gerente.gerenteRecuperarValidacao(codigo);
+
+	// Mesa
+
+	public void cadastrarMesa(Mesa mesa)
+			throws MesaCadastradaException, NumeroInvalidoException, MesaDisponibilidadeInvalidaException {
+		this.mesa.cadastrarMesa(mesa);
 	}
-	
-	public Gerente gerenteRecuperarCPFValidacao(String CPF) throws CPFInvalidoException, RecuperarCPFException{
-		return this.gerente.gerenteRecuperarCPFValidacao(CPF);
+
+	public void deletarMesa(Mesa mesa) throws MesaInexistenteException {
+		this.mesa.deletarMesa(mesa);
 	}
-	
-	public List<Gerente> gerenteListarTodosValidacao() throws ListarTodosInvalidoException{
-		return this.gerente.gerenteListarTodosValidacao();
+
+	public void alterarMesa(Mesa mesa, int novoNumero) throws MesaCadastradaException {
+		this.mesa.alterarMesa(mesa, novoNumero);
 	}
-	
-	public Gerente gerenteVerificarValidacao(String identificador) throws LoginInvalidoException {
-		return this.gerente.gerenteVerificarValidacao(identificador);
+
+	public Mesa recuperarMesaID(Integer codigo) throws IDRecuperarMesaException {
+		return this.mesa.recuperarMesaID(codigo);
 	}
-	
-	public Gerente gerenteLogarValidacao(String senha) throws SenhaInvalidaException {
-		return this.gerente.gerenteLogarValidacao(senha);
+
+	public Mesa recuperarMesaPorNumero(Integer numero) throws MesaInexistenteException {
+		return this.mesa.recuperarMesaPorNumero(numero);
 	}
-	
-	public void produtoCadastroValidacao(Produto produto) throws PrecoInvalidoException, ProdutoExistenteException, QuantidadeProdutoInvalidaException, NomeInvalidoException {
-		this.produto.produtoCadastroValidacao(produto);
+
+	public void mudarDisponibilidadeMesa(Mesa mesa) throws MesaInexistenteException {
+		this.mesa.mudarDisponibilidadeMesa(mesa);
 	}
-	
-	public void produtoRemocaoValidacao(Produto produto) throws ProdutoInexistenteException{
-		this.produto.produtoRemocaoValidacao(produto);
+
+	public List<Mesa> listarTodasMesas() throws ListarTodosInvalidoException {
+		return this.mesa.listarTodasMesas();
 	}
-	
-	public void produtoAlteracaoValidacao(Produto produto, String nome, String novoNome, int quantidade, double preco)throws ProdutoExistenteException{
-		this.produto.produtoAlteracaoValidacao(produto, nome, novoNome, quantidade, preco);
+
+	// Produto
+
+	public void cadastrarProduto(Produto produto) throws PrecoInvalidoException, ProdutoExistenteException,
+			QuantidadeProdutoInvalidaException, NomeInvalidoException {
+		this.produto.cadastrarProduto(produto);
 	}
-	
-	public Produto produtoRetornarProdutoValidacao(String nome) throws ProdutoInexistenteException, NomeInvalidoException {
-		return this.produto.produtoRetornarProdutoValidacao(nome);
+
+	public void deletarProduto(Produto produto) throws ProdutoInexistenteException {
+		this.produto.deletarProduto(produto);
 	}
-	
-	public Produto produtoRecuperarValidacao(Integer codigo) throws IDRecuperacaoItemInvalidoException{
-		return this.produto.produtoRecuperarValidacao(codigo);
+
+	public void alterarProduto(Produto produto, String nome, String novoNome, int quantidade, double preco)
+			throws ProdutoExistenteException {
+		this.produto.alterarProduto(produto, nome, novoNome, quantidade, preco);
 	}
-	
-	public int produtoRetornarQuantidadeProdutoValidacao(Produto produto) throws ProdutoInexistenteException{
-		return this.produto.produtoRetornarQuantidadeProdutoValidacao(produto);
+
+	public Produto recuperarProdutoNome(String nome) throws ProdutoInexistenteException, NomeInvalidoException {
+		return this.produto.recuperarProdutoNome(nome);
 	}
-	
-	public void produtoRemoverQuantProdutoValidacao(Produto produto, Integer quantidade) throws QuantidadeInvalidaException, QuantidadeProdutoInvalidaException {
-		this.produto.produtoRemoverQuantProdutoValidacao(produto, quantidade);
+
+	public Produto recuperarProdutoPorID(Integer codigo) throws IDRecuperacaoItemInvalidoException {
+		return this.produto.recuperarProdutoPorID(codigo);
 	}
-	public void produtoAdicionarQuantProdutoValidacao(Produto produto, Integer quantidade) throws QuantidadeProdutoInvalidaException {
-		this.produto.produtoAdicionarQuantProdutoValidacao(produto, quantidade);
+
+	public int recuperarQuantidadeProduto(Produto produto) throws ProdutoInexistenteException {
+		return this.produto.recuperarQuantidadeProduto(produto);
 	}
-	
-	public List<Produto> produtoListarTodosValidacao() throws ListarTodosInvalidoException{
-		return this.produto.produtoListarTodosValidacao();
+
+	public void removerQuantidadeProduto(Produto produto, Integer quantidade)
+			throws QuantidadeInvalidaException, QuantidadeProdutoInvalidaException {
+		this.produto.removerQuantidadeProduto(produto, quantidade);
 	}
-	
-	public Integer produtoRetornarIDValidacao(String nome) throws NomeInvalidoException, ProdutoInexistenteException{
-		return this.produto.produtoRetornarIDValidacao(nome);
+
+	public void adicionarQuantidadeProduto(Produto produto, Integer quantidade)
+			throws QuantidadeProdutoInvalidaException {
+		this.produto.adicionarQuantidadeProduto(produto, quantidade);
 	}
-	
-	public void cardapioCadastroValidacao(Cardapio cardapio) throws PratoExistenteException, NomeInvalidoException, PrecoInvalidoException{
-		this.cardapio.cardapioCadastroValidacao(cardapio);
+
+	public List<Produto> listarTodosProdutos() throws ListarTodosInvalidoException {
+		return this.produto.listarTodosProdutos();
 	}
-	
-	public void cardapioRemocaoValidacao(Cardapio cardapio) throws PratoInexistenteException {
-		this.cardapio.cardapioRemocaoValidacao(cardapio);
+
+	public Integer recuperarIDPeloNomeProduto(String nome) throws NomeInvalidoException, ProdutoInexistenteException {
+		return this.produto.recuperarIDPeloNome(nome);
 	}
-	
-	public void cardapioAlteracaoValidacao(Cardapio cardapio, String nome, String novoNome, double preco) throws PratoExistenteException {
-		this.cardapio.cardapioAlteracaoValidacao(cardapio, nome, novoNome, preco);
+
+	// CARDAPIO
+
+	public void cadastrarCardapio(Cardapio cardapio)
+			throws PratoExistenteException, NomeInvalidoException, PrecoInvalidoException {
+		this.cardapio.cadastrarCardapio(cardapio);
 	}
-	
-	public Cardapio cardapioRecuperarValidacao(String nome) throws PratoInexistenteException, NomeInvalidoException {
-		return this.cardapio.cardapioRecuperarValidacao(nome);
+
+	public void deletarCardapio(Cardapio cardapio) throws PratoInexistenteException {
+		this.cardapio.deletarCardapio(cardapio);
 	}
-	
-	public Cardapio cardapioRecuperarValidacao(Integer codigo) throws IDRecuperacaoItemInvalidoException{
-		return this.cardapio.cardapioRecuperarValidacao(codigo);
+
+	public void alterarCardapio(Cardapio cardapio, String nome, String novoNome, double preco)
+			throws PratoExistenteException {
+		this.cardapio.alterarCardapio(cardapio, nome, novoNome, preco);
 	}
-	
-	public List<Cardapio> cardapioListarTodosValidacao() throws ListarTodosInvalidoException {
-		return this.cardapio.cardapioListarTodosValidacao();
+
+	public Cardapio recuperarCardapioPeloNome(String nome) throws PratoInexistenteException, NomeInvalidoException {
+		return this.cardapio.recuperarCardapioPeloNome(nome);
 	}
-	
-	public Integer cardapioRetornarIDValidacao(String nome) throws NomeInvalidoException, PratoInexistenteException{
-		return this.cardapio.cardapioRetornarIDValidacao(nome);
+
+	public Cardapio recuperarCardapioPorID(Integer codigo) throws PratoInexistenteException {
+		return this.cardapio.recuperarCardapioPorID(codigo);
 	}
-	
-	public void pedidoCadastroValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException{
-		this.pedido.pedidoCadastroValidacao(pedido);
+
+	public List<Cardapio> listarTodosCardapios() throws ListarTodosInvalidoException {
+		return this.cardapio.listarTodosCardapios();
 	}
-	
-	public void pedidoRemocaoValidacao(Pedido pedido) throws PedidoInexistenteException {
-		this.pedido.pedidoRemocaoValidacao(pedido);
+
+	public Integer recuperarIDPeloNomeCardapio(String nome) throws NomeInvalidoException, PratoInexistenteException {
+		return this.cardapio.recuperarIDPeloNomeCardapio(nome);
 	}
-	
-	public void pedidoAlteracaoValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
-		this.pedido.pedidoAlteracaoValidacao(pedido);
+
+	// Pedido
+
+	public void cadastrarPedido(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
+		this.pedido.cadastrarPedido(pedido);
 	}
-	
-	public Pedido pedidoRecuperarValidacao(Integer codigo) throws  IDRecuperacaoItemInvalidoException {
-		return this.pedido.pedidoRecuperarValidacao(codigo);
+
+	public void deletarPedido(Pedido pedido) throws PedidoInexistenteException {
+		this.pedido.deletarPedido(pedido);
 	}
-	
-	public List<Pedido> pedidoListarTodosValidacao() throws ListarTodosInvalidoException {
-		return this.pedido.pedidoListarTodosValidacao();
+
+	public void alterarPedido(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
+		this.pedido.alterarPedido(pedido);
 	}
-	
-	public Integer pedidoRecuperarCodigosValidacao(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws PedidoInexistenteException {
-		return this.pedido.pedidoRecuperarCodigosValidacao(id_cardapio, id_produto, id_mesa);
+
+	public Pedido recuperarPedidoPorID(Integer codigo) throws IDRecuperacaoItemInvalidoException {
+		return this.pedido.recuperarPedidoPorID(codigo);
 	}
-	
-	public int pedidoRecuperarUltimoIDValidacao() {
-		return this.pedido.pedidoRecuperarUltimoIDValidacao();
+
+	public List<Pedido> listarTodosPedidos() throws ListarTodosInvalidoException {
+		return this.pedido.listarTodosPedidos();
 	}
-	public List<Pedido> pedidoListarPorMesaValidacao(Integer codigo)throws ConcluirPagamentoException{
-		return this.pedido.pedidoListarPorMesaValidacao(codigo);
+
+	public Integer retornarIDPedido(Integer id_cardapio, Integer id_produto, Integer id_mesa)
+			throws PedidoInexistenteException {
+		return this.pedido.retornarIDPedido(id_cardapio, id_produto, id_mesa);
 	}
-	
-	public void pedidoRemoverTodosPedidosValidacao(Integer codigo) {
-		this.pedido.pedidoRemoverTodosPedidosValidacao(codigo);
+
+	public int recuperarUltimoIDPedido() throws ExceptionRecuperarUltimoID {
+		return this.pedido.recuperarUltimoIDPedido();
 	}
-	
-	public void mesaCadastroMesaValidacao(Mesa mesa) throws MesaCadastradaException, NumeroInvalidoException, MesaDisponibilidadeInvalidaException{
-		this.mesa.mesaCadastroMesaValidacao(mesa);
+
+	public List<Pedido> listarPedidosPorMesa(Integer codigo) throws ConcluirPagamentoException {
+		return this.pedido.listarPedidosPorMesa(codigo);
 	}
-	
-	public void mesaRemocaoValidacao(Mesa mesa){
-		this.mesa.mesaRemocaoValidacao(mesa);
+
+	public void deletarTodosPedidosPelaMesa(Integer codigo) throws PedidoInexistenteException {
+		this.pedido.deletarTodosPedidosPelaMesa(codigo);
 	}
-	
-	public void mesaAlteracaoValidacao(Mesa mesa, int novoNumero) throws MesaCadastradaException{
-		this.mesa.mesaAlteracaoValidacao(mesa, novoNumero);
+
+	// Conta
+
+	public void cadastrarConta(Conta conta) {
+		this.conta.cadastrarConta(conta);
 	}
-	
-	public Mesa mesaRecuperarValidacao(Integer codigo) throws IDRecuperarMesaException {
-		return this.mesa.mesaRecuperarValidacao(codigo);
+
+	public void deletarConta(Conta conta) {
+		this.conta.deletarConta(conta);
 	}
-	
-	public Mesa mesaRecuperarNumeroValidacao(Integer numero) throws MesaInexistenteException {
-		return this.mesa.mesaRecuperarNumeroValidacao(numero);
+
+	public Conta recuperarContaID(Integer codigo) {
+		return this.conta.recuperarContaID(codigo);
 	}
-	
-	public void mesaMudarDisponibilidadeValidacao(Mesa mesa) {
-		this.mesa.mesaMudarDisponibilidadeValidacao(mesa);
+
+	public double mostrarValorConta(Conta conta) {
+		return this.conta.mostrarValorConta(conta);
 	}
-	
-	public List<Mesa> mesaListarTodosValidacao() throws ListarTodosInvalidoException {
-		return this.mesa.mesaListarTodosValidacao();
+
+	public List<Conta> recuperarContaPorMesa(Integer codigo) throws ContaGerarException {
+		return this.conta.recuperarContaPorMesa(codigo);
 	}
-	
-	public void contaCadastroContaValidacao(Conta conta) {
-		this.conta.contaCadastroContaValidacao(conta);
+
+	public void deletarTodasContasPorMesa(Conta conta) {
+		this.conta.deletarTodasContasPorMesa(conta);
 	}
-	
-	public void contaRemocaoContaValidacao(Conta conta) {
-		this.conta.contaRemocaoContaValidacao(conta);
+	// Gerenciamento Conta
+
+	public void cadastrarGerenciamentoContas(GerenciamentoContas gerenciamento) {
+		this.gerenciamento.cadastrarGerenciamentoContas(gerenciamento);
 	}
-	
-	public Conta contaRecuperarContaValidacao(Integer codigo) {
-		return this.conta.contaRecuperarContaValidacao(codigo);
-	}
-	
-	public double contaGerarConta(Conta conta) {
-		return this.conta.contaGerarContaValidacao(conta);
-	}
-	
-	public List<Conta> contaRetornarTodasContaPorMesaValidacao(Integer codigo) throws ContaGerarException {
-		return this.conta.contaRetornarTodasContaPorMesaValidacao(codigo);
-	}
-	
-	public void contaRemoverTodasContaValidacao(Conta conta) {
-		this.conta.contaRemoverTodasContaValidacao(conta);
-	}
-	
-	public void gerenciamentoCadastroValidacao(GerenciamentoContas gerenciamento) {
-		this.gerenciamento.gerenciamentoCadastroValidacao(gerenciamento);
-	}
-	
-	public List<GerenciamentoContas> gerenciamentoListarTodosValidacao() throws RelatorioVazioException {
-		return this.gerenciamento.gerenciamentoListarTodosValidacao();
+
+	public List<GerenciamentoContas> listarTodosGerenciamentoContas() throws RelatorioVazioException {
+		return this.gerenciamento.listarTodosGerenciamentoContas();
 	}
 }

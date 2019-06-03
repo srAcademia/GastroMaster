@@ -12,13 +12,13 @@ public class Pedido {
 
 	}
 
-	public Pedido(Cardapio cardapio, Produto produto,double valor,Mesa mesa) {
+	public Pedido(Cardapio cardapio, Produto produto, double valor, Mesa mesa) {
 
 		this.cardapio = cardapio;
 		this.produto = produto;
-		this.valor=valor;
-		this.mesa=mesa;
-		
+		this.valor = valor;
+		this.mesa = mesa;
+
 	}
 
 	public int getId_pedido() {
@@ -52,7 +52,8 @@ public class Pedido {
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-	public double calcularValorPedido(double precoProd , double precoCard) {
+
+	public double calcularValorPedido(double precoProd, double precoCard) {
 		return precoProd + precoCard;
 	}
 
@@ -69,7 +70,5 @@ public class Pedido {
 		return "Pedido [id_pedido=" + id_pedido + ", cardapio=" + cardapio + ", produto=" + produto + ", valor=" + valor
 				+ ", mesa=" + mesa + "]\n";
 	}
-
-	
 
 }

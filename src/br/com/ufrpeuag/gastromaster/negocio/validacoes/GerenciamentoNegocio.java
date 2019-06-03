@@ -8,18 +8,19 @@ import br.com.ufrpeuag.gastromaster.dados.interfaces.IGerenciamentoContasDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RelatorioVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
 
-public class GerenciamentoValidacao {
+public class GerenciamentoNegocio {
+	
 	private IGerenciamentoContasDao repGerenciamento;
 	
-	public GerenciamentoValidacao() throws SQLException {
+	public GerenciamentoNegocio() throws SQLException {
 		repGerenciamento = new RepositorioGerenciamentoContas();
 	}
 	
-	public void gerenciamentoCadastroValidacao(GerenciamentoContas gerenciamento) {
+	public void cadastrarGerenciamentoContas(GerenciamentoContas gerenciamento) {
 		repGerenciamento.inserir(gerenciamento);
 	}
 	
-	public List<GerenciamentoContas> gerenciamentoListarTodosValidacao() throws RelatorioVazioException {
+	public List<GerenciamentoContas> listarTodosGerenciamentoContas() throws RelatorioVazioException {
 		if(repGerenciamento.listarTodos() == null || repGerenciamento.listarTodos().isEmpty()) {
 			throw new RelatorioVazioException();
 		}

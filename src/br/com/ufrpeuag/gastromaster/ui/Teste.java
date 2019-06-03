@@ -1,4 +1,5 @@
-/*package br.com.ufrpeuag.gastromaster.ui;
+package br.com.ufrpeuag.gastromaster.ui;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,191 +15,339 @@ import br.com.ufrpeuag.gastromaster.dados.RepositorioGerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioMesa;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioPedido;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioProduto;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ExceptionRecuperarUltimoID;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperarMesaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaCadastradaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaDisponibilidadeInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoVazioException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoExistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.PrecoInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoExistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.RelatorioVazioException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.SenhaInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
-import br.com.ufrpeuag.gastromaster.negocio.validacoes.CpfValidacao;
-public class Teste {
-	private static Scanner src;
-	public static void main(String[] args) throws SQLException {
-		src = new Scanner(System.in);
-		
-	ConfiguracoesBanco.getSingleton().getConnection();
-	String data = "25/01/2016";
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	LocalDate date = LocalDate.parse(data,formatter);
-	//System.out.println(date);
-	
-	 // Data atual
-    
-    // A classe do java.sql.Date converte o localDate
-	LocalDate localDate = LocalDate.now();
-    java.sql.Date date = java.sql.Date.valueOf(localDate);
-    SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-    String dataFormatada = formatador.format(date);
-  
-    System.out.println("Data em String:  "+dataFormatada);
-	String data1 =dataFormatada;
-	
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	LocalDate date1 = LocalDate.parse(data1,formatter);
-	System.out.println("LocalDate : "+date1);
-	
-	java.sql.Date dat = java.sql.Date.valueOf(date1);
-	SimpleDateFormat formatador2 = new SimpleDateFormat("dd/MM/yyyy");
-	String dataFormatada2 = formatador2.format(dat);
-	System.out.println("Strng da localdate "+dataFormatada2);
-		
-		
-	    
-		
-		
-		//Mesa Todos Métodos
-		 RepositorioMesa rm = new RepositorioMesa();
-		Mesa m = new Mesa(2, 0);
-		rm.inserir(m);
-		System.out.println(rm.recuperar(1));
-		System.out.println(rm.listarTodos());
-		m = rm.recuperar(1);
-		m.setDisponibilidade(1);
-		rm.alterar(m);
-		System.out.println(rm.recuperarNumeroMesa(2));
-		rm.deletar(rm.recuperar(1));
-		 
-		//Garcom e endereco
-		Endereco end  = new Endereco("Garanhuns","sitio","Mochila",30,"55555");
-		
-		ConfiguracoesBanco.getSingleton().getConnection();
-		
-		RepositorioGarcom rg = new  RepositorioGarcom();
-		RepositorioEndereco e = new RepositorioEndereco();
-		
-		e.inserir(end);
-		int a = e.recuperarUltimoID();
-		System.out.println(a);
-		Garcom g = new Garcom("Milena","11536598701","14/07/1198","88888","milly",220,null,end);
-		g.getEndereco().setId_endereco(a);
-		g.setIdentificador(g.gerarIdentificador());
-		rg.inserir(g);
-		
-		
-		//Produto
-		 RepositorioProduto rp= new RepositorioProduto();
-		
-		Produto p = new Produto("Vinho ", 3, 2.5);
-		Produto p2 = new Produto("Fanta 500 ml", 3, 2.5);
-		rp.inserir(p);
-		rp.inserir(p2);
-		 p = rp.recuperar(4);
-		 p.setNome("Pitu");
-		 rp.alterar(p);
-		System.out.println(p);
-		///Cardapio
-		RepositorioCardapio repCardapio = new RepositorioCardapio();
-		
-		Cardapio cardapio = new Cardapio("Bife", 20);
-		Cardapio cardapio2 = new Cardapio("Camarão", 30);
-		repCardapio.inserir(cardapio);
-		repCardapio.inserir(cardapio2);
-		//repCardapio.deletar(repCardapio.recuperar(5));
-		System.out.println(repCardapio.listarTodos());
-		System.out.println(repCardapio.recuperar("Camarão"));
-		System.out.println(repCardapio.retornarID("Camarão"));
-		//System.out.println(repCardapio.retornarID("Pizza"));
-		//System.out.println(rp.retornarID("Vinho "));
-		
-		 //Pedido
-		RepositorioPedido rpedido = new RepositorioPedido();
-		RepositorioCardapio repCardapio = new RepositorioCardapio();
-		RepositorioProduto rp= new RepositorioProduto();
-		
-		Cardapio card = new Cardapio();
-		Produto prod = new Produto();
-		Pedido pedido = null;
-		
-		
-		double valor = 0;
-		Mesa m = new Mesa();
-		
-		pedido = new Pedido(card, prod, valor,m);
-		
-		pedido.setValor(pedido.calcularValorPedido(repCardapio.recuperar(1).getPreco(),rp.recuperar(1).getPreco()));
-		pedido.getCardapio().setId_cardapio(1);
-		pedido.getProduto().setId_produto(1);
-		pedido.getMesa().setId_mesa(1);
-		rpedido.inserir(pedido);
-		System.out.println(rpedido.recuperar(1));
-		System.out.println(rpedido.listarTodos());
-		//System.out.println(rpedido.retornarId(2,1,1));
-		
-		//Conta
-		
-		Pedido pedido = null;
-		Garcom g = null;
-		RepositorioPedido rpedido = new RepositorioPedido();
-		RepositorioGarcom rg = new  RepositorioGarcom();
-		RepositorioMesa rm = new RepositorioMesa();
-		RepositorioConta rc = new RepositorioConta();
-		Mesa m =null; 
-		Conta c = null;
-		//Conta c = new Conta(1,localDate,pedido,g,m,50);
-		//pedido = rpedido.recuperar(4);
-		g = rg.recuperar(1);
-		m = rm.recuperar(3);
-		System.out.println(g);
-		System.out.println(m);
-		System.out.println(pedido);
-		c.setPedido(pedido);
-		c.setGarcom(g);
-		c.setMesa(m);
-	//	rc.inserir(c);
-		c = rc.recuperar(1);
-		//System.out.println(c);
 
-		//REPOSITORIO GErencoam
-		RepositorioGerenciamentoContas r = new RepositorioGerenciamentoContas();
-		GerenciamentoContas gc = null;
-		double a = rc.fecharConta(c);
-		//System.out.println(a);
-		LocalDate l = c.getData();
-		gc = new GerenciamentoContas(g,m,a,l);
-		//System.out.println(gc);
-		//r.inserir(gc);
-		System.out.println(r.recuperar(1));
-		System.out.println(r.listarTodos());
-		gc = r.recuperar(1);
-		gc.setMesa(rm.recuperar(4));
-		r.alterar(gc);
-		System.out.println(r.listarTodos());
-		
-		RepositorioPedido rpedido = new RepositorioPedido();
-		RepositorioMesa rm = new RepositorioMesa();
-		RepositorioConta rc = new RepositorioConta();
-		System.out.println(rc.recuperar(1));
-		
-		CpfValidacao cpf = new CpfValidacao();
-		if (cpf.isCPF("11563286408")){
-			System.out.println(cpf.imprimeCPF("11563286408"));
-		}
-		Conta c = null;
-		System.out.println(rm.listarTodos());
-		System.out.println("Digite id da mesa:");
-		int cod_mesa = src.nextInt();
-		rc.recuperarPorMesa(cod_mesa);
-		System.out.println(c);
-		System.out.println(rc.fecharConta(c));
-		rc.deletar(c);
-		
-		
-		System.out.println(rc.listarTodos());
+public class Teste {
+
+	public static void main(String[] args) throws SQLException, CPFInvalidoException, DataNascimentoInvalidaException,
+			NomeInvalidoException, GarcomExistenteException, SalarioInvalidoException, RuaInvalidaException,
+			NumeroInvalidoException, CidadeInvalidaException, CEPInvalidoException, BairroInvalidoException,
+			IDRecuperacaoInvalidaException, GarcomInexistenteException, RecuperarCPFException, LoginInvalidoException,
+			ListarTodosInvalidoException, GerenteExistenteException, SenhaInvalidaException, MesaCadastradaException,
+			MesaDisponibilidadeInvalidaException, IDRecuperarMesaException, MesaInexistenteException, PratoExistenteException, PrecoInvalidoException, IDRecuperacaoItemInvalidoException, PratoInexistenteException, ProdutoInexistenteException, ProdutoExistenteException, QuantidadeProdutoInvalidaException, QuantidadeInvalidaException, PedidoInvalidoException, PedidoVazioException, PedidoInexistenteException, ConcluirPagamentoException, ExceptionRecuperarUltimoID, ContaGerarException, RelatorioVazioException {
+
+		// Garcom e endereco cadastrar
+
+		/*
+		 * Endereco end = new Endereco("Garanhuns", "sitio", "Mochila", 30, "55555");
+		 * Garcom g = new
+		 * Garcom("Milena","11563286408",LocalDate.now(),"88888","milly",220,null,end);
+		 * g.setIdentificador(g.gerarIdentificador());
+		 * Fachada.getSingleton().cadastrarGarcom(g);
+		 * 
+		 * //Recuperar: Garcom g = null; g =
+		 * Fachada.getSingleton().recuperarGarcomID(1);
+		 * System.out.println("Recuperar por ID: "+g); g =
+		 * Fachada.getSingleton().recuperarGarcomPorCPF("11563286408");
+		 * System.out.println("\nRecuperar por CPF: "+g); g =
+		 * Fachada.getSingleton().verificarIdentificadorGarcom("1c1d12");
+		 * System.out.println("\nRecuperar pelo Indentificador: "+g);
+		 * System.out.println("\nListar todos: "+Fachada.getSingleton().
+		 * ListarTodosGarcons());
+		 * 
+		 * //Deletar: g = Fachada.getSingleton().recuperarGarcomID(1);
+		 * Fachada.getSingleton().deletarGarcom(g);
+		 * 
+		 * //Alterar Garcom g = null; g = Fachada.getSingleton().recuperarGarcomID(1);
+		 * g.setNome("Maria"); g.getEndereco().setBairro("Jucati");
+		 * Fachada.getSingleton().alterarGarcom(g);
+		 * 
+		 */
+
+		// Gerente Cadastrar
+		/*
+		 * Endereco end = new Endereco("Caetes", "sitio", "Mulambu", 30, "55555");
+		 * Gerente g = new Gerente("Joao", "11563286408", LocalDate.now(), "88888",
+		 * "milly", 350, "12345", null, end);
+		 * g.setIdentificador(g.gerarIdentificador());
+		 * Fachada.getSingleton().cadastrarGerente(g);
+		 * 
+		 * 
+		 * // Recuperar:
+		 * 
+		 * Gerente g = null; g = Fachada.getSingleton().recuperarGerenteID(1);
+		 * System.out.println("Recuperar por ID: " + g); g =
+		 * Fachada.getSingleton().recuperarCpfPorGerente("11563286408");
+		 * System.out.println("\nRecuperar por CPF: " + g); g =
+		 * Fachada.getSingleton().verificarIdentificadorGerente("2fb2ec");
+		 * System.out.println("\nRecuperar pelo Indentificador: " + g); g =
+		 * Fachada.getSingleton().logarGerente("12345");
+		 * System.out.println("\nRecuperar Por senha: " + g);
+		 * System.out.println("\nListar todos: " +
+		 * Fachada.getSingleton().ListarTodosGarcons());
+		 * 
+		 * // Deletar: g = Fachada.getSingleton().recuperarGarcomID(1);
+		 * Fachada.getSingleton().deletarGerente(g);
+		 * 
+		 * // Alterar Gerente g = null; g =
+		 * Fachada.getSingleton().recuperarGerenteID(1); g.setNome("Paulo");
+		 * g.getEndereco().setBairro("Boa vista"); g.getEndereco().setCidade("Jupi");
+		 * Fachada.getSingleton().alterarGerente(g);
+		 */
+
+		// Mesa Cadastrar
+		  /*
+
+		  Mesa m = new Mesa(6,1); 
+		  Fachada.getSingleton().cadastrarMesa(m);
+				// Recuperar
+		Mesa m = null;
+		m = Fachada.getSingleton().recuperarMesaID(1);
+		System.out.println("Recuperar ID: " + m);
+		m = Fachada.getSingleton().recuperarMesaPorNumero(4);
+		System.out.println("Recuperar Numeror: " + m);
+		System.out.println("Listar Todas: " + Fachada.getSingleton().listarTodasMesas());
 		 
-		 
+		//Alterar
+		Mesa m = null;
+		m = Fachada.getSingleton().recuperarMesaID(1);
+		m.setDisponibilidade(0);
+		m.setNumero(2);
+		Fachada.getSingleton().alterarMesa(m);
+		
+
+		//Mudar Disponibilidade
+		Mesa m = null;	
+		m = Fachada.getSingleton().recuperarMesaID(1);
+		Fachada.getSingleton().mudarDisponibilidadeMesa(m);
+		System.out.println("Antes: "+m);
+		m = Fachada.getSingleton().recuperarMesaID(1);
+		System.out.println("Depois: "+m);
+		
+		//Deletar
+		Mesa m = null;
+		m = Fachada.getSingleton().recuperarMesaID(1);
+		Fachada.getSingleton().deletarMesa(m);*/
+		
+		//Cardapio
+		
+		//Cadastrar
+		
+		/*
 	
-	}
-}
+		Cardapio card = new Cardapio("Pizza",30);
+		Cardapio card2 = new Cardapio("Lasanha",20);
+		Fachada.getSingleton().cadastrarCardapio(card);
+		Fachada.getSingleton().cadastrarCardapio(card2);
+		
+		
+		//Alterar
+		 
+
+
+		Cardapio c =null;
+		c = Fachada.getSingleton().recuperarCardapioPorID(1);
+		c.setPreco(55);
+		Fachada.getSingleton().alterarCardapio(c);
+		*/
+		
+		//Deletar e recuperar por nome e ID, listar Todos
+		
+		/*
+		Cardapio c =null;
+		
+		int id = Fachada.getSingleton().recuperarIDPeloNomeCardapio("Pizza");
+		System.out.println("Mostrar ID :"+id);
+		
+		System.out.println("Listar todos cardapios: "+Fachada.getSingleton().listarTodosCardapios());
+		
+		c= Fachada.getSingleton().recuperarCardapioPeloNome("Lasanha");
+		System.out.println("Recuperar Pelo Nome cardapio : "+c);
+		
+		Fachada.getSingleton().deletarCardapio(c);
+		
+		c = Fachada.getSingleton().recuperarCardapioPorID(2);
+		System.out.println("Recuperar pelo ID: "+c);
+		
+		Fachada.getSingleton().deletarCardapio(c);
+		*/
+		
+		//Produto 
+		
+		//Cadastrar
+		
+		/*Produto p = new Produto("Fanta",20,3);
+		Produto p2 = new Produto("Coca-cola",10,4);
+		Fachada.getSingleton().cadastrarProduto(p);
+		Fachada.getSingleton().cadastrarProduto(p2);
+		*/
+		
+		//Deletar
+		
+		/*
+		Produto p = null;
+		p = Fachada.getSingleton().recuperarProdutoPorID(2);
+		Fachada.getSingleton().deletarProduto(p);
+		*/
+		
+		//Recuperar
+		
+	/*	Produto p = null;
+		
+		p = Fachada.getSingleton().recuperarProdutoNome("Fanta");
+		System.out.println("Recuperar Por nome: "+p);
+		
+		p = Fachada.getSingleton().recuperarProdutoPorID(1);
+		System.out.println("Recuperar por ID: "+p);
+		
+		int quant = Fachada.getSingleton().recuperarQuantidadeProduto(p);
+		System.out.println("Quantidade de produtos: "+quant);
+		
+		Fachada.getSingleton().adicionarQuantidadeProduto(p, 5);
+		int quant2 = Fachada.getSingleton().recuperarQuantidadeProduto(p);
+		System.out.println("Adicionar quantidade : "+quant2);
+		
+		Fachada.getSingleton().removerQuantidadeProduto(p, 10);
+		int quant3 = Fachada.getSingleton().recuperarQuantidadeProduto(p);
+		System.out.println("Remover quantidade : "+quant3);
+		
+		System.out.println("Listar Todos: "+Fachada.getSingleton().listarTodosProdutos());
+		
+		System.out.println("Recuperar id Pelo nome: "+ Fachada.getSingleton().recuperarIDPeloNomeProduto("Fanta"));
+		
+		//Alterar
+		
+		Produto pp =null;
+		pp = Fachada.getSingleton().recuperarProdutoPorID(1);
+		pp.setNome("Coca");
+		Fachada.getSingleton().alterarProduto(pp);
+		System.out.println("Apos alteracao: "+Fachada.getSingleton().recuperarProdutoPorID(1));
+		*/
+		
+		//Pedido 
+		
+		/*
+		//Cadastrar Pedido
+		Produto p = null;
+		Cardapio c = null;
+		Mesa mesa = null;
+		mesa = Fachada.getSingleton().recuperarMesaID(2);
+		p = Fachada.getSingleton().recuperarProdutoPorID(1);
+		c= Fachada.getSingleton().recuperarCardapioPorID(4);
+		Pedido pedido = new Pedido(c,p,0,mesa);
+		pedido.getCardapio().setId_cardapio(4);
+		pedido.getProduto().setId_produto(1);
+		pedido.getMesa().setId_mesa(2);
+		Fachada.getSingleton().cadastrarPedido(pedido);
+	
+		Pedido p = null;
+		Cardapio card =null;
+		
+		//Listar Todos
+		System.out.println( Fachada.getSingleton().listarTodosPedidos());
+		
+		//Deletar Pedido por mesa
+		Fachada.getSingleton().deletarTodosPedidosPelaMesa(2);
+		
+		//Recuperar ultimo ID
+		int a =Fachada.getSingleton().recuperarUltimoIDPedido();
+		System.out.println(a);
+		
+		//Recuperar por ID
+		System.out.println(Fachada.getSingleton().recuperarPedidoPorID(5));
+		
+		//Alterar
+		p = Fachada.getSingleton().recuperarPedidoPorID(6);
+		card = Fachada.getSingleton().recuperarCardapioPorID(4);
+		p.setCardapio(card);
+		Fachada.getSingleton().alterarPedido(p);
+		
+		//Retornar ID de pedido
+		System.out.println(Fachada.getSingleton().retornarIDPedido(4, 1, 2));
+		
+		//Deletar pedido
+		Fachada.getSingleton().deletarPedido(Fachada.getSingleton().recuperarPedidoPorID(7));
+	
+		//Listar Por mesa 
+		System.out.println(Fachada.getSingleton().listarPedidosPorMesa(2));
+		*/
+		
+		//CONTA
+		
+		//Cadastrar Conta
+
+		/*
+		Pedido ped = Fachada.getSingleton().recuperarPedidoPorID(7);
+		Conta conta = null;
+		Garcom g = Fachada.getSingleton().recuperarGarcomID(1);
+		Mesa m = Fachada.getSingleton().recuperarMesaID(3);
+		conta = new Conta(LocalDate.now(), ped, g, m, ped.getValor());
+		Fachada.getSingleton().cadastrarConta(conta);
+
+		// Rcuperar e Mostrar
+		System.out.println(Fachada.getSingleton().recuperarContaID(1));
+		System.out.println(Fachada.getSingleton().mostrarValorConta(Fachada.getSingleton().recuperarContaID(1)));
+		System.out.println(Fachada.getSingleton().recuperarContaPorMesa(2));
+
+		// Deletar uma conta
+
+		Fachada.getSingleton().deletarConta(Fachada.getSingleton().recuperarContaID(2));
+
+		// Deletar conta por Mesa
+
+		Fachada.getSingleton().deletarTodasContasPorMesa(Fachada.getSingleton().recuperarContaID(1));
+
+		// GERENCIAMENTO DE CONTA
+
+		Garcom g = Fachada.getSingleton().recuperarGarcomID(1);
+		Mesa m = Fachada.getSingleton().recuperarMesaID(3);
+		Conta c = Fachada.getSingleton().recuperarContaID(3);
+
+		// CADASTRAR
+
+		GerenciamentoContas gc = new GerenciamentoContas(g, m, Fachada.getSingleton().mostrarValorConta(c),
+				LocalDate.now());
+		Fachada.getSingleton().cadastrarGerenciamentoContas(gc);
+
+		// LISTAR TODOS
+
+		System.out.println(Fachada.getSingleton().listarTodosGerenciamentoContas());
 */
+	}
+	
+}

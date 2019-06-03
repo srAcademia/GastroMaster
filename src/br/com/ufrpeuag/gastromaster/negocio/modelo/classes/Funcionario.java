@@ -1,18 +1,20 @@
 package br.com.ufrpeuag.gastromaster.negocio.modelo.classes;
 
-public class Funcionario {
+import java.time.LocalDate;
+
+public abstract class Funcionario {
 
 	private String identificador;
 	private String nome;
 	private String cpf;
 	private Endereco endereco;
-	private String dataNasc;
+	private LocalDate dataNasc;
 	private String telefone;
 	private String email;
 	private double salario;
 
-	public Funcionario(String nome, String cpf, String dataNasc, String telefone, String email,
-			double salario, String identificador, Endereco endereco) {
+	public Funcionario(String nome, String cpf, LocalDate dataNasc, String telefone, String email, double salario,
+			String identificador, Endereco endereco) {
 
 		this.nome = nome;
 		this.cpf = cpf;
@@ -60,11 +62,11 @@ public class Funcionario {
 		this.endereco = endereco;
 	}
 
-	public String getDataNasc() {
+	public LocalDate getDataNasc() {
 		return dataNasc;
 	}
 
-	public void setDataNasc(String dataNasc) {
+	public void setDataNasc(LocalDate dataNasc) {
 		this.dataNasc = dataNasc;
 	}
 
@@ -91,5 +93,7 @@ public class Funcionario {
 	public void setSalario(double salario) {
 		this.salario = salario;
 	}
+
+	public abstract String gerarIdentificador();
 
 }

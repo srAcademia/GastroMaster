@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IGarcomDao;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
@@ -25,7 +26,7 @@ public class RepositorioGarcom implements IGarcomDao {
 
 	@Override
 	public void inserir(Garcom garcom) {
-
+		Data d = new Data();
 		String inserirSql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario,"
 				+ " identificador ,cod_endereco) VALUES(?,?,?,?,?,?,?,?)";
 
@@ -35,7 +36,7 @@ public class RepositorioGarcom implements IGarcomDao {
 
 			pstmt.setString(1, garcom.getNome());
 			pstmt.setString(2, garcom.getCpf());
-			pstmt.setString(3, garcom.getDataNasc());
+			pstmt.setString(3, d.mudarDataParaString(garcom.getDataNasc()));
 			pstmt.setString(4, garcom.getTelefone());
 			pstmt.setString(5, garcom.getEmail());
 			pstmt.setDouble(6, garcom.getSalario());
@@ -59,7 +60,7 @@ public class RepositorioGarcom implements IGarcomDao {
 	public Garcom recuperar(Integer codigo) {
 		Garcom g = null;
 		Endereco e = null;
-
+		Data d = new Data();
 		String sql = "SELECT *\r\n" + "from Garcom g join Endereco e on g.cod_endereco=e.id_endereco\r\n"
 				+ "where id_garcom = ?";
 		try {
@@ -76,7 +77,7 @@ public class RepositorioGarcom implements IGarcomDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -108,6 +109,7 @@ public class RepositorioGarcom implements IGarcomDao {
 
 	@Override
 	public void alterar(Garcom garcom) {
+		Data d = new Data();
 		String alterarSql = "UPDATE Garcom SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
 				+ "email = ?," + "salario = ? , identificador = ?" + " WHERE id_garcom = ?";
 
@@ -117,7 +119,7 @@ public class RepositorioGarcom implements IGarcomDao {
 
 			pstmt.setString(1, garcom.getNome());
 			pstmt.setString(2, garcom.getCpf());
-			pstmt.setString(3, garcom.getDataNasc());
+			pstmt.setString(3, d.mudarDataParaString(garcom.getDataNasc()));
 			pstmt.setString(4, garcom.getTelefone());
 			pstmt.setString(5, garcom.getEmail());
 			pstmt.setDouble(6, garcom.getSalario());
@@ -166,7 +168,7 @@ public class RepositorioGarcom implements IGarcomDao {
 	public List<Garcom> listarTodos() {
 		Garcom g = null;
 		Endereco e = null;
-
+		Data d = new Data();
 		List<Garcom> lista = new ArrayList<>();
 		String listarTodosSql = "Select * FROM Garcom join endereco  on cod_endereco = id_endereco ";
 
@@ -182,7 +184,7 @@ public class RepositorioGarcom implements IGarcomDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -218,10 +220,10 @@ public class RepositorioGarcom implements IGarcomDao {
 	}
 
 	@Override
-	public Garcom recuperar(String cpf) {
+	public Garcom recuperarCPF(String cpf) {
 		Garcom g = null;
 		Endereco e = null;
-
+		Data d = new Data();
 		String sqlRecuperarCpf = "SELECT * from Garcom g join Endereco e on g.cod_endereco=e.id_endereco where cpf = ?";
 
 		try {
@@ -238,7 +240,7 @@ public class RepositorioGarcom implements IGarcomDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -270,9 +272,10 @@ public class RepositorioGarcom implements IGarcomDao {
 	}
 
 	@Override
-	public Garcom verificar(String identificador) {
+	public Garcom verificarIdentificador(String identificador) {
 		Garcom g = null;
 		Endereco e = null;
+		Data d = new Data();
 		String sqlVerificado = "SELECT * from Garcom g join Endereco e on g.cod_endereco = e.id_endereco where identificador = ?;";
 
 		try {
@@ -289,7 +292,7 @@ public class RepositorioGarcom implements IGarcomDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));

@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioPedido;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IPedidoDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.ExceptionRecuperarUltimoID;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
@@ -13,79 +14,82 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 
-public class PedidoValidacao {
+public class PedidoNegocio {
 	private IPedidoDao repPedido;
-	
-	public PedidoValidacao() throws SQLException {
+
+	public PedidoNegocio() throws SQLException {
 		repPedido = new RepositorioPedido();
 	}
-	
-	public void pedidoCadastroValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException{
+
+	public void cadastrarPedido(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
 		pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), pedido.getProduto().getPreco()));
-		if(pedido.getValor() <= 0) {
+		if (pedido.getValor() <= 0) {
 			throw new PedidoInvalidoException();
 		}
-		if(pedido.getCardapio().equals(null) && pedido.getProduto().equals(null)) {
+		if (pedido.getCardapio().equals(null) && pedido.getProduto().equals(null)) {
 			throw new PedidoVazioException();
 		}
 		repPedido.inserir(pedido);
 	}
-	
-	public void pedidoRemocaoValidacao(Pedido pedido) throws PedidoInexistenteException {
-		if(!pedido.equals(null)) {
-			int id = repPedido.retornarId(pedido.getCardapio().getId_cardapio(), pedido.getProduto().getId_produto(), pedido.getMesa().getId_mesa());
-			if( id != 0) {
-				repPedido.deletar(pedido);
-			}
-		}
-		else {
+
+	public void deletarPedido(Pedido pedido) throws PedidoInexistenteException {
+		if (repPedido.retornarId(pedido.getCardapio().getId_cardapio(), pedido.getProduto().getId_produto(),
+				pedido.getMesa().getId_mesa()) == 0) {
 			throw new PedidoInexistenteException();
 		}
+		repPedido.deletar(pedido);
 	}
-	
-	public void pedidoAlteracaoValidacao(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
+
+	public void alterarPedido(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
 		pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), pedido.getProduto().getPreco()));
-		if(pedido.getValor() <= 0) {
+
+		if (pedido.getValor() <= 0) {
 			throw new PedidoInvalidoException();
 		}
-		if(pedido.getCardapio().equals(null) && pedido.getProduto().equals(null)) {
+		if (pedido.getCardapio().equals(null) && pedido.getProduto().equals(null)) {
 			throw new PedidoVazioException();
 		}
 		repPedido.alterar(pedido);
 	}
-	
-	public Pedido pedidoRecuperarValidacao(Integer codigo)throws IDRecuperacaoItemInvalidoException {
-		if(repPedido.recuperar(codigo).equals(null)) {
-			throw new IDRecuperacaoItemInvalidoException();
+
+	public Pedido recuperarPedidoPorID(Integer codigo) throws IDRecuperacaoItemInvalidoException {
+		if (repPedido.recuperar(codigo) != (null)) {
+			return repPedido.recuperar(codigo);
+
 		}
-		return repPedido.recuperar(codigo);
+		throw new IDRecuperacaoItemInvalidoException();
 	}
-	
-	public Integer pedidoRecuperarCodigosValidacao(Integer id_cardapio, Integer id_produto, Integer id_mesa) throws PedidoInexistenteException {
-		Integer id = repPedido.retornarId(id_cardapio, id_produto, id_mesa);
-		if(id == 0) {
+
+	public Integer retornarIDPedido(Integer id_cardapio, Integer id_produto, Integer id_mesa)
+			throws PedidoInexistenteException {
+
+		if (repPedido.retornarId(id_cardapio, id_produto, id_mesa) == 0) {
 			throw new PedidoInexistenteException();
 		}
-		return id;
+		return repPedido.retornarId(id_cardapio, id_produto, id_mesa);
 	}
-	
-	public List<Pedido> pedidoListarTodosValidacao() throws ListarTodosInvalidoException {
-		if(repPedido.listarTodos() == null || repPedido.listarTodos().isEmpty()) {
+
+	public List<Pedido> listarTodosPedidos() throws ListarTodosInvalidoException {
+
+		if (repPedido.listarTodos() == null || repPedido.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repPedido.listarTodos();
 	}
-	
-	public int pedidoRecuperarUltimoIDValidacao() {
+
+	public int recuperarUltimoIDPedido() throws ExceptionRecuperarUltimoID {
+		if (repPedido.recuperarUltimoID() == 0) {
+			throw new ExceptionRecuperarUltimoID();
+		}
 		return repPedido.recuperarUltimoID();
 	}
-	
-	public void pedidoRemoverTodosPedidosValidacao(Integer codigo) {
+
+	public void deletarTodosPedidosPelaMesa(Integer codigo) {
 		repPedido.deletarPedidosPelaMesa(codigo);
 	}
-	
-	public List<Pedido> pedidoListarPorMesaValidacao(Integer codigo)throws ConcluirPagamentoException{
-		if(repPedido.listarPorMesa(codigo) == null || repPedido.listarPorMesa(codigo).isEmpty()) {
+
+	public List<Pedido> listarPedidosPorMesa(Integer codigo) throws ConcluirPagamentoException {
+		if (repPedido.listarPorMesa(codigo) == null || repPedido.listarPorMesa(codigo).isEmpty()) {
 			throw new ConcluirPagamentoException();
 		}
 		return repPedido.listarPorMesa(codigo);

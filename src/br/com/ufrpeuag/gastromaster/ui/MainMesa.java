@@ -16,7 +16,7 @@ public class MainMesa {
 	public void gerenciarCadastroMesa(int numero, int disponibilidade) throws SQLException, MesaCadastradaException, NumeroInvalidoException, MesaDisponibilidadeInvalidaException{
 		try {
 			Mesa mesa = new Mesa(numero, disponibilidade);
-			Fachada.getSingleton().mesaCadastroMesaValidacao(mesa);
+			Fachada.getSingleton().cadastrarMesa(mesa);
 			System.out.println("Mesa cadastrado.");
 		}catch(MesaCadastradaException | NumeroInvalidoException |MesaDisponibilidadeInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -30,8 +30,8 @@ public class MainMesa {
 	public void gerenciarRemocaoMesa(int numero) throws SQLException, MesaInexistenteException {
 		try {
 			Mesa mesa = new Mesa();
-			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
-			Fachada.getSingleton().mesaRemocaoValidacao(mesa);
+			mesa = Fachada.getSingleton().recuperarMesaPorNumero(numero);
+			Fachada.getSingleton().deletarMesa(mesa);
 			System.out.println("Mesa removida.");
 		}catch(MesaInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -44,7 +44,7 @@ public class MainMesa {
 	public Mesa gerenciarGerenciamentoMesa(int numero) throws SQLException, MesaInexistenteException {
 		try {
 			Mesa mesa = new Mesa();
-			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
+			mesa = Fachada.getSingleton().recuperarMesaPorNumero(numero);
 			return mesa;
 		}catch(MesaInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -60,8 +60,8 @@ public class MainMesa {
 	public void gerenciarAlteracaoMesa(int numero, int novoNumero) throws SQLException, MesaCadastradaException{
 		try {
 			Mesa mesa = new Mesa();
-			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
-			Fachada.getSingleton().mesaAlteracaoValidacao(mesa, novoNumero);
+			mesa = Fachada.getSingleton().recuperarMesaPorNumero(numero);
+			Fachada.getSingleton().alterarMesa(mesa, novoNumero);
 			System.out.println("Mesa alterada.");
 		}catch(MesaCadastradaException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -74,8 +74,8 @@ public class MainMesa {
 	public void gerenciarMudarDisponibilidadeMesa(int numero) throws SQLException, MesaInexistenteException {
 		try {
 			Mesa mesa = new Mesa();
-			mesa = Fachada.getSingleton().mesaRecuperarNumeroValidacao(numero);
-			Fachada.getSingleton().mesaMudarDisponibilidadeValidacao(mesa);;
+			mesa = Fachada.getSingleton().recuperarMesaPorNumero(numero);
+			Fachada.getSingleton().mudarDisponibilidadeMesa(mesa);
 		}catch(MesaInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -86,7 +86,7 @@ public class MainMesa {
 	//LISTAR TODOS
 	public void gerenciarListarMesa() throws SQLException, ListarTodosInvalidoException{
 		try {
-			System.out.println(Fachada.getSingleton().mesaListarTodosValidacao());
+			System.out.println(Fachada.getSingleton().listarTodasMesas());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {

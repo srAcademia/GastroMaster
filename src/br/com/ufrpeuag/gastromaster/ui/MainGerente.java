@@ -1,6 +1,7 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
@@ -27,16 +28,13 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 public class MainGerente {
 	
 	//CADASTRAR
-	public void gerenciarCadastroGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String dataNasc, String telefone, String email, double salario, String senha, String identificador)
+	public void gerenciarCadastroGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, LocalDate dataNasc, String telefone, String email, double salario, String senha, String identificador)
 			throws SQLException, BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException, CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, GerenteExistenteException, IDInexistenteException, SalarioInvalidoException, IDRecuperacaoInvalidaException{
 		try {
 			Endereco end  = new Endereco(cidade, bairro, rua, numero, cep);
 			Gerente gerente = new Gerente(nome, cpf, dataNasc, telefone, email, salario, senha, identificador, end);
-			Fachada.getSingleton().enderecoCadastroValidacao(end);
-			int id = Fachada.getSingleton().enderecoRecuperarUltimoIDValidacao();
-			gerente.getEndereco().setId_endereco(id);
-			gerente.setIdentificador(gerente.gerarIdentificador());
-			Fachada.getSingleton().gerenteCadastroValidacao(gerente);
+			
+			Fachada.getSingleton().cadastrarGerente(gerente);
 			System.out.println("Gerente cadastrado.");
 			System.out.println("ID gerado do gerente: "+gerente.getIdentificador());
 		}catch(BairroInvalidoException | CEPInvalidoException | CidadeInvalidaException | NumeroInvalidoException | RuaInvalidaException | CPFInvalidoException | DataNascimentoInvalidaException | NomeInvalidoException | GerenteExistenteException ex) {
@@ -50,7 +48,7 @@ public class MainGerente {
 	public Gerente gerenciarVerificarGerente(String identificador) throws SQLException, LoginInvalidoException{
 		try {
 			Gerente gerente = new Gerente();
-			gerente = Fachada.getSingleton().gerenteVerificarValidacao(identificador);
+			gerente = Fachada.getSingleton().verificarIdentificadorGerente(identificador);
 			return gerente;
 		}catch(LoginInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -64,7 +62,7 @@ public class MainGerente {
 	public Gerente gerenciarLogarGerente(String senha) throws SQLException, SenhaInvalidaException {
 		try {
 			Gerente gerente = new Gerente();
-			gerente = Fachada.getSingleton().gerenteLogarValidacao(senha);
+			gerente = Fachada.getSingleton().logarGerente(senha);
 			return gerente;
 		}catch(SenhaInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -75,16 +73,14 @@ public class MainGerente {
 	}
 		
 	//REMOCAO
-	public void gerenciarRemocaoGerente(String CPF) throws SQLException, GerenteInexistenteException, EnderecoInexistenteException, CPFInvalidoException, RecuperarCPFException {
+	public void gerenciarRemocaoGerente(String CPF) throws SQLException, GerenteInexistenteException, CPFInvalidoException, RecuperarCPFException {
 		try {
 			Gerente gerente = new Gerente();
-			Endereco end = new Endereco();
-			gerente = Fachada.getSingleton().gerenteRecuperarCPFValidacao(CPF);
-			end = Fachada.getSingleton().enderecoRecuperarValidacao(gerente.getEndereco().getId_endereco());
-			Fachada.getSingleton().gerenteRemocaoValidacao(gerente);
-			Fachada.getSingleton().enderecoRemocaoValidacao(end);
+			gerente = Fachada.getSingleton().recuperarCpfPorGerente(CPF);
+			Fachada.getSingleton().deletarGerente(gerente);
+			
 			System.out.println("Gerente removido.");
-		}catch(GerenteInexistenteException | EnderecoInexistenteException | CPFInvalidoException | RecuperarCPFException ex) {
+		}catch(GerenteInexistenteException | CPFInvalidoException | RecuperarCPFException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
@@ -92,7 +88,7 @@ public class MainGerente {
 	}
 	
 	//ALTERACAO
-	public void gerenciarAlteracaoGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha)
+	/*public void gerenciarAlteracaoGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha)
 			throws SQLException, CPFInvalidoException, RecuperarCPFException, DataNascimentoInvalidaException, GerenteExistenteException {
 		try {
 			Gerente gerente = new Gerente();
@@ -107,13 +103,13 @@ public class MainGerente {
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 	
 	//RECUPERAR
 	public void gerenciarRecuperarGerente(Integer codigo) throws SQLException, IDRecuperacaoInvalidaException {
 		try{
 			Gerente gerente = new Gerente();
-			gerente = Fachada.getSingleton().gerenteRecuperarValidacao(codigo);
+			gerente = Fachada.getSingleton().recuperarGerenteID(codigo);
 			System.out.println(gerente);;
 		}catch(IDRecuperacaoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -125,7 +121,7 @@ public class MainGerente {
 	//LISTAR TODOS
 	public void gerenciarListarGerente() throws SQLException, ListarTodosInvalidoException {
 		try {
-			System.out.println(Fachada.getSingleton().gerenteListarTodosValidacao());
+			System.out.println(Fachada.getSingleton().listarTodosGerentes());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {

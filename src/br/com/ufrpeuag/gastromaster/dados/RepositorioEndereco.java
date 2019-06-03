@@ -145,7 +145,7 @@ public class RepositorioEndereco implements IEnderecoDao {
 
 		String listarTodosSql = "Select * FROM Endereco";
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
+
 			stmt = conn.createStatement();
 
 			result = stmt.executeQuery(listarTodosSql);

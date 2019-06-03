@@ -5,15 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IContaDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
@@ -33,18 +31,13 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public void inserir(Conta conta) {
+		Data d = new Data();
 		String inserirSql = "INSERT INTO  Conta(data, cod_pedido , cod_garcom , cod_mesa, valor) VALUES(?,?,?,?,?)";
 
 		try {
 			pstmt = this.conn.prepareStatement(inserirSql);
 
-			// Data transformar para string
-			java.sql.Date date = java.sql.Date.valueOf(conta.getData());
-			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-			String dataFormatada = formatador.format(date);
-
-			
-			pstmt.setString(1, dataFormatada);
+			pstmt.setString(1, d.mudarDataParaString(conta.getData()));
 			pstmt.setInt(2, conta.getPedido().getId_pedido());
 			pstmt.setInt(3, conta.getGarcom().getId_garcom());
 			pstmt.setInt(4, conta.getMesa().getId_mesa());
@@ -79,7 +72,7 @@ public class RepositorioConta implements IContaDao {
 		Produto prod = null;
 		Cardapio card = null;
 		Endereco e = null;
-		String data;
+
 		try {
 
 			pstmt = this.conn.prepareStatement(sql);
@@ -96,13 +89,10 @@ public class RepositorioConta implements IContaDao {
 				card = new Cardapio();
 				prod = new Produto();
 				e = new Endereco();
-
-				data = result.getString("data");
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-				LocalDate localDate = LocalDate.parse(data, formatter);
+				Data d = new Data();
 
 				c.setId_conta(result.getInt("id_conta"));
-				c.setData(localDate);
+				c.setData(d.mudarDataParaLocalDate(result.getString("data")));
 
 				// Pedido
 				pedido.setId_pedido(result.getInt("id_pedido"));
@@ -124,7 +114,7 @@ public class RepositorioConta implements IContaDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -168,20 +158,15 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public void alterar(Conta conta) {
-		String alterarSql = "UPDATE Conta SET data= ? , " + "cod_pedido= ? , cod_garcom= ? , "
-				+ "cod_mesa= ?," + " valor= ?  WHERE id_conta = ?";
+		Data d = new Data();
+		String alterarSql = "UPDATE Conta SET data= ? , " + "cod_pedido= ? , cod_garcom= ? , " + "cod_mesa= ?,"
+				+ " valor= ?  WHERE id_conta = ?";
 
 		try {
 
 			pstmt = this.conn.prepareStatement(alterarSql);
 
-			// Data transformar para string
-			java.sql.Date date = java.sql.Date.valueOf(conta.getData());
-			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-			String dataFormatada = formatador.format(date);
-
-		
-			pstmt.setString(1, dataFormatada);
+			pstmt.setString(1, d.mudarDataParaString(conta.getData()));
 			pstmt.setInt(2, conta.getPedido().getId_pedido());
 			pstmt.setInt(3, conta.getGarcom().getId_garcom());
 			pstmt.setInt(4, conta.getMesa().getId_mesa());
@@ -233,8 +218,7 @@ public class RepositorioConta implements IContaDao {
 		Produto prod = null;
 		Cardapio card = null;
 		Endereco e = null;
-		String data;
-
+		Data d = new Data();
 		List<Conta> lista = new ArrayList<>();
 
 		String listarTodosSql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
@@ -259,12 +243,8 @@ public class RepositorioConta implements IContaDao {
 				prod = new Produto();
 				e = new Endereco();
 
-				data = result.getString("data");
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-				LocalDate localDate = LocalDate.parse(data, formatter);
-
 				c.setId_conta(result.getInt("id_conta"));
-				c.setData(localDate);
+				c.setData(d.mudarDataParaLocalDate(result.getString("data")));
 
 				// Pedido
 				pedido.setId_pedido(result.getInt("id_pedido"));
@@ -286,7 +266,7 @@ public class RepositorioConta implements IContaDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -329,7 +309,7 @@ public class RepositorioConta implements IContaDao {
 	}
 
 	@Override
-	public double fecharConta(Conta conta) {
+	public double mostrarValorConta(Conta conta) {
 		String sql = "SELECT * FROM Conta WHERE cod_mesa = ?;";
 
 		double valor = 0;
@@ -369,7 +349,6 @@ public class RepositorioConta implements IContaDao {
 		Produto prod = null;
 		Cardapio card = null;
 		Endereco e = null;
-		String data;
 
 		List<Conta> lista = new ArrayList<>();
 
@@ -388,7 +367,7 @@ public class RepositorioConta implements IContaDao {
 			result = pstmt.executeQuery();
 
 			while (result.next()) {
-
+				Data d = new Data();
 				c = new Conta();
 				m = new Mesa();
 				pedido = new Pedido();
@@ -397,12 +376,8 @@ public class RepositorioConta implements IContaDao {
 				prod = new Produto();
 				e = new Endereco();
 
-				data = result.getString("data");
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-				LocalDate localDate = LocalDate.parse(data, formatter);
-
 				c.setId_conta(result.getInt("id_conta"));
-				c.setData(localDate);
+				c.setData(d.mudarDataParaLocalDate(result.getString("data")));
 
 				// Pedido
 				pedido.setId_pedido(result.getInt("id_pedido"));
@@ -424,7 +399,7 @@ public class RepositorioConta implements IContaDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));

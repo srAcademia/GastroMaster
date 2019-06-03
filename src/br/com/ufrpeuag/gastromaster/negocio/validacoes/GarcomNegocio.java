@@ -1,14 +1,16 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioEndereco;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioGarcom;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IEnderecoDao;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IGarcomDao;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
@@ -16,134 +18,168 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaExcept
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.RuaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 
-public class GarcomValidacao {
+public class GarcomNegocio {
+
 	private IGarcomDao repGarcom;
 	private IEnderecoDao repEndereco;
-	Endereco end = new Endereco();
-	int id;
-	
-	public GarcomValidacao() throws SQLException {
+
+	public GarcomNegocio() throws SQLException {
 		repGarcom = new RepositorioGarcom();
 		repEndereco = new RepositorioEndereco();
 	}
-	
-	public void garcomCadastroValidacao(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, SalarioInvalidoException, GarcomExistenteException{
-		if(CpfValidacao.isCPF(garcom.getCpf()) == false) {
-			id = repEndereco.recuperarUltimoID();
-			end = repEndereco.recuperar(id);
-			repEndereco.deletar(end);
+
+	public void cadastrarGarcom(Garcom garcom) throws CPFInvalidoException, DataNascimentoInvalidaException,
+			NomeInvalidoException, SalarioInvalidoException, GarcomExistenteException, RuaInvalidaException,
+			NumeroInvalidoException, CidadeInvalidaException, CEPInvalidoException, BairroInvalidoException {
+
+		if (CpfNegocio.isCPF(garcom.getCpf()) == false) {
 			throw new CPFInvalidoException();
 		}
-		if(repGarcom.recuperar(garcom.getCpf()) != null) {
-			id = repEndereco.recuperarUltimoID();
-			end = repEndereco.recuperar(id);
-			repEndereco.deletar(end);
+		if (repGarcom.recuperarCPF(garcom.getCpf()) != null) {
 			throw new GarcomExistenteException();
 		}
-		if(garcom.getNome() == null || garcom.getNome().isEmpty()) {
-			id = repEndereco.recuperarUltimoID();
-			end = repEndereco.recuperar(id);
-			repEndereco.deletar(end);
+		if (garcom.getNome() == null || garcom.getNome().isEmpty()) {
 			throw new NomeInvalidoException();
 		}
-		if(DataValidacao.ValidarData(garcom.getDataNasc()) == false) {
-			id = repEndereco.recuperarUltimoID();
-			end = repEndereco.recuperar(id);
-			repEndereco.deletar(end);
+
+		if (garcom.getDataNasc() == null) {
 			throw new DataNascimentoInvalidaException();
 		}
-		if(garcom.getSalario() <= 0) {
-			id = repEndereco.recuperarUltimoID();
-			end = repEndereco.recuperar(id);
-			repEndereco.deletar(end);
+
+		if (garcom.getSalario() <= 0) {
 			throw new SalarioInvalidoException();
 		}
-		repGarcom.inserir(garcom);	
+		if (garcom.getEndereco().getBairro() == null || garcom.getEndereco().getBairro().isEmpty()) {
+			throw new BairroInvalidoException();
+		}
+		if (garcom.getEndereco().getCep() == null || garcom.getEndereco().getCep().isEmpty()) {
+			throw new CEPInvalidoException();
+		}
+		if (garcom.getEndereco().getCidade() == null || garcom.getEndereco().getCidade().isEmpty()) {
+			throw new CidadeInvalidaException();
+		}
+		if (garcom.getEndereco().getNumero() <= 0) {
+			throw new NumeroInvalidoException();
+		}
+		if (garcom.getEndereco().getRua() == null || garcom.getEndereco().getRua().isEmpty()) {
+			throw new RuaInvalidaException();
+		}
+
+		repEndereco.inserir(garcom.getEndereco());
+		garcom.getEndereco().setId_endereco(repEndereco.recuperarUltimoID());
+		garcom.setIdentificador(garcom.gerarIdentificador());
+		repGarcom.inserir(garcom);
+
 	}
-	
-	public void garcomRemocaoValidacao(Garcom garcom) throws GarcomInexistenteException{
-		if(repGarcom.recuperar(garcom.getCpf()) == null) {
+
+	public void deletarGarcom(Garcom garcom) throws GarcomInexistenteException {
+		if (repGarcom.recuperarCPF(garcom.getCpf()) == null) {
 			throw new GarcomInexistenteException();
 		}
+		repEndereco.deletar(garcom.getEndereco());
 		repGarcom.deletar(garcom);
 	}
-	
-	public void garcomAlteracaoValidacao(Garcom garcom, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario) throws CPFInvalidoException, DataNascimentoInvalidaException, GarcomExistenteException{
-		if(nome.isEmpty() == false) {
-			garcom.setNome(nome);
+
+	public void alterarGarcom(Garcom garcom)
+			throws GarcomExistenteException, DataNascimentoInvalidaException, CPFInvalidoException {
+
+		if (garcom.getNome().isEmpty() == false) {
+			garcom.setNome(garcom.getNome());
 		}
-		if(novoCPF.isEmpty() == false) {
-			if(CpfValidacao.isCPF(novoCPF) == false) {
+
+		if (garcom.getCpf().isEmpty() == false) {
+			if (CpfNegocio.isCPF(garcom.getCpf()) == false) {
 				throw new CPFInvalidoException();
 			}
-			if(repGarcom.recuperar(novoCPF) != null) {
-				throw new GarcomExistenteException(); 
+			if (repGarcom.recuperarCPF(garcom.getCpf()) != null) {
+				throw new GarcomExistenteException();
 			}
-			garcom.setCpf(novoCPF);
+			garcom.setCpf(garcom.getCpf());
 		}
-		if(dataNasc.isEmpty() == false) {
-			if(DataValidacao.ValidarData(dataNasc) == false) {
-				throw new DataNascimentoInvalidaException();
-			}
-			garcom.setDataNasc(dataNasc);
+
+		if (garcom.getDataNasc() == null) {
+			garcom.setDataNasc(garcom.getDataNasc());
 		}
-		if(telefone.isEmpty() == false) {
-			garcom.setTelefone(telefone);
+
+		if (garcom.getTelefone().isEmpty() == false) {
+			garcom.setTelefone(garcom.getTelefone());
 		}
-		if(email.isEmpty() == false) {
-			garcom.setEmail(email);
+
+		if (garcom.getEmail().isEmpty() == false) {
+			garcom.setEmail(garcom.getEmail());
 		}
-		if(salario > 0 ) {
-			garcom.setSalario(salario);
+
+		if (garcom.getSalario() > 0) {
+			garcom.setSalario(garcom.getSalario());
 		}
+
+		if (garcom.getEndereco().getBairro().isEmpty() == false) {
+			garcom.getEndereco().setBairro(garcom.getEndereco().getBairro());
+
+		}
+		if (garcom.getEndereco().getCidade().isEmpty() == false) {
+			garcom.getEndereco().setCidade(garcom.getEndereco().getCidade());
+
+		}
+		if (garcom.getEndereco().getRua().isEmpty() == false) {
+			garcom.getEndereco().setRua(garcom.getEndereco().getRua());
+
+		}
+		if (garcom.getEndereco().getNumero() > 0) {
+			garcom.getEndereco().setNumero(garcom.getEndereco().getNumero());
+
+		}
+		if (garcom.getEndereco().getCep().isEmpty() == false) {
+			garcom.getEndereco().setCep(garcom.getEndereco().getCep());
+
+		}
+
+		repEndereco.alterar(garcom.getEndereco());
 		repGarcom.alterar(garcom);
+
 	}
-	
-	public Garcom garcomRecuperarValidacao(Integer codigo) throws IDRecuperacaoInvalidaException{
-		List<Garcom> garcom = new ArrayList<>();
-		garcom = this.repGarcom.listarTodos();
-		for (int i = 0; i < garcom.size(); i++) {
-			if(garcom.get(i).getId_garcom() == codigo) {
-				return repGarcom.recuperar(codigo);
-			}
+
+	public Garcom recuperarGarcomID(Integer codigo) throws IDRecuperacaoInvalidaException {
+		if (codigo == null || repGarcom.recuperar(codigo) == null) {
+			throw new IDRecuperacaoInvalidaException();
 		}
-		throw new IDRecuperacaoInvalidaException();
+
+		return repGarcom.recuperar(codigo);
 	}
-	
-	public List<Garcom> garcomListarTodosValidacao() throws ListarTodosInvalidoException{
+
+	public List<Garcom> listarTodosGarcons() throws ListarTodosInvalidoException {
 		if (repGarcom.listarTodos() == null || repGarcom.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repGarcom.listarTodos();
 	}
-	
-	public Garcom garcomRecuperarCPFValidacao(String CPF) throws CPFInvalidoException, RecuperarCPFException{
-		if(CPF.equals(null) || CPF.isEmpty()) {
+
+	public Garcom recuperarPorCpfGarcom(String CPF) throws CPFInvalidoException, RecuperarCPFException {
+		if (CPF.equals(null) || CPF.isEmpty()) {
 			throw new CPFInvalidoException();
 		}
-		List<Garcom> garcom =  new ArrayList<>();
-		garcom = this.repGarcom.listarTodos();
-		for(int i = 0; i < garcom.size(); i++) {
-			if(garcom.get(i).getCpf().equals(CPF)) {
-				return repGarcom.recuperar(CPF);
-			}
+		if (repGarcom.recuperarCPF(CPF) == null) {
+			throw new RecuperarCPFException();
 		}
-		throw new RecuperarCPFException();
+
+		return repGarcom.recuperarCPF(CPF);
+
 	}
-	
-	public Garcom garcomVerificarValidacao(String identificador) throws LoginInvalidoException {
-		if(identificador.equals(null) || identificador.isEmpty()) {
+
+	public Garcom verificarIndetificadorGarcom(String identificador) throws LoginInvalidoException {
+		if (identificador.equals(null) || identificador.isEmpty()) {
 			throw new LoginInvalidoException();
 		}
-		if(repGarcom.verificar(identificador) == null) {
+		if (repGarcom.verificarIdentificador(identificador) == null) {
 			throw new LoginInvalidoException();
 		}
-		return repGarcom.verificar(identificador);
+		return repGarcom.verificarIdentificador(identificador);
 	}
 
 }

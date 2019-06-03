@@ -3,7 +3,8 @@ package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class DataValidacao {
+public class DataNegocio {
+	
 	public static boolean ValidarData(String data) {
 		try {
 			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -11,7 +12,7 @@ public class DataValidacao {
 	         sdf.parse(data);
 	         return true;
 	     }catch(ParseException ex) {
-	    	 System.out.println("Data inválida.");
+	    	 System.out.println("Data invï¿½lida.");
 	     }
 		 return false;
 	}

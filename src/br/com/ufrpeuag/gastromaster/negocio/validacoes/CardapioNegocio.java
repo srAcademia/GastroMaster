@@ -1,12 +1,10 @@
 package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioCardapio;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.ICardapioDao;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoExistenteException;
@@ -14,36 +12,39 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PrecoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 
-public class CardapioValidacao {
+public class CardapioNegocio {
 	private ICardapioDao repCardapio;
-	
-	public CardapioValidacao() throws SQLException {
+
+	public CardapioNegocio() throws SQLException {
 		repCardapio = new RepositorioCardapio();
 	}
-	
-	public void cardapioCadastroValidacao(Cardapio cardapio) throws PratoExistenteException, NomeInvalidoException, PrecoInvalidoException {
-		if(repCardapio.recuperar(cardapio.getPrato()) != null) {
+
+	public void cadastrarCardapio(Cardapio cardapio)
+			throws PratoExistenteException, NomeInvalidoException, PrecoInvalidoException {
+
+		if (repCardapio.recuperarPorNome(cardapio.getPrato()) != null) {
 			throw new PratoExistenteException();
 		}
-		if(cardapio.getPrato() == null || cardapio.getPrato().isEmpty()) {
+		if (cardapio.getPrato() == null || cardapio.getPrato().isEmpty()) {
 			throw new NomeInvalidoException();
 		}
-		if(cardapio.getPreco() <= 0) {
+		if (cardapio.getPreco() <= 0) {
 			throw new PrecoInvalidoException();
 		}
 		repCardapio.inserir(cardapio);
 	}
-	
-	public void cardapioRemocaoValidacao(Cardapio cardapio) throws PratoInexistenteException {
-		if(repCardapio.recuperar(cardapio.getPrato()) == null) {
+
+	public void deletarCardapio(Cardapio cardapio) throws PratoInexistenteException {
+
+		if (repCardapio.recuperarPorNome(cardapio.getPrato()) == null) {
 			throw new PratoInexistenteException();
 		}
 		repCardapio.deletar(cardapio);
 	}
-	
-	public void cardapioAlteracaoValidacao(Cardapio cardapio, String nome, String novoNome, double preco) throws PratoExistenteException {
+
+	public void alterarCardapio(Cardapio cardapio, String nome, String novoNome, double preco) throws PratoExistenteException {
 		if(novoNome.isEmpty() == false) {
-			if(repCardapio.recuperar(novoNome) != null) {
+			if(repCardapio.recuperarPorNome(novoNome) != null) {
 				throw new PratoExistenteException();
 			}
 			cardapio.setPrato(novoNome);
@@ -54,47 +55,41 @@ public class CardapioValidacao {
 		repCardapio.alterar(cardapio);
 	}
 	
-	public Cardapio cardapioRecuperarValidacao(String nome) throws PratoInexistenteException, NomeInvalidoException {
-		if(nome.equals(null)) {
+
+	public Cardapio recuperarCardapioPeloNome(String nome) throws PratoInexistenteException, NomeInvalidoException {
+
+		if (nome.equals(null)) {
 			throw new NomeInvalidoException();
 		}
-		List<Cardapio> cardapio = new ArrayList<>();
-		cardapio = this.repCardapio.listarTodos();
-		for (int i = 0; i < cardapio.size(); i++) {
-			if(cardapio.get(i).getPrato().equals(nome)) {
-				return repCardapio.recuperar(nome);
-			}
-		}
-		throw new PratoInexistenteException();
-	}
-	
-	public Integer cardapioRetornarIDValidacao(String nome) throws NomeInvalidoException, PratoInexistenteException{
-		if(nome== null || nome.isEmpty()) {
-			throw new NomeInvalidoException();
-		}
-		int id = repCardapio.retornarID(nome);
-		if(id == 0) {
+		if (repCardapio.recuperarPorNome(nome) == null) {
 			throw new PratoInexistenteException();
 		}
-		return id;
+		return repCardapio.recuperarPorNome(nome);
 	}
-	
-	public Cardapio cardapioRecuperarValidacao(Integer codigo) throws IDRecuperacaoItemInvalidoException{
-		List<Cardapio> cardapio = new ArrayList<>();
-		cardapio = this.repCardapio.listarTodos();
-		for (int i = 0; i < cardapio.size(); i++) {
-			if(cardapio.get(i).getId_cardapio() == (codigo)) {
-				return repCardapio.recuperar(codigo);
-			}
+
+	public Integer recuperarIDPeloNomeCardapio(String nome) throws NomeInvalidoException, PratoInexistenteException {
+		if (nome == null || nome.isEmpty()) {
+			throw new NomeInvalidoException();
 		}
-		throw new IDRecuperacaoItemInvalidoException();
+
+		if (repCardapio.retornarID(nome) == 0) {
+			throw new PratoInexistenteException();
+		}
+		return repCardapio.retornarID(nome);
 	}
-	
-	public List<Cardapio> cardapioListarTodosValidacao() throws ListarTodosInvalidoException {
-		if(repCardapio.listarTodos() == null || repCardapio.listarTodos().isEmpty()) {
+
+	public Cardapio recuperarCardapioPorID(Integer codigo) throws PratoInexistenteException {
+		if (repCardapio.recuperar(codigo) == null) {
+			throw new PratoInexistenteException();
+		}
+		return repCardapio.recuperar(codigo);
+
+	}
+
+	public List<Cardapio> listarTodosCardapios() throws ListarTodosInvalidoException {
+		if (repCardapio.listarTodos() == null || repCardapio.listarTodos().isEmpty()) {
 			throw new ListarTodosInvalidoException();
 		}
 		return repCardapio.listarTodos();
 	}
-
 }
