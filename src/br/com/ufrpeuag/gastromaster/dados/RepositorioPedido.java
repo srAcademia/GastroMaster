@@ -55,7 +55,7 @@ public class RepositorioPedido implements IPedidoDao {
 
 		String sqlRecuperar = "select * " + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) "
 				+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) JOIN Mesa m on (pe.cod_mesa = m.id_mesa) "
-				+ "where id_pedido = ?";
+				+ "where pe.id_pedido = ?";
 
 		Cardapio c = null;
 		Produto p = null;
@@ -124,9 +124,8 @@ public class RepositorioPedido implements IPedidoDao {
 			pstmt.setInt(1, pedido.getProduto().getId_produto());
 			pstmt.setInt(2, pedido.getCardapio().getId_cardapio());
 			pstmt.setDouble(3, pedido.getValor());
-			pstmt.setInt(4, pedido.getId_pedido());
 			pstmt.setInt(4, pedido.getMesa().getId_mesa());
-
+			pstmt.setInt(5, pedido.getId_pedido());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -341,12 +340,13 @@ public class RepositorioPedido implements IPedidoDao {
 				+ "JOIN Mesa m on (pe.cod_mesa = m.id_mesa) \r\n" + "where pe.cod_mesa = ? ;";
 
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-			stmt = conn.createStatement();
-			result = stmt.executeQuery(sql);
-
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id_mesa);
+			result = pstmt.executeQuery();
+			
 			while (result.next()) {
-
+			
 				c = new Cardapio();
 				p = new Produto();
 				pedido = new Pedido();
@@ -374,6 +374,7 @@ public class RepositorioPedido implements IPedidoDao {
 				pedido.setMesa(m);
 
 				lista.add(pedido);
+				
 
 			}
 			return lista;
@@ -385,7 +386,7 @@ public class RepositorioPedido implements IPedidoDao {
 
 			try {
 				result.close();
-				stmt.close();
+				pstmt.close();
 			} catch (SQLException ex) {
 				System.out.println(ex.getMessage());
 			}

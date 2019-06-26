@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IGerenteDao;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 
 public class RepositorioGerente implements IGerenteDao {
-	
+
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet result;
@@ -25,7 +26,7 @@ public class RepositorioGerente implements IGerenteDao {
 
 	@Override
 	public void inserir(Gerente gerente) {
-
+		Data d = new Data();
 		String inserirSql = "INSERT INTO Gerente (nome, cpf, dataNasc, telefone, email, salario,senha,identificador,cod_endereco)"
 				+ " VALUES(?,?,?,?,?,?,?,?,?)";
 		try {
@@ -34,7 +35,7 @@ public class RepositorioGerente implements IGerenteDao {
 
 			pstmt.setString(1, gerente.getNome());
 			pstmt.setString(2, gerente.getCpf());
-			pstmt.setString(3, gerente.getDataNasc());
+			pstmt.setString(3, d.mudarDataParaString(gerente.getDataNasc()));
 			pstmt.setString(4, gerente.getTelefone());
 			pstmt.setString(5, gerente.getEmail());
 			pstmt.setDouble(6, gerente.getSalario());
@@ -59,6 +60,7 @@ public class RepositorioGerente implements IGerenteDao {
 	public Gerente recuperar(Integer codigo) {
 		Gerente g = null;
 		Endereco e = null;
+		Data d = new Data();
 		String sqlRecuperar = "SELECT * from Gerente g join Endereco e on g.cod_endereco=e.id_endereco where id_gerente = ? ;";
 
 		try {
@@ -74,7 +76,7 @@ public class RepositorioGerente implements IGerenteDao {
 				g.setId_gerente(result.getInt("id_gerente"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -107,6 +109,7 @@ public class RepositorioGerente implements IGerenteDao {
 
 	@Override
 	public void alterar(Gerente gerente) {
+		Data d = new Data();
 		String alterarSql = "UPDATE Gerente SET " + "nome = ? , " + "cpf = ?, " + "dataNasc = ?," + "telefone = ?,"
 				+ "email = ?," + "salario = ?," + "senha = ?, identificador = ? " + " WHERE id_gerente = ?";
 		try {
@@ -115,7 +118,7 @@ public class RepositorioGerente implements IGerenteDao {
 
 			pstmt.setString(1, gerente.getNome());
 			pstmt.setString(2, gerente.getCpf());
-			pstmt.setString(3, gerente.getDataNasc());
+			pstmt.setString(3, d.mudarDataParaString(gerente.getDataNasc()));
 			pstmt.setString(4, gerente.getTelefone());
 			pstmt.setString(5, gerente.getEmail());
 			pstmt.setDouble(6, gerente.getSalario());
@@ -166,7 +169,7 @@ public class RepositorioGerente implements IGerenteDao {
 	public List<Gerente> listarTodos() {
 		Gerente g = null;
 		Endereco e = null;
-
+		Data d = new Data();
 		List<Gerente> lista = new ArrayList<>();
 		String listarTodosSql = "Select * FROM Gerente join endereco  on cod_endereco = id_endereco ";
 
@@ -182,7 +185,7 @@ public class RepositorioGerente implements IGerenteDao {
 				g.setId_gerente(result.getInt("id_gerente"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -222,7 +225,7 @@ public class RepositorioGerente implements IGerenteDao {
 	public Gerente recuperarCPF(String cpf) {
 		Gerente g = null;
 		Endereco e = null;
-
+		Data d = new Data();
 		String sqlRecuperarCpf = "SELECT * from Gerente g join Endereco e on g.cod_endereco=e.id_endereco where cpf = ? ;";
 		try {
 
@@ -237,7 +240,7 @@ public class RepositorioGerente implements IGerenteDao {
 				g.setId_gerente(result.getInt("id_gerente"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -270,11 +273,11 @@ public class RepositorioGerente implements IGerenteDao {
 	}
 
 	@Override
-	public Gerente verificar(String identificador) {
+	public Gerente verificarIdentificador(String identificador) {
 
 		Gerente g = null;
 		Endereco e = null;
-
+		Data d = new Data();
 		String verificarIdentificador = "SELECT * from Gerente g join Endereco e on g.cod_endereco=e.id_endereco where identificador = ?;";
 
 		try {
@@ -290,7 +293,7 @@ public class RepositorioGerente implements IGerenteDao {
 				g.setId_gerente(result.getInt("id_gerente"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -326,7 +329,7 @@ public class RepositorioGerente implements IGerenteDao {
 	public Gerente logar(String senha) {
 		Gerente g = null;
 		Endereco e = null;
-
+		Data d = new Data();
 		String sqlLogar = "SELECT * from Gerente g join Endereco e on g.cod_endereco=e.id_endereco where senha = ? ; ";
 
 		try {
@@ -343,7 +346,7 @@ public class RepositorioGerente implements IGerenteDao {
 				g.setId_gerente(result.getInt("id_gerente"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(result.getString("dataNasc"));
+				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));

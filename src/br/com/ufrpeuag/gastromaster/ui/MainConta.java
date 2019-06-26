@@ -19,7 +19,7 @@ public class MainConta {
 		try {	
 		   	LocalDate localDate = LocalDate.now();
 		   	Conta conta = new Conta(localDate, pedido, garcom, mesa, pedido.getValor());
-		    Fachada.getSingleton().contaCadastroContaValidacao(conta);
+		    Fachada.getSingleton().cadastrarConta(conta);
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
@@ -29,8 +29,8 @@ public class MainConta {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();	
 			Conta conta = new Conta();
-			conta = Fachada.getSingleton().contaRecuperarContaValidacao(codigo);
-			Fachada.getSingleton().contaRemocaoContaValidacao(conta);
+			conta = Fachada.getSingleton().recuperarContaID(codigo);
+			Fachada.getSingleton().deletarConta(conta);
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
@@ -38,7 +38,7 @@ public class MainConta {
 	
 	public double gerenciarGerarConta(Conta conta) throws SQLException {
 		try {
-			double valor = Fachada.getSingleton().contaGerarConta(conta);
+			double valor = Fachada.getSingleton().mostrarValorConta(conta);
 			return valor;
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
@@ -49,7 +49,7 @@ public class MainConta {
 	public List<Conta> gerenciarRetornarTodasContaPorMesa(Integer codigo) throws SQLException, ContaGerarException {
 		try {
 			List<Conta> contas = new ArrayList<>();
-			contas = Fachada.getSingleton().contaRetornarTodasContaPorMesaValidacao(codigo);
+			contas = Fachada.getSingleton().recuperarContaPorMesa(codigo);
 			return contas;
 		}catch(ContaGerarException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -61,7 +61,7 @@ public class MainConta {
 	
 	public void gerenciarRemoverTodasConta(Conta conta) throws SQLException{
 		try {
-			Fachada.getSingleton().contaRemoverTodasContaValidacao(conta);
+			Fachada.getSingleton().deletarConta(conta);
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado");
 		}

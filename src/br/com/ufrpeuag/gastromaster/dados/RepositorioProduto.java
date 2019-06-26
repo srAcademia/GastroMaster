@@ -311,8 +311,7 @@ public class RepositorioProduto implements IProdutoDao {
 
 		int id = 0;
 		try {
-			Connection conn = ConfiguracoesBanco.getSingleton().getConnection();
-
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, nome);
 

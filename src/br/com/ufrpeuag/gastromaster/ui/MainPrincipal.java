@@ -1,6 +1,7 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -100,9 +101,9 @@ public class MainPrincipal {
 			switch (opcao) {
 			case 1:
 				System.out.println("Digite seu login:");
-				//mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "13189229414", "30/01/2001", "87 9953-3012",
+				//mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "13189229414", LocalDate.now(), "87 9953-3012",
 				//"kelwinjonas@gmail.com", 9999999, "12345", "");
-				gerente = mainGerente.gerenciarVerificarGerente("260c75");
+				gerente = mainGerente.gerenciarVerificarGerente("26b676");
 				if (gerente != null) {
 					System.out.println("Digite sua senha:");
 					gerente = mainGerente.gerenciarLogarGerente("12345");
@@ -127,12 +128,12 @@ public class MainPrincipal {
 								switch (opcao11) {
 								case 1:
 									mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva",
-											9, "553233", "Milena", "13189229414", "30/01/2001", "87 9953-3012",
+											9, "553233", "Milena", "13189229414", LocalDate.now(), "87 9953-3012",
 											"kelwinjonas@gmail.com", 9999999, "12345", "");
 									break;
 								case 2:
-									mainGerente.gerenciarAlteracaoGerente("", "", "", 0, "", "Milena Macedo", "8998324",
-											"", "", "", "", 0, "");
+									/*mainGerente.gerenciarAlteracaoGerente("", "", "", 0, "", "Milena Macedo", "8998324",
+											"", "", "", "", 0, "");*/
 									break;
 								case 3:
 									mainGerente.gerenciarRemocaoGerente("8998324");
@@ -163,12 +164,12 @@ public class MainPrincipal {
 								switch (opcao12) {
 								case 1:
 									mainGarcom.gerenciarCadastroGarcom("Garanhuns", "Boa Vista", "Jose Duca da Silva",
-											9, "553233", "Kelwin", "13189229414", "30/01/2001", "87 9953-3012",
+											9, "553233", "Kelwin", "13189229414", LocalDate.now(), "87 9953-3012",
 											"kelwinjonas@gmail.com", 9999999, "");
 									break;
 								case 2:
-									mainGarcom.gerenciarAlteracaoGarcom("", "", "", 0, "", "Kelwin Jonas", "131892", "",
-											"", "", "", 0);
+									/*mainGarcom.gerenciarAlteracaoGarcom("", "", "", 0, "", "Kelwin Jonas", "131892", "",
+											"", "", "", 0);*/
 									break;
 								case 3:
 									mainGarcom.gerenciarRemocaoGarcom("131892");
@@ -218,7 +219,7 @@ public class MainPrincipal {
 						break;
 					case 4:
 						mesa = mainMesa.gerenciarGerenciamentoMesa(1);
-						garcom = mainGarcom.gerenciarVerificarGarcom("134bdd");
+						garcom = mainGarcom.gerenciarVerificarGarcom("1c0f3e");
 						if (mesa != null && garcom != null) {
 							do {
 								System.out.println("Digite 1 para fazer um pedido à mesa.");

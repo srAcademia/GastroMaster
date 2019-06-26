@@ -1,5 +1,8 @@
 package br.com.ufrpeuag.gastromaster.ui;
+
 import java.sql.SQLException;
+import java.time.LocalDate;
+
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
@@ -21,97 +24,105 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
+
 public class MainGarcom {
-	
-	//TESTE DE CADASTRO
-	public void gerenciarCadastroGarcom (String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String dataNasc, String telefone, String email, double salario, String identificador)
-			throws SQLException, BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException, CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException, GarcomExistenteException, IDInexistenteException, SalarioInvalidoException, IDRecuperacaoInvalidaException{
+
+	// TESTE DE CADASTRO
+	public void gerenciarCadastroGarcom(String cidade, String bairro, String rua, int numero, String cep, String nome,
+			String cpf, LocalDate dataNasc, String telefone, String email, double salario, String identificador)
+			throws SQLException, BairroInvalidoException, CEPInvalidoException, CidadeInvalidaException,
+			NumeroInvalidoException, RuaInvalidaException, CPFInvalidoException, DataNascimentoInvalidaException,
+			NomeInvalidoException, GarcomExistenteException, IDInexistenteException, SalarioInvalidoException,
+			IDRecuperacaoInvalidaException {
 		try {
-			Endereco end  = new Endereco(cidade, bairro, rua, numero, cep);
+			Endereco end = new Endereco(cidade, bairro, rua, numero, cep);
 			Garcom garcom = new Garcom(nome, cpf, dataNasc, telefone, email, salario, identificador, end);
-			Fachada.getSingleton().enderecoCadastroValidacao(end);
-			int id = Fachada.getSingleton().enderecoRecuperarUltimoIDValidacao();
-			garcom.getEndereco().setId_endereco(id);
+			
 			garcom.setIdentificador(garcom.gerarIdentificador());
-			Fachada.getSingleton().garcomCadastroValidacao(garcom);
+			Fachada.getSingleton().cadastrarGarcom(garcom);
+			
 			System.out.println("Gar�om cadastrado.");
-			System.out.println("ID gerado do garçom: "+garcom.getIdentificador());
-		}catch(BairroInvalidoException | CEPInvalidoException | CidadeInvalidaException | NumeroInvalidoException | RuaInvalidaException | CPFInvalidoException | DataNascimentoInvalidaException | NomeInvalidoException | GarcomExistenteException ex) {
+			System.out.println("ID gerado do garçom: " + garcom.getIdentificador());
+		} catch (BairroInvalidoException | CEPInvalidoException | CidadeInvalidaException | NumeroInvalidoException
+				| RuaInvalidaException | CPFInvalidoException | DataNascimentoInvalidaException | NomeInvalidoException
+				| GarcomExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
 
-	//RECUPERAR
+	// RECUPERAR
 	public void gerenciarRecuperarGarcom(Integer codigo) throws SQLException, IDRecuperacaoInvalidaException {
-		try{
+		try {
 			Garcom garcom = new Garcom();
-			garcom = Fachada.getSingleton().garcomRecuperarValidacao(codigo);
+			garcom = Fachada.getSingleton().recuperarGarcomID(codigo);
 			System.out.println(garcom);
-		}catch(IDRecuperacaoInvalidaException ex) {
+		} catch (IDRecuperacaoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
-	
-	//REMOCAO
-	public void gerenciarRemocaoGarcom(String CPF) throws SQLException, GarcomInexistenteException, EnderecoInexistenteException, CPFInvalidoException, RecuperarCPFException {
+
+	// REMOCAO
+	public void gerenciarRemocaoGarcom(String CPF) throws SQLException, GarcomInexistenteException,
+			EnderecoInexistenteException, CPFInvalidoException, RecuperarCPFException {
 		try {
 			Garcom garcom = new Garcom();
-			Endereco end = new Endereco();
-			garcom = Fachada.getSingleton().garcomRecuperarCPFValidacao(CPF);
-			end = Fachada.getSingleton().enderecoRecuperarValidacao(garcom.getEndereco().getId_endereco());
-			Fachada.getSingleton().garcomRemocaoValidacao(garcom);
-			Fachada.getSingleton().enderecoRemocaoValidacao(end);
+
+			garcom = Fachada.getSingleton().recuperarGarcomPorCPF(CPF);
+			Fachada.getSingleton().deletarGarcom(garcom);
 			System.out.println("Gar�om removido.");
-		}catch(GarcomInexistenteException | EnderecoInexistenteException | CPFInvalidoException | RecuperarCPFException ex) {
+		} catch (GarcomInexistenteException | CPFInvalidoException | RecuperarCPFException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
-		
-	//TESTE ALTERACAO	
-	public void gerenciarAlteracaoGarcom(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario)
-			throws SQLException, CPFInvalidoException, DataNascimentoInvalidaException, RecuperarCPFException, GarcomExistenteException {
+
+	/*// TESTE ALTERACAO
+	public void gerenciarAlteracaoGarcom(String cidade, String bairro, String rua, int numero, String cep, String nome,
+			String cpf, String novoCPF, LocalDate dataNasc, String telefone, String email, double salario)
+			throws SQLException, CPFInvalidoException, DataNascimentoInvalidaException, RecuperarCPFException,
+			GarcomExistenteException {
 		try {
-			Garcom garcom = new Garcom();
-			Endereco end = new Endereco();
-			garcom = Fachada.getSingleton().garcomRecuperarCPFValidacao(cpf);
-			end = Fachada.getSingleton().enderecoRecuperarValidacao(garcom.getEndereco().getId_endereco());		
-			Fachada.getSingleton().enderecoAlteracaoValidacao(end, cidade, bairro, rua, numero, cep);
-			Fachada.getSingleton().garcomAlteracaoValidacao(garcom, nome, cpf, novoCPF, dataNasc, telefone, email, salario);
+			
+			Endereco end = new Endereco(cidade, bairro, rua, numero, cep);
+			Garcom garcom = new Garcom(nome, cpf, novoCPF, dataNasc, telefone, email,salario,,end);
+			garcom = Fachada.getSingleton().recuperarGarcomPorCPF(cpf);
+			
+			Fachada.getSingleton().alterarGarcom(garcom);
 			System.out.println("Gar�om alterado.");
-		}catch(CPFInvalidoException | RecuperarCPFException | DataNascimentoInvalidaException | GarcomExistenteException ex) {
+		} catch (CPFInvalidoException | RecuperarCPFException | DataNascimentoInvalidaException
+				| GarcomExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
-		
-	//TESTE LISTAR TODOS
-	public void gerenciarListarGarcom() throws SQLException, ListarTodosInvalidoException{
+	}*/
+
+	// TESTE LISTAR TODOS
+	public void gerenciarListarGarcom() throws SQLException, ListarTodosInvalidoException {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
-			System.out.println(Fachada.getSingleton().garcomListarTodosValidacao());
-		}catch(ListarTodosInvalidoException ex) {
+			System.out.println(Fachada.getSingleton().ListarTodosGarcons());
+		} catch (ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
-	
-	//VERIFICA SE E GARCOM
-	public Garcom gerenciarVerificarGarcom(String identificador) throws SQLException, LoginInvalidoException{
+
+	// VERIFICA SE E GARCOM
+	public Garcom gerenciarVerificarGarcom(String identificador) throws SQLException, LoginInvalidoException {
 		try {
 			Garcom garcom = new Garcom();
-			garcom = Fachada.getSingleton().garcomVerificarValidacao(identificador);
+			garcom = Fachada.getSingleton().verificarIdentificadorGarcom(identificador);
 			return garcom;
-		}catch(LoginInvalidoException ex) {
+		} catch (LoginInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 		return null;

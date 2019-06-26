@@ -17,16 +17,15 @@ public class RepositorioCardapio implements ICardapioDao {
 	private Connection conn;
 	private ResultSet result;
 	private Statement stmt;
-	
 
 	public RepositorioCardapio() throws SQLException {
-		this.conn = ConfiguracoesBanco.getSingleton().getConnection();	
+		this.conn = ConfiguracoesBanco.getSingleton().getConnection();
 	}
 
 	@Override
 	public void inserir(Cardapio cardapio) {
 		String inserirSql = "INSERT INTO Cardapio(prato, preco) VALUES(?,?)";
-		
+
 		try {
 
 			pstmt = conn.prepareStatement(inserirSql);
@@ -139,12 +138,11 @@ public class RepositorioCardapio implements ICardapioDao {
 		String listarTodosSql = "Select * FROM Cardapio";
 
 		try {
-			conn = ConfiguracoesBanco.getSingleton().getConnection();
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(listarTodosSql);
-			
+
 			while (result.next()) {
-				Cardapio c  = new Cardapio();
+				Cardapio c = new Cardapio();
 				c.setId_cardapio(result.getInt("id_cardapio"));
 				c.setPrato(result.getString("prato"));
 				c.setPreco(result.getDouble("preco"));
@@ -171,19 +169,16 @@ public class RepositorioCardapio implements ICardapioDao {
 	}
 
 	@Override
-	public Cardapio recuperar(String nome) {
+	public Cardapio recuperarPorNome(String nome) {
 		Cardapio c = null;
 		String sqlRecuperarNome = "SELECT * from Cardapio where prato = ?";
-		
-		try {
-			conn = ConfiguracoesBanco.getSingleton().getConnection();
 
+		try {
 			pstmt = conn.prepareStatement(sqlRecuperarNome);
 
 			pstmt.setString(1, nome);
 
 			result = pstmt.executeQuery();
-
 
 			if (result.next()) {
 

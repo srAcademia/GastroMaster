@@ -1,9 +1,10 @@
-    
+
 package br.com.ufrpeuag.gastromaster.negocio.modelo.classes;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.Random;
 
 public class Garcom extends Funcionario {
@@ -14,9 +15,9 @@ public class Garcom extends Funcionario {
 
 	}
 
-	public Garcom(String nome, String cpf,  String dataNasc, String telefone, String email,
-			double salario, String identificador,Endereco endereco) {
-		super(nome, cpf,  dataNasc, telefone, email, salario, identificador,endereco);
+	public Garcom(String nome, String cpf, LocalDate dataNasc, String telefone, String email, double salario,
+			String identificador, Endereco endereco) {
+		super(nome, cpf, dataNasc, telefone, email, salario, identificador, endereco);
 
 	}
 

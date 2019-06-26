@@ -216,17 +216,16 @@ public class RepositorioMesa implements IMesaDao {
 		try {
 
 			pstmt = conn.prepareStatement(alterarSql);
-			
+
 			if (mesa.getDisponibilidade() == 1) {
 				pstmt.setInt(1, 0);
 				pstmt.setInt(2, mesa.getId_mesa());
-
+				pstmt.executeUpdate();
 			} else {
 				pstmt.setInt(1, 1);
 				pstmt.setInt(2, mesa.getId_mesa());
+				pstmt.executeUpdate();
 			}
-
-			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

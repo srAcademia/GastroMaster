@@ -3,6 +3,7 @@ package br.com.ufrpeuag.gastromaster.negocio.modelo.classes;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.Random;
 
 public class Gerente extends Funcionario {
@@ -13,9 +14,9 @@ public class Gerente extends Funcionario {
 	public Gerente() {
 	}
 
-	public Gerente(String nome, String cpf,  String dataNasc, String telefone, String email,
-			double salario, String senha, String identificador,Endereco endereco) {
-		super(nome, cpf,  dataNasc, telefone, email, salario, identificador,endereco);
+	public Gerente(String nome, String cpf, LocalDate dataNasc, String telefone, String email, double salario,
+			String senha, String identificador, Endereco endereco) {
+		super(nome, cpf, dataNasc, telefone, email, salario, identificador, endereco);
 		this.senha = senha;
 	}
 

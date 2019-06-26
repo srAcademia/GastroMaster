@@ -17,7 +17,7 @@ public class MainProduto {
 	public void gerenciarCadastroProduto(String nome, int quantidade, double preco) throws SQLException, NomeInvalidoException, PrecoInvalidoException, ProdutoExistenteException, QuantidadeProdutoInvalidaException {
 		try {
 			Produto produto = new Produto(nome, quantidade, preco);
-			Fachada.getSingleton().produtoCadastroValidacao(produto);
+			Fachada.getSingleton().cadastrarProduto(produto);
 			System.out.println("Produto cadastrado.");
 		}catch(NomeInvalidoException | QuantidadeProdutoInvalidaException | ProdutoExistenteException | PrecoInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -30,8 +30,8 @@ public class MainProduto {
 	public void gerenciarRemocaoProduto(String nome) throws SQLException, ProdutoInexistenteException, NomeInvalidoException {
 		try {
 			Produto produto = new Produto();
-			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
-			Fachada.getSingleton().produtoRemocaoValidacao(produto);
+			produto = Fachada.getSingleton().recuperarProdutoNome(nome);
+			Fachada.getSingleton().deletarProduto(produto);
 			System.out.println("Produto removido.");
 		}catch(ProdutoInexistenteException | NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -44,8 +44,8 @@ public class MainProduto {
 	public void gerenciarAlteracaoProduto(String nome, String novoNome, int quantidade, double preco)throws SQLException, NomeInvalidoException, ProdutoInexistenteException, ProdutoExistenteException{
 		try {
 			Produto produto = new Produto();
-			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
-			Fachada.getSingleton().produtoAlteracaoValidacao(produto, nome, novoNome, quantidade, preco);
+			produto = Fachada.getSingleton().recuperarProdutoNome(nome);
+			Fachada.getSingleton().alterarProduto(produto, nome, novoNome, quantidade, preco);
 			System.out.println("Produto alterado.");
 		}catch(NomeInvalidoException | ProdutoExistenteException | ProdutoInexistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -58,7 +58,7 @@ public class MainProduto {
 	public void gerenciarRecuperarProduto(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException {
 		try {	
 			Produto produto = new Produto();
-			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
+			produto = Fachada.getSingleton().recuperarProdutoPorID(codigo);
 			System.out.println(produto);
 		}catch(IDRecuperacaoItemInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -70,7 +70,7 @@ public class MainProduto {
 	//RECUPERAR ID
 	public Integer gerenciarRecuperarIDProduto(String nome) throws SQLException, NomeInvalidoException, ProdutoInexistenteException{
 		try {
-			Integer id = Fachada.getSingleton().produtoRetornarIDValidacao(nome);
+			Integer id = Fachada.getSingleton().recuperarIDPeloNomeProduto(nome);
 			return id;
 		}catch(NomeInvalidoException | ProdutoInexistenteException ex) {
 			System.out.println(ex.getMessage());
@@ -84,8 +84,8 @@ public class MainProduto {
 	public void gerenciarVerificarQuantidadeProduto(String nome)throws SQLException, ProdutoInexistenteException, NomeInvalidoException{
 		try {
 			Produto produto = new Produto();
-			produto = Fachada.getSingleton().produtoRetornarProdutoValidacao(nome);
-			int quant = Fachada.getSingleton().produtoRetornarQuantidadeProdutoValidacao(produto);
+			produto = Fachada.getSingleton().recuperarProdutoNome(nome);
+			int quant = Fachada.getSingleton().recuperarQuantidadeProduto(produto);
 			System.out.println(quant);
 		}catch(ProdutoInexistenteException | NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
@@ -98,8 +98,8 @@ public class MainProduto {
 	public void gerenciarRemoverQuantidadeProduto(Integer codigo, int quantidade) throws SQLException, QuantidadeInvalidaException, QuantidadeProdutoInvalidaException, IDRecuperacaoItemInvalidoException {
 		try {
 			Produto produto = new Produto();
-			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
-			Fachada.getSingleton().produtoRemoverQuantProdutoValidacao(produto, quantidade);
+			produto = Fachada.getSingleton().recuperarProdutoPorID(codigo);
+			Fachada.getSingleton().removerQuantidadeProduto(produto, quantidade);
 		}catch(IDRecuperacaoItemInvalidoException | QuantidadeInvalidaException | QuantidadeProdutoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -111,8 +111,8 @@ public class MainProduto {
 	public void gerenciarAdcionarQuantidadeProduto(Integer codigo, int quantidade) throws SQLException, QuantidadeProdutoInvalidaException, IDRecuperacaoItemInvalidoException {
 		try {
 			Produto produto = new Produto();
-			produto = Fachada.getSingleton().produtoRecuperarValidacao(codigo);
-			Fachada.getSingleton().produtoAdicionarQuantProdutoValidacao(produto, quantidade);
+			produto = Fachada.getSingleton().recuperarProdutoPorID(codigo);
+			Fachada.getSingleton().adicionarQuantidadeProduto(produto, quantidade);
 		}catch(IDRecuperacaoItemInvalidoException | QuantidadeProdutoInvalidaException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -123,7 +123,7 @@ public class MainProduto {
 	//TESTE DE MOSTRAR TODOS
 	public void gerenciarListarProduto() throws SQLException, ListarTodosInvalidoException{
 		try {
-			System.out.println(Fachada.getSingleton().produtoListarTodosValidacao());
+			System.out.println(Fachada.getSingleton().listarTodosProdutos());
 		}catch(ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}catch(Exception ex) {

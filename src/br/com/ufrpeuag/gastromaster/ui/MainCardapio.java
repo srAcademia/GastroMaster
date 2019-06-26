@@ -12,83 +12,85 @@ import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 
 public class MainCardapio {
-	
-	//INSERCAO
-	public void gerenciarCadastroCardapio(String nome, double preco) throws SQLException, NomeInvalidoException, PrecoInvalidoException{
+
+	// INSERCAO
+	public void gerenciarCadastroCardapio(String nome, double preco)
+			throws SQLException, NomeInvalidoException, PrecoInvalidoException {
 		try {
 			Cardapio cardapio = new Cardapio(nome, preco);
-			Fachada.getSingleton().cardapioCadastroValidacao(cardapio);
+			Fachada.getSingleton().cadastrarCardapio(cardapio);
 			System.out.println("Prato cadastrado.");
-		}catch(PratoExistenteException | NomeInvalidoException | PrecoInvalidoException ex) {
+		} catch (PratoExistenteException | NomeInvalidoException | PrecoInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
-	
-	//REMOCAO
-	public void gerenciarRemocaoCardapio(String nome) throws SQLException, NomeInvalidoException, PratoInexistenteException {
+
+	// REMOCAO
+	public void gerenciarRemocaoCardapio(String nome)
+			throws SQLException, NomeInvalidoException, PratoInexistenteException {
 		try {
 			Cardapio cardapio = new Cardapio();
-			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nome);
-			Fachada.getSingleton().cardapioRemocaoValidacao(cardapio);
+			cardapio = Fachada.getSingleton().recuperarCardapioPeloNome(nome);
+			Fachada.getSingleton().deletarCardapio(cardapio);
 			System.out.println("Prato removido.");
-		}catch(PratoInexistenteException | NomeInvalidoException ex) {
+		} catch (PratoInexistenteException | NomeInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
-	
-	//ALTERACAO
-	public void gerenciarAlteracaoCardapio(String nome, String novoNome, double preco) throws SQLException, PratoInexistenteException, NomeInvalidoException, PratoExistenteException {
+
+	// ALTERACAO
+	public void gerenciarAlteracaoCardapio(String nome, String novoNome, double preco)
+			throws SQLException, PratoInexistenteException, NomeInvalidoException, PratoExistenteException {
 		try {
 			Cardapio cardapio = new Cardapio();
-			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(nome);
-			Fachada.getSingleton().cardapioAlteracaoValidacao(cardapio, nome, novoNome, preco);
+			cardapio = Fachada.getSingleton().recuperarCardapioPeloNome(nome);
+			Fachada.getSingleton().alterarCardapio(cardapio, nome, novoNome, preco);
 			System.out.println("Prato alterado.");
-		}catch(PratoInexistenteException | NomeInvalidoException | PratoExistenteException ex) {
+		} catch (PratoInexistenteException | NomeInvalidoException | PratoExistenteException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
-	
-	//RECUPERAR
+
+	// RECUPERAR
 	public void gerenciarRecuperarCardapio(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException {
 		try {
 			Cardapio cardapio = new Cardapio();
-			cardapio = Fachada.getSingleton().cardapioRecuperarValidacao(codigo);
+			cardapio = Fachada.getSingleton().recuperarCardapioPorID(codigo);
 			System.out.println(cardapio);
-		}catch(IDRecuperacaoItemInvalidoException ex) {
-			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
-	
-	//RECUPERAR ID
-	public Integer gerenciarRecuperarIDCardapio(String nome) throws SQLException, NomeInvalidoException, PratoInexistenteException{
+
+	// RECUPERAR ID
+	public Integer gerenciarRecuperarIDCardapio(String nome)
+			throws SQLException, NomeInvalidoException, PratoInexistenteException {
 		try {
-			Integer id = Fachada.getSingleton().cardapioRetornarIDValidacao(nome);
+			Integer id = Fachada.getSingleton().recuperarIDPeloNomeCardapio(nome);
 			return id;
-		}catch(NomeInvalidoException | PratoInexistenteException ex) {
+		} catch (NomeInvalidoException | PratoInexistenteException ex) {
 			System.out.println(ex.getMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 		return null;
 	}
-	
-	//LISTAR TODOS
+
+	// LISTAR TODOS
 	public void gerenciarListarCardapio() throws SQLException, ListarTodosInvalidoException {
 		try {
-			System.out.println(Fachada.getSingleton().cardapioListarTodosValidacao());
-		}catch(ListarTodosInvalidoException ex) {
+			System.out.println(Fachada.getSingleton().listarTodosCardapios());
+		} catch (ListarTodosInvalidoException ex) {
 			System.out.println(ex.getLocalizedMessage());
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
 	}
-	
+
 }
