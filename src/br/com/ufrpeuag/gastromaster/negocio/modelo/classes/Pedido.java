@@ -67,8 +67,7 @@ public class Pedido {
 
 	@Override
 	public String toString() {
-		return "Pedido [id_pedido=" + id_pedido + ", cardapio=" + cardapio + ", produto=" + produto + ", valor=" + valor
-				+ ", mesa=" + mesa + "]\n";
+		return cardapio.getPrato() +" "+produto.getNome() +", Valor = R$" + valor + "\n";
 	}
 
 }

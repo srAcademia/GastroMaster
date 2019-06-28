@@ -74,22 +74,36 @@ public class Teste {
 		// Garcom e endereco cadastrar
 
 		/*
-		 * Endereco end = new Endereco("Garanhuns", "sitio", "Mochila", 30, "55555");
-		 * Garcom g = new
-		 * Garcom("Milena","11563286408",LocalDate.now(),"88888","milly",220,null,end);
+		  Endereco end = new Endereco("Garanhuns", "sitio", "Mochila", 30, "55555");
+		  Garcom g = new
+		  Garcom("Milena","11563286408",LocalDate.now(),"88888","milly",220,null,end);
+		  g.setIdentificador(g.gerarIdentificador());
+		  Fachada.getSingleton().cadastrarGarcom(g);
+		  Garcom g1 = new
+				  Garcom("Papai","75008513400",LocalDate.now(),"88888","milly",220,null,end);
+				  g1.setIdentificador(g1.gerarIdentificador());
+				  Fachada.getSingleton().cadastrarGarcom(g1);*/
+				  
+		/*
+		 * LocalDate data = LocalDate.of(2010, 3, 7); Endereco end = new
+		 * Endereco("Garanhuns", "sitio", "Mochila", 30, "55555"); Garcom g = new
+		 * Garcom("David","05842364417",data,"88888","milly",220,null,end);
 		 * g.setIdentificador(g.gerarIdentificador());
 		 * Fachada.getSingleton().cadastrarGarcom(g);
-		 * 
-		 * //Recuperar: Garcom g = null; g =
-		 * Fachada.getSingleton().recuperarGarcomID(1);
-		 * System.out.println("Recuperar por ID: "+g); g =
-		 * Fachada.getSingleton().recuperarGarcomPorCPF("11563286408");
-		 * System.out.println("\nRecuperar por CPF: "+g); g =
-		 * Fachada.getSingleton().verificarIdentificadorGarcom("1c1d12");
-		 * System.out.println("\nRecuperar pelo Indentificador: "+g);
-		 * System.out.println("\nListar todos: "+Fachada.getSingleton().
-		 * ListarTodosGarcons());
-		 * 
+		 */
+		String data ="14/07/1998";
+		String a =""+ data.charAt(6)+ data.charAt(7)+ data.charAt(8)+ data.charAt(9);
+		System.out.println(a);
+		  /* //Recuperar: Garcom g = null; g =
+		  Fachada.getSingleton().recuperarGarcomID(1);
+		  System.out.println("Recuperar por ID: "+g); g =
+		 Fachada.getSingleton().recuperarGarcomPorCPF("11563286408");
+		  System.out.println("\nRecuperar por CPF: "+g); g =
+		  Fachada.getSingleton().verificarIdentificadorGarcom("1c1d12");
+		  System.out.println("\nRecuperar pelo Indentificador: "+g);
+		  System.out.println("\nListar todos: "+Fachada.getSingleton().
+		  ListarTodosGarcons());
+		
 		 * //Deletar: g = Fachada.getSingleton().recuperarGarcomID(1);
 		 * Fachada.getSingleton().deletarGarcom(g);
 		 * 
