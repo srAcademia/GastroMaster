@@ -101,9 +101,9 @@ public class MainPrincipal {
 			switch (opcao) {
 			case 1:
 				System.out.println("Digite seu login:");
-				//mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "13189229414", LocalDate.now(), "87 9953-3012",
-				//"kelwinjonas@gmail.com", 9999999, "12345", "");
-				gerente = mainGerente.gerenciarVerificarGerente("26b676");
+				mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "13189229414", LocalDate.now(), "87 9953-3012",
+				"kelwinjonas@gmail.com", 9999999, "12345", "");
+				gerente = mainGerente.gerenciarVerificarGerente("2cdfc9");
 				if (gerente != null) {
 					System.out.println("Digite sua senha:");
 					gerente = mainGerente.gerenciarLogarGerente("12345");
@@ -219,7 +219,7 @@ public class MainPrincipal {
 						break;
 					case 4:
 						mesa = mainMesa.gerenciarGerenciamentoMesa(1);
-						garcom = mainGarcom.gerenciarVerificarGarcom("1c0f3e");
+						garcom = mainGarcom.gerenciarVerificarGarcom("1e1f58");
 						if (mesa != null && garcom != null) {
 							do {
 								System.out.println("Digite 1 para fazer um pedido à mesa.");

@@ -5,8 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IGarcomDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
@@ -29,11 +33,10 @@ public class RepositorioGarcom implements IGarcomDao {
 		Data d = new Data();
 		String inserirSql = "INSERT INTO Garcom (nome, cpf, dataNasc, telefone, email, salario,"
 				+ " identificador ,cod_endereco) VALUES(?,?,?,?,?,?,?,?)";
-
+		
 		try {
-
-			pstmt = conn.prepareStatement(inserirSql);
-
+			
+			pstmt = conn.prepareStatement(inserirSql);	
 			pstmt.setString(1, garcom.getNome());
 			pstmt.setString(2, garcom.getCpf());
 			pstmt.setString(3, d.mudarDataParaString(garcom.getDataNasc()));
@@ -322,4 +325,44 @@ public class RepositorioGarcom implements IGarcomDao {
 		return null;
 	}
 
+	@Override
+	public Map<Integer, ArrayList> niverPorMes(LocalDate data) {
+		        String sql = " ";
+		        Map<Integer, ArrayList> retorno = new HashMap();
+		        
+		        try {
+		        	pstmt = conn.prepareStatement(sql);
+		        	result = pstmt.executeQuery();
+		            while (result.next()) {
+		                ArrayList linha = new ArrayList();
+		                if (!retorno.containsKey(result.getString("dataNasc")))
+		                {
+		                	Data d = new Data();
+		                	String date = d.mudarDataParaString(data),c;
+		                	c = ""+ date.charAt(6)+ date.charAt(7)+ date.charAt(8)+ date.charAt(9);
+		                	
+		                    linha.add(c); 
+		                    linha.add(result.getInt("count"));
+		                    retorno.put(result.getInt("dataNasc"), linha);
+		                }else{
+		                    ArrayList linhaNova = retorno.get(result.getInt("ano"));
+		                    linhaNova.add(result.getInt("mes"));
+		                    linhaNova.add(result.getInt("count"));
+		                }
+		            }
+		            return retorno;
+		        } catch (SQLException ex) {
+					System.out.println(ex.getMessage());
+				} finally {
+
+					try {
+						result.close();
+						pstmt.close();
+					} catch (SQLException ex) {
+						System.out.println(ex.getMessage());
+					}
+
+				}
+		        return retorno;
+		    }
 }

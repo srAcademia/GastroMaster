@@ -32,7 +32,7 @@ public class ConfiguracoesBanco {
 				+ "id_garcom INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "nome TEXT ,"
 				+ "cpf TEXT ,"
-				+ "dataNasc TEXT,"
+				+ "dataNasc DATE,"
 				+ "telefone TEXT,"
 				+ "email TEXT,"
 				+ "salario REAL,"

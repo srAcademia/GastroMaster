@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="800.0" styleClass="background" stylesheets="@base16-google-dark.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ufrpeuag.gastromaster.ui.MesaControlador">
+   <children>
+      <ImageView fitHeight="363.0" fitWidth="325.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="120.0">
+         <image>
+            <Image url="@icons/mesas.png" />
+         </image>
+         <effect>
+            <ColorAdjust brightness="1.0" contrast="1.0" />
+         </effect>
+      </ImageView>
+      <Button layoutX="14.0" layoutY="10.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="53.0" style="-fx-background-color: #444444; -fx-border-color: #444444;" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/voltar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button defaultButton="true" layoutX="295.0" layoutY="135.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #444444; -fx-border-color: #444444;" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="600.0">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/menos.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #444444; -fx-border-color: #444444;" AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="600.0">
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/pagar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="pedir" alignment="CENTER" layoutX="216.0" layoutY="31.0" mnemonicParsing="false" onAction="#handleFazerPedido" prefHeight="48.0" prefWidth="93.0" style="-fx-background-color: #444444;" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="600.0">
+         <font>
+            <Font name="Gill Sans Ultra Bold Condensed" size="12.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="103.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/prato.png" />
+               </image>
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+            </ImageView>
+         </graphic></Button>
+      <Label layoutX="730.0" layoutY="261.0" text="Realizar Pedido" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="580.0" />
+      <Label text="Detalhes da Mesa:" AnchorPane.bottomAnchor="110.0" AnchorPane.rightAnchor="180.0" />
+      <GridPane layoutX="487.0" layoutY="290.0" prefHeight="87.0" prefWidth="303.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Número:" />
+            <Label text="Disponibilidade:" GridPane.rowIndex="1" />
+            <Label text="Valor:" GridPane.rowIndex="2" />
+            <Label text="00" GridPane.columnIndex="1" />
+            <Label text="00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <Label layoutX="600.0" layoutY="5.0" style="-fx-font-size: 20;" text="Pedidos" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="5.0" />
+      <ListView fx:id="pedidoList" layoutX="600.0" layoutY="5.0" prefHeight="249.0" prefWidth="332.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0">
+         <styleClass>
+            <String fx:value="background" />
+            <String fx:value="label" />
+         </styleClass></ListView>
+   </children>
+</AnchorPane>

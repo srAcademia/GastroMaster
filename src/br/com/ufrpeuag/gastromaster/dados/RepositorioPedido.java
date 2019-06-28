@@ -271,7 +271,7 @@ public class RepositorioPedido implements IPedidoDao {
 
 	@Override
 	public int recuperarUltimoID() {
-		String recuperarUltimoIdSql = "SELECT *FROM Pedido WHERE id_pedido= (SELECT MAX(id_pedido) FROM Pedido);";
+		String recuperarUltimoIdSql = "SELECT *FROM Pedido WHERE id_pedido = (SELECT MAX(id_pedido) FROM Pedido);";
 		int id = 0;
 		try {
 
