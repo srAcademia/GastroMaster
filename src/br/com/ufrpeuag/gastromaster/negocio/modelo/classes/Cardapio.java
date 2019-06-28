@@ -43,7 +43,7 @@ public class Cardapio {
 
 	@Override
 	public String toString() {
-		return "Cardapio [id_cardapio=" + id_cardapio + ", prato=" + prato + ", preco=" + preco + "]";
+		return  prato + ", Valor = R$" + preco +"\n";
 	}
 
 }

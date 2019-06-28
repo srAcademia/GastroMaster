@@ -102,8 +102,8 @@ public class MainGarcom {
 		}
 	}*/
 
-	// TESTE LISTAR TODOS
-	public void gerenciarListarGarcom() throws SQLException, ListarTodosInvalidoException {
+	/* TESTE LISTAR TODOS
+	public void gerenciarListarGarcom() throws SQLException,  {
 		try {
 			ConfiguracoesBanco.getSingleton().getConnection();
 			System.out.println(Fachada.getSingleton().ListarTodosGarcons());
@@ -112,9 +112,9 @@ public class MainGarcom {
 		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 
-	// VERIFICA SE E GARCOM
+	 //VERIFICA SE E GARCOM
 	public Garcom gerenciarVerificarGarcom(String identificador) throws SQLException, LoginInvalidoException {
 		try {
 			Garcom garcom = new Garcom();
