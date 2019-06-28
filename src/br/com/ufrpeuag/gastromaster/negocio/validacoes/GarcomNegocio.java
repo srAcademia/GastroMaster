@@ -15,7 +15,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaExcep
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
@@ -79,6 +78,9 @@ public class GarcomNegocio {
 	}
 
 	public void deletarGarcom(Garcom garcom) throws GarcomInexistenteException {
+		if (garcom == null) {
+			throw new GarcomInexistenteException();
+		}
 		if (repGarcom.recuperarCPF(garcom.getCpf()) == null) {
 			throw new GarcomInexistenteException();
 		}
@@ -153,10 +155,7 @@ public class GarcomNegocio {
 		return repGarcom.recuperar(codigo);
 	}
 
-	public List<Garcom> listarTodosGarcons() throws ListarTodosInvalidoException {
-		if (repGarcom.listarTodos() == null || repGarcom.listarTodos().isEmpty()) {
-			throw new ListarTodosInvalidoException();
-		}
+	public List<Garcom> listarTodosGarcons() {
 		return repGarcom.listarTodos();
 	}
 

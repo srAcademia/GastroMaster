@@ -26,7 +26,7 @@ public class MainApp extends Application {
         String fileURI = css.toURI().toString();
         
         try {
-            root = FXMLLoader.load(getClass().getResource("Mesa.fxml"));
+            root = FXMLLoader.load(getClass().getResource("TelaFuncionarios.fxml"));
             root.getStylesheets().clear();
             root.getStylesheets().add(fileURI);
 

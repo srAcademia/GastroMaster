@@ -3,7 +3,6 @@ package br.com.ufrpeuag.gastromaster.ui;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -136,13 +135,13 @@ public class MainPrincipal {
 											"", "", "", "", 0, "");*/
 									break;
 								case 3:
-									mainGerente.gerenciarRemocaoGerente("8998324");
+									//mainGerente.gerenciarRemocaoGerente("8998324");
 									break;
 								case 4:
 									mainGerente.gerenciarRecuperarGerente(2);
 									break;
 								case 5:
-									mainGerente.gerenciarListarGerente();
+									//mainGerente.gerenciarListarGerente();
 									break;
 								case 0:
 									break;
@@ -178,7 +177,7 @@ public class MainPrincipal {
 									mainGarcom.gerenciarRecuperarGarcom(1);
 									break;
 								case 5:
-									mainGarcom.gerenciarListarGarcom();
+									//mainGarcom.gerenciarListarGarcom();
 									break;
 								case 0:
 									break;
@@ -219,7 +218,7 @@ public class MainPrincipal {
 						break;
 					case 4:
 						mesa = mainMesa.gerenciarGerenciamentoMesa(1);
-						garcom = mainGarcom.gerenciarVerificarGarcom("1e1f58");
+						garcom = mainGarcom.gerenciarVerificarGarcom("1164f4");
 						if (mesa != null && garcom != null) {
 							do {
 								System.out.println("Digite 1 para fazer um pedido à mesa.");

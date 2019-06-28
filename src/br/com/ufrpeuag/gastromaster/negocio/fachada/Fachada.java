@@ -102,7 +102,7 @@ public class Fachada {
 		return this.garcom.recuperarGarcomID(codigo);
 	}
 
-	public List<Garcom> ListarTodosGarcons() throws ListarTodosInvalidoException {
+	public List<Garcom> ListarTodosGarcons() {
 		return this.garcom.listarTodosGarcons();
 	}
 
@@ -145,7 +145,7 @@ public class Fachada {
 		return this.gerente.recuperarCpfPorGerente(CPF);
 	}
 
-	public List<Gerente> listarTodosGerentes() throws ListarTodosInvalidoException {
+	public List<Gerente> listarTodosGerentes() {
 		return this.gerente.listarTodosGerentes();
 	}
 

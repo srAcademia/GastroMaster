@@ -29,6 +29,10 @@ public class ContaNegocio {
 	}
 
 	public double mostrarValorConta(Conta conta) {
+		if(conta.equals(null)) {
+			return 0;
+		}
+		
 		return repConta.mostrarValorConta(conta);
 	}
 

@@ -8,7 +8,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.EnderecoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDInexistenteException;
@@ -72,7 +71,7 @@ public class MainGerente {
 		return null;
 	}
 		
-	//REMOCAO
+	/*REMOCAO
 	public void gerenciarRemocaoGerente(String CPF) throws SQLException, GerenteInexistenteException, CPFInvalidoException, RecuperarCPFException {
 		try {
 			Gerente gerente = new Gerente();
@@ -85,7 +84,7 @@ public class MainGerente {
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 	
 	//ALTERACAO
 	/*public void gerenciarAlteracaoGerente(String cidade, String bairro, String rua, int numero, String cep, String nome, String cpf, String novoCPF, String dataNasc, String telefone, String email, double salario, String senha)
@@ -118,7 +117,7 @@ public class MainGerente {
 		}
 	}
 	
-	//LISTAR TODOS
+	/*/LISTAR TODOS
 	public void gerenciarListarGerente() throws SQLException, ListarTodosInvalidoException {
 		try {
 			System.out.println(Fachada.getSingleton().listarTodosGerentes());
@@ -127,6 +126,6 @@ public class MainGerente {
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 
 }

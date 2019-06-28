@@ -88,10 +88,7 @@ public class PedidoNegocio {
 		repPedido.deletarPedidosPelaMesa(codigo);
 	}
 
-	public List<Pedido> listarPedidosPorMesa(Integer codigo) throws ConcluirPagamentoException {
-		if (repPedido.listarPorMesa(codigo) == null || repPedido.listarPorMesa(codigo).isEmpty()) {
-			throw new ConcluirPagamentoException();
-		}
+	public List<Pedido> listarPedidosPorMesa(Integer codigo){
 		return repPedido.listarPorMesa(codigo);
 	}
 

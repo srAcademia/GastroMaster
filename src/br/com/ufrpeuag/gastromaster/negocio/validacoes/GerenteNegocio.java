@@ -15,7 +15,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaExcep
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
@@ -79,7 +78,9 @@ public class GerenteNegocio {
 	}
 
 	public void deletarGerente(Gerente gerente) throws GerenteInexistenteException {
-
+		if (gerente == null) {
+			throw new GerenteInexistenteException();
+		}
 		if (repGerente.recuperarCPF(gerente.getCpf()) == null) {
 			throw new GerenteInexistenteException();
 		}
@@ -88,7 +89,6 @@ public class GerenteNegocio {
 	}
 
 	public void alterarGerente(Gerente gerente) throws GerenteExistenteException, CPFInvalidoException {
-
 		if (gerente.getNome().isEmpty() == false) {
 			gerente.setNome(gerente.getNome());
 		}
@@ -169,11 +169,7 @@ public class GerenteNegocio {
 
 	}
 
-	public List<Gerente> listarTodosGerentes() throws ListarTodosInvalidoException {
-
-		if (repGerente.listarTodos() == null || repGerente.listarTodos().isEmpty()) {
-			throw new ListarTodosInvalidoException();
-		}
+	public List<Gerente> listarTodosGerentes() {
 		return repGerente.listarTodos();
 	}
 
