@@ -3,6 +3,7 @@ package br.com.ufrpeuag.gastromaster.ui;
 import java.io.File;
 import java.io.IOException;
 
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +12,10 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class EditarGerente extends Application {
+public class EditarGarcom extends Application {
 	
-	public EditarGerente(Gerente gerente) {
-		GerenteControladorEditar.setGerente2(gerente);
+	public EditarGarcom(Garcom garcom) {
+		GarcomControladorAlterar.setGarcom(garcom);
 	}
 
 	public static void main(String[] args) {
@@ -31,7 +32,7 @@ public class EditarGerente extends Application {
 		String fileURI = css.toURI().toString();
 
 		try {
-			root = FXMLLoader.load(getClass().getResource("TelaGerenteEdicao.fxml"));
+			root = FXMLLoader.load(getClass().getResource("GarcomAlterar.fxml"));
 			root.getStylesheets().clear();
 			root.getStylesheets().add(fileURI);
 
@@ -46,7 +47,4 @@ public class EditarGerente extends Application {
 		window.setResizable(false);
 		window.showAndWait();
 	}
-    
-    
-
 }

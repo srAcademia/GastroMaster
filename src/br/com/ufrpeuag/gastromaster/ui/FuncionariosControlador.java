@@ -211,7 +211,7 @@ public class FuncionariosControlador implements Initializable{
 	@FXML
 	public void handleDeletarGerente(ActionEvent event) throws GerenteInexistenteException, SQLException {
 		try {
-			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Deletar Gerente", "Tem certeza de que deseja deletar o funcionário?");
+			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Deletar Gerente", "Tem certeza de que deseja deletar o funcionï¿½rio?");
 			Gerente gerente = new Gerente();
 			gerente = gerenteList.getSelectionModel().getSelectedItem();
 			if (confirmacao == true) {
@@ -229,18 +229,18 @@ public class FuncionariosControlador implements Initializable{
 	@FXML
 	public void handleDeletarGarcom(ActionEvent event) throws GarcomInexistenteException, SQLException {
 		try {
-			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Deletar Garçom", "Tem certeza de que deseja deletar o funcionário?");
+			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Deletar Garï¿½om", "Tem certeza de que deseja deletar o funcionï¿½rio?");
 			Garcom garcom = new Garcom();
 			garcom = garcomList.getSelectionModel().getSelectedItem();
 			if (confirmacao == true) {
 				Fachada.getSingleton().deletarGarcom(garcom);
 				listarFuncionarios();
-				CaixasDeAlerta.CaixaConcluido("Deletar Garçom", "Garçom deletado.");
+				CaixasDeAlerta.CaixaConcluido("Deletar Garï¿½om", "Garï¿½om deletado.");
 			}
 		}catch(GarcomInexistenteException ex) {
-			CaixasDeAlerta.CaixaErro("Deletar Garçom", ex.getLocalizedMessage(), "Selecione um garçom para deletar.");
+			CaixasDeAlerta.CaixaErro("Deletar Garï¿½om", ex.getLocalizedMessage(), "Selecione um garï¿½om para deletar.");
 		}catch(Exception ex) {
-			CaixasDeAlerta.CaixaErro("Deletar Garçom", "Erro inesperado.", "Erro inesperado.");
+			CaixasDeAlerta.CaixaErro("Deletar Garï¿½om", "Erro inesperado.", "Erro inesperado.");
 		}
 	}
 	
@@ -269,6 +269,31 @@ public class FuncionariosControlador implements Initializable{
 		window.showAndWait();
 		listarFuncionarios();
 	}
+	@FXML
+	public void handleCadastarGarcom(ActionEvent event) throws SQLException {
+		Stage window = new Stage();
+		window.initModality(Modality.APPLICATION_MODAL);
+		
+		Parent root = null;
+        File css = new File("base16-google-dark.css");
+        String fileURI = css.toURI().toString();
+        
+        try {
+            root = FXMLLoader.load(getClass().getResource("TelaCadastroGarcom.fxml"));
+            root.getStylesheets().clear();
+            root.getStylesheets().add(fileURI);
+
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+        window.setTitle("Garcom");
+		Scene scene = new Scene(root, 500, 400);
+		window.setScene(scene);
+		window.setResizable(false);
+		window.showAndWait();
+		listarFuncionarios();
+	}
 	
 	@FXML
 	public void handleAlterarGerente(ActionEvent event) throws Exception {
@@ -278,7 +303,18 @@ public class FuncionariosControlador implements Initializable{
 			EditarGerente editar = new EditarGerente(gerente);
 			editar.start(new Stage());
 		} else {
-			CaixasDeAlerta.CaixaErro("Alterar Gerente", "Gerente não encontrado", "Selecione um gerente para alterar.");
+			CaixasDeAlerta.CaixaErro("Alterar Gerente", "Gerente nï¿½o encontrado", "Selecione um gerente para alterar.");
+		}
+	}
+	@FXML
+	public void handleAlterarGarcom(ActionEvent event) throws Exception {
+		Garcom garcom = new Garcom();
+		garcom = garcomList.getSelectionModel().getSelectedItem();
+		if(garcom != null) {
+			EditarGarcom editar = new EditarGarcom(garcom);
+			editar.start(new Stage());
+		} else {
+			CaixasDeAlerta.CaixaErro("Alterar GarÃ§om", "GarÃ§om nÃ£o encontrado", "Selecione um GarÃ§om para alterar.");
 		}
 	}
 	

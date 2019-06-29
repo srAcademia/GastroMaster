@@ -57,7 +57,7 @@
             <TextField fx:id="senhaFieldGerente" layoutX="295.0" layoutY="282.0" prefHeight="20.0" prefWidth="285.0" promptText="Senha" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="11" />
          </children>
       </GridPane>
-      <Label text="Gerente" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+      <Label layoutX="158.0" layoutY="10.0" text="Gerente" AnchorPane.leftAnchor="158.0" AnchorPane.topAnchor="10.0" />
       <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0">
          <children>
             <Button fx:id="concluirGerenteEdicao" mnemonicParsing="false" onAction="#handleConcluirEdicao" text="Concluir" />

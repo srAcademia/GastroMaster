@@ -1,5 +1,6 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
@@ -20,6 +21,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class GerenteControlador {
 	
@@ -63,15 +66,16 @@ public class GerenteControlador {
 					senhaFieldGerente.getText(), "", endereco);
 			Fachada.getSingleton().cadastrarGerente(gerente);
 			CaixasDeAlerta.CaixaConcluido("Cadastro Gerente", "Gerente cadastrado.");
+		
 		}catch(BairroInvalidoException | CEPInvalidoException | CidadeInvalidaException | NumeroInvalidoException | RuaInvalidaException | CPFInvalidoException | DataNascimentoInvalidaException | NomeInvalidoException | GerenteExistenteException ex) {
-			CaixasDeAlerta.CaixaErro("Cadastrar Gerente", "Campo inválido.", ex.getLocalizedMessage());
+			CaixasDeAlerta.CaixaErro("Cadastrar Gerente", "Campo invï¿½lido.", ex.getLocalizedMessage());
 		}catch(NumberFormatException ex) {
-			CaixasDeAlerta.CaixaErro("Cadastrar Gerente", "Campo inválido.", "Preencha os campos corretamente antes de concluir o cadastro.");
+			CaixasDeAlerta.CaixaErro("Cadastrar Gerente", "Campo invï¿½lido.", "Preencha os campos corretamente antes de concluir o cadastro.");
 		}catch(Exception ex) {
 			CaixasDeAlerta.CaixaErro("Cadastrar Gerente", "Erro inesperado.", "Erro inesperado.");
 		}
 	}
-	
+
 	@FXML
 	public void handleCancelar(ActionEvent event) {
 	}
