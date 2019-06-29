@@ -102,7 +102,7 @@ public class MainPrincipal {
 				System.out.println("Digite seu login:");
 				mainGerente.gerenciarCadastroGerente("Garanhuns", "Boa Vista", "Jose Duca da Silva", 9, "553233", "Milena", "13189229414", LocalDate.now(), "87 9953-3012",
 				"kelwinjonas@gmail.com", 9999999, "12345", "");
-				gerente = mainGerente.gerenciarVerificarGerente("2cdfc9");
+				//gerente = mainGerente.gerenciarVerificarGerente("2cdfc9");
 				if (gerente != null) {
 					System.out.println("Digite sua senha:");
 					gerente = mainGerente.gerenciarLogarGerente("12345");
@@ -218,7 +218,7 @@ public class MainPrincipal {
 						break;
 					case 4:
 						mesa = mainMesa.gerenciarGerenciamentoMesa(1);
-						garcom = mainGarcom.gerenciarVerificarGarcom("1164f4");
+						//garcom = mainGarcom.gerenciarVerificarGarcom("1164f4");
 						if (mesa != null && garcom != null) {
 							do {
 								System.out.println("Digite 1 para fazer um pedido à mesa.");
@@ -367,7 +367,7 @@ public class MainPrincipal {
 				break;
 			case 5:
 				System.out.println("Digite seu login:");
-				gerente = mainGerente.gerenciarVerificarGerente("260c75");
+				//gerente = mainGerente.gerenciarVerificarGerente("260c75");
 				if (gerente != null) {
 					System.out.println("Digite sua senha:");
 					gerente = mainGerente.gerenciarLogarGerente("12345");

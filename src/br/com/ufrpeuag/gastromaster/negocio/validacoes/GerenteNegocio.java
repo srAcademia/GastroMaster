@@ -15,7 +15,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaExcep
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
@@ -173,14 +172,7 @@ public class GerenteNegocio {
 		return repGerente.listarTodos();
 	}
 
-	public Gerente verificarIdentificadorGerente(String identificador) throws LoginInvalidoException {
-
-		if (identificador.equals(null) || identificador.isEmpty()) {
-			throw new LoginInvalidoException();
-		}
-		if (repGerente.verificarIdentificador(identificador) == null) {
-			throw new LoginInvalidoException();
-		}
+	public Gerente verificarIdentificadorGerente(String identificador) {
 		return repGerente.verificarIdentificador(identificador);
 	}
 

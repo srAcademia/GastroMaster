@@ -115,7 +115,7 @@ public class MainGarcom {
 	}*/
 
 	 //VERIFICA SE E GARCOM
-	public Garcom gerenciarVerificarGarcom(String identificador) throws SQLException, LoginInvalidoException {
+	/*ublic Garcom gerenciarVerificarGarcom(String identificador) throws SQLException, LoginInvalidoException {
 		try {
 			Garcom garcom = new Garcom();
 			garcom = Fachada.getSingleton().verificarIdentificadorGarcom(identificador);
@@ -126,5 +126,5 @@ public class MainGarcom {
 			System.out.println("Erro inesperado.");
 		}
 		return null;
-	}
+	}*/
 }

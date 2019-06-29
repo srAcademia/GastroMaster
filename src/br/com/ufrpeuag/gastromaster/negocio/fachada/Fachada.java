@@ -18,7 +18,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaExcept
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperarMesaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaCadastradaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaDisponibilidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaInexistenteException;
@@ -110,7 +109,7 @@ public class Fachada {
 		return this.garcom.recuperarPorCpfGarcom(CPF);
 	}
 
-	public Garcom verificarIdentificadorGarcom(String identificador) throws LoginInvalidoException {
+	public Garcom verificarIdentificadorGarcom(String identificador) {
 		return this.garcom.verificarIndetificadorGarcom(identificador);
 	}
 
@@ -149,7 +148,7 @@ public class Fachada {
 		return this.gerente.listarTodosGerentes();
 	}
 
-	public Gerente verificarIdentificadorGerente(String identificador) throws LoginInvalidoException {
+	public Gerente verificarIdentificadorGerente(String identificador) {
 		return this.gerente.verificarIdentificadorGerente(identificador);
 	}
 
