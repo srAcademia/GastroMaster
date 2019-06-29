@@ -44,7 +44,7 @@ public class MainGerente {
 			
 	}
 	//VERIFICAR SE E GERENTE
-	public Gerente gerenciarVerificarGerente(String identificador) throws SQLException, LoginInvalidoException{
+	/*public Gerente gerenciarVerificarGerente(String identificador) throws SQLException, LoginInvalidoException{
 		try {
 			Gerente gerente = new Gerente();
 			gerente = Fachada.getSingleton().verificarIdentificadorGerente(identificador);
@@ -55,7 +55,7 @@ public class MainGerente {
 			System.out.println("Erro inesperado.");
 		}
 		return null;
-	}
+	}*/
 	//LOGAR
 	
 	public Gerente gerenciarLogarGerente(String senha) throws SQLException, SenhaInvalidaException {

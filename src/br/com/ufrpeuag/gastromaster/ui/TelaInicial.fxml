@@ -9,12 +9,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="150.0" minWidth="300.0" prefHeight="400.0" prefWidth="700.0" styleClass="background" stylesheets="@base16-google-dark.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="150.0" minWidth="300.0" prefHeight="400.0" prefWidth="700.0" styleClass="background" stylesheets="@base16-google-dark.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ufrpeuag.gastromaster.ui.TelaInicialViewController">
    <children>
       <AnchorPane prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #7f1215;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="100.0">
          <children>
-            <PasswordField layoutX="80.0" layoutY="168.0" promptText="Identificador" style="-fx-background-color: #640f11;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="168.0" />
-            <Button alignment="CENTER" layoutX="128.0" layoutY="135.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="63.0" text="Entrar" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="90.0" />
+            <PasswordField fx:id="txtIndentificador" layoutX="80.0" layoutY="168.0" promptText="Identificador" style="-fx-background-color: #640f11;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="168.0" />
+            <Button fx:id="buttonEntrar" alignment="CENTER" layoutX="128.0" layoutY="135.0" mnemonicParsing="false" onAction="#acaoDoBotao" prefHeight="35.0" prefWidth="63.0" text="Entrar" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="90.0" />
             <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="23.0" layoutY="14.0" prefHeight="35.0" prefWidth="212.0" style="-fx-font-size: 24;" text="Entrar" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
                <opaqueInsets>
                   <Insets />

@@ -15,7 +15,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaExcep
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoInvalidaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.LoginInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NumeroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
@@ -171,13 +170,7 @@ public class GarcomNegocio {
 
 	}
 
-	public Garcom verificarIndetificadorGarcom(String identificador) throws LoginInvalidoException {
-		if (identificador.equals(null) || identificador.isEmpty()) {
-			throw new LoginInvalidoException();
-		}
-		if (repGarcom.verificarIdentificador(identificador) == null) {
-			throw new LoginInvalidoException();
-		}
+	public Garcom verificarIndetificadorGarcom(String identificador) {
 		return repGarcom.verificarIdentificador(identificador);
 	}
 
