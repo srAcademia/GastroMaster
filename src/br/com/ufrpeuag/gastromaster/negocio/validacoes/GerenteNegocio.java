@@ -36,7 +36,9 @@ public class GerenteNegocio {
 			throws CPFInvalidoException, DataNascimentoInvalidaException, NomeInvalidoException,
 			SalarioInvalidoException, GerenteExistenteException, SenhaInvalidaException, BairroInvalidoException,
 			CEPInvalidoException, CidadeInvalidaException, NumeroInvalidoException, RuaInvalidaException {
-
+		if (gerente == null) {
+			throw new NomeInvalidoException();
+		}
 		if (CpfNegocio.isCPF(gerente.getCpf()) == false) {
 			throw new CPFInvalidoException();
 		}
@@ -91,7 +93,6 @@ public class GerenteNegocio {
 		if (gerente.getNome().isEmpty() == false) {
 			gerente.setNome(gerente.getNome());
 		}
-
 		if (gerente.getCpf().isEmpty() == false) {
 			if (CpfNegocio.isCPF(gerente.getCpf()) == false) {
 				throw new CPFInvalidoException();
@@ -102,7 +103,7 @@ public class GerenteNegocio {
 			gerente.setCpf(gerente.getCpf());
 		}
 
-		if (gerente.getDataNasc() == null) {
+		if (gerente.getDataNasc() != null) {
 			gerente.setDataNasc(gerente.getDataNasc());
 		}
 

@@ -1,6 +1,7 @@
 package br.com.ufrpeuag.gastromaster.negocio.fachada;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
@@ -48,6 +49,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.CardapioNegocio;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.ContaNegocio;
+import br.com.ufrpeuag.gastromaster.negocio.validacoes.DataNegocio;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GarcomNegocio;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenciamentoNegocio;
 import br.com.ufrpeuag.gastromaster.negocio.validacoes.GerenteNegocio;
@@ -66,6 +68,7 @@ public class Fachada {
 	private MesaNegocio mesa;
 	private ContaNegocio conta;
 	private GerenciamentoNegocio gerenciamento;
+	private DataNegocio data;
 
 	public static Fachada getSingleton() throws SQLException {
 		if (singleton == null) {
@@ -83,6 +86,7 @@ public class Fachada {
 		mesa = new MesaNegocio();
 		conta = new ContaNegocio();
 		gerenciamento = new GerenciamentoNegocio();
+		data = new DataNegocio();
 	}
 
 	// Garçom
@@ -337,5 +341,9 @@ public class Fachada {
 
 	public List<GerenciamentoContas> listarTodosGerenciamentoContas() throws RelatorioVazioException {
 		return this.gerenciamento.listarTodosGerenciamentoContas();
+	}
+	
+	public LocalDate ValidarData(String data) throws DataNascimentoInvalidaException {
+		return this.data.ValidarData(data);
 	}
 }

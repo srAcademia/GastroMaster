@@ -10,13 +10,13 @@ public class Data {
 
 	}
 
-	public LocalDate mudarDataParaLocalDate(String data) {
+	public static LocalDate mudarDataParaLocalDate(String data) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate localDate = LocalDate.parse(data, formatter);
 		return localDate;
 	}
 
-	public String mudarDataParaString(LocalDate data) {
+	public static String mudarDataParaString(LocalDate data) {
 		java.sql.Date date = java.sql.Date.valueOf(data);
 		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 		String dataFormatada = formatador.format(date);

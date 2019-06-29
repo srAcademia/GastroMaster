@@ -1,5 +1,7 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,8 +10,8 @@ import java.util.ResourceBundle;
 
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,11 +19,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class FuncionariosControlador implements Initializable{
 	
@@ -65,8 +72,9 @@ public class FuncionariosControlador implements Initializable{
 	private Button deletarGerente;
 	@FXML
 	private Button cadastrarGerente;
+	@FXML
+	private Button alterarGerente;
 	
-
     @FXML
 	private TableView<Garcom> garcomList;
 	@FXML
@@ -110,7 +118,7 @@ public class FuncionariosControlador implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			listarFuncionarios();
-		} catch (ListarTodosInvalidoException | SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -121,7 +129,7 @@ public class FuncionariosControlador implements Initializable{
 		
 	}
 	
-	public void listarFuncionarios() throws ListarTodosInvalidoException, SQLException{
+	public void listarFuncionarios() throws SQLException{
 		gerentes = Fachada.getSingleton().listarTodosGerentes();
 		listaObservabelGerente = FXCollections.observableArrayList(gerentes);
 		gerenteList.setItems(listaObservabelGerente);
@@ -140,7 +148,7 @@ public class FuncionariosControlador implements Initializable{
 		if(gerente != null) {
 			nomeLabelGerente.setText(gerente.getNome());
 			cpfLabelGerente.setText(gerente.getCpf());
-			//dataNascLabelGerente.setText(gerente.getDataNasc());
+			dataNascLabelGerente.setText(Data.mudarDataParaString(gerente.getDataNasc()));
 			telefoneLabelGerente.setText(gerente.getTelefone());
 			emailLabelGerente.setText(gerente.getEmail());
 			salarioLabelGerente.setText(Double.toString(gerente.getSalario()));
@@ -173,7 +181,7 @@ public class FuncionariosControlador implements Initializable{
 		if(garcom != null) {
 			nomeLabelGarcom.setText(garcom.getNome());
 			cpfLabelGarcom.setText(garcom.getCpf());
-			//dataNascLabelGarcom.setText(garcom.getDataNasc());
+			dataNascLabelGarcom.setText(Data.mudarDataParaString(garcom.getDataNasc()));
 			telefoneLabelGarcom.setText(garcom.getTelefone());
 			emailLabelGarcom.setText(garcom.getEmail());
 			salarioLabelGarcom.setText(Double.toString(garcom.getSalario()));
@@ -203,11 +211,14 @@ public class FuncionariosControlador implements Initializable{
 	@FXML
 	public void handleDeletarGerente(ActionEvent event) throws GerenteInexistenteException, SQLException {
 		try {
+			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Deletar Gerente", "Tem certeza de que deseja deletar o funcionário?");
 			Gerente gerente = new Gerente();
 			gerente = gerenteList.getSelectionModel().getSelectedItem();
-			Fachada.getSingleton().deletarGerente(gerente);
-			listarFuncionarios();
-			CaixasDeAlerta.CaixaConcluido("Deletar Gerente", "Gerente deletado.");
+			if (confirmacao == true) {
+				Fachada.getSingleton().deletarGerente(gerente);
+				listarFuncionarios();
+				CaixasDeAlerta.CaixaConcluido("Deletar Gerente", "Gerente deletado.");
+			}
 		}catch(GerenteInexistenteException  ex) {
 			CaixasDeAlerta.CaixaErro("Deletar Gerente", ex.getLocalizedMessage(), "Selecione um gerente para deletar.");
 		}catch(Exception ex) {
@@ -218,11 +229,14 @@ public class FuncionariosControlador implements Initializable{
 	@FXML
 	public void handleDeletarGarcom(ActionEvent event) throws GarcomInexistenteException, SQLException {
 		try {
+			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Deletar Garçom", "Tem certeza de que deseja deletar o funcionário?");
 			Garcom garcom = new Garcom();
 			garcom = garcomList.getSelectionModel().getSelectedItem();
-			Fachada.getSingleton().deletarGarcom(garcom);
-			listarFuncionarios();
-			CaixasDeAlerta.CaixaConcluido("Deletar Garçom", "Garçom deletado.");
+			if (confirmacao == true) {
+				Fachada.getSingleton().deletarGarcom(garcom);
+				listarFuncionarios();
+				CaixasDeAlerta.CaixaConcluido("Deletar Garçom", "Garçom deletado.");
+			}
 		}catch(GarcomInexistenteException ex) {
 			CaixasDeAlerta.CaixaErro("Deletar Garçom", ex.getLocalizedMessage(), "Selecione um garçom para deletar.");
 		}catch(Exception ex) {
@@ -231,9 +245,43 @@ public class FuncionariosControlador implements Initializable{
 	}
 	
 	@FXML
-	public void handleCadastarGerente(ActionEvent event) {
+	public void handleCadastarGerente(ActionEvent event) throws SQLException {
+		Stage window = new Stage();
+		window.initModality(Modality.APPLICATION_MODAL);
 		
+		Parent root = null;
+        File css = new File("base16-google-dark.css");
+        String fileURI = css.toURI().toString();
+        
+        try {
+            root = FXMLLoader.load(getClass().getResource("TelaGerenteCadastro.fxml"));
+            root.getStylesheets().clear();
+            root.getStylesheets().add(fileURI);
+
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+        window.setTitle("Gerente");
+		Scene scene = new Scene(root, 500, 400);
+		window.setScene(scene);
+		window.setResizable(false);
+		window.showAndWait();
+		listarFuncionarios();
 	}
+	
+	@FXML
+	public void handleAlterarGerente(ActionEvent event) throws Exception {
+		Gerente gerente = new Gerente();
+		gerente = gerenteList.getSelectionModel().getSelectedItem();
+		if(gerente != null) {
+			EditarGerente editar = new EditarGerente(gerente);
+			editar.start(new Stage());
+		} else {
+			CaixasDeAlerta.CaixaErro("Alterar Gerente", "Gerente não encontrado", "Selecione um gerente para alterar.");
+		}
+	}
+	
 	
 	
 
