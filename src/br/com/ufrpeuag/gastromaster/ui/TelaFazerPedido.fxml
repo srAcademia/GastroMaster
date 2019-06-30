@@ -24,7 +24,7 @@
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #111111;" BorderPane.alignment="CENTER">
         <buttons>
-          <Button mnemonicParsing="false" style="-fx-background-color: #111111; -fx-border-color: #111111;" text="Concluir" />
+          <Button fx:id="concluiPedido" mnemonicParsing="false" onAction="#handleConcluirPedido" style="-fx-background-color: #111111; -fx-border-color: #111111;" text="Concluir" />
         </buttons>
       </ButtonBar>
    </bottom>

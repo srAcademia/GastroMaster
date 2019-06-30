@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
@@ -220,28 +219,16 @@ public class TodasMesasControlador implements Initializable{
 	}
 	
 	@FXML
-	public void handleFazerPedido(ActionEvent event) throws ListarTodosInvalidoException, SQLException {
-		Stage window = new Stage();
-		window.initModality(Modality.APPLICATION_MODAL);
-		
-		Parent root = null;
-        File css = new File("base16-google-dark.css");
-        String fileURI = css.toURI().toString();
-        
-        try {
-            root = FXMLLoader.load(getClass().getResource("TelaFazerPedido.fxml"));
-            root.getStylesheets().clear();
-            root.getStylesheets().add(fileURI);
-
-        } catch (IOException e) {
-            System.out.println(e);
-            System.exit(1);
-        }
-        window.setTitle("Realizar Pedido");
-		Scene scene = new Scene(root, 500, 400);
-		window.setScene(scene);
-		window.setResizable(false);;
-		window.showAndWait();
+	public void handleFazerPedido(ActionEvent event) throws Exception {
+		Mesa mesa = new Mesa();
+		mesa = mesaList.getSelectionModel().getSelectedItem();
+		if(mesa != null) {
+			FazerPedido pedir = new FazerPedido(mesa, Double.parseDouble(valorLabel.getText()));
+			pedir.start(new Stage());
+		} else {
+			CaixasDeAlerta.CaixaErro("Fazer Pedido", "Mesa não encontrada", "Selecione uma mesa para fazer o pedido.");
+		}
+		listarPedidos(mesa);
 	}
 	
 	@FXML

@@ -67,6 +67,12 @@ public class Pedido {
 
 	@Override
 	public String toString() {
+		if(cardapio == null) {
+			return produto.getNome() +", Valor = R$" + valor + "\n";
+		}
+		else if(produto == null) {
+			return cardapio.getPrato() +", Valor = R$" + valor + "\n";
+		}
 		return cardapio.getPrato() +" "+produto.getNome() +", Valor = R$" + valor + "\n";
 	}
 
