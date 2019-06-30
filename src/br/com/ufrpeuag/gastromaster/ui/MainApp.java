@@ -26,7 +26,7 @@ public class MainApp extends Application {
         String fileURI = css.toURI().toString();
         
         try {
-            root = FXMLLoader.load(getClass().getResource("TelaCardapio.fxml"));
+            root = FXMLLoader.load(getClass().getResource("TelaProduto.fxml"));
             root.getStylesheets().clear();
             root.getStylesheets().add(fileURI);
 

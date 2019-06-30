@@ -6,7 +6,6 @@ import java.util.List;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioProduto;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IProdutoDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PrecoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ProdutoExistenteException;
@@ -24,7 +23,11 @@ public class ProdutoNegocio {
 
 	public void cadastrarProduto(Produto produto) throws PrecoInvalidoException, ProdutoExistenteException,
 			QuantidadeProdutoInvalidaException, NomeInvalidoException {
-
+		
+		if (produto == null) {
+			throw new NomeInvalidoException();
+		}
+		
 		if (repProduto.retornarProduto(produto.getNome()) != null) {
 			throw new ProdutoExistenteException();
 		}
@@ -40,15 +43,17 @@ public class ProdutoNegocio {
 		repProduto.inserir(produto);
 	}
 
-	public void deletarProduto(Produto produto) throws ProdutoInexistenteException {
-
+	public void deletarProduto(Produto produto) throws ProdutoInexistenteException, NomeInvalidoException {
+		if (produto == null) {
+			throw new NomeInvalidoException();
+		}
 		if (repProduto.retornarProduto(produto.getNome()) == null) {
 			throw new ProdutoInexistenteException();
 		}
 		repProduto.deletar(produto);
 	}
 
-	public void alterarProduto(Produto produto, String nome, String novoNome, int quantidade, double preco)
+	public void alterarProduto(Produto produto, String novoNome, int quantidade, double preco)
 			throws ProdutoExistenteException {
 		
 		if (novoNome.isEmpty() == false) {
@@ -126,11 +131,7 @@ public class ProdutoNegocio {
 		repProduto.adicionarQuantProduto(produto, quantidade);
 	}
 
-	public List<Produto> listarTodosProdutos() throws ListarTodosInvalidoException {
-
-		if (repProduto.listarTodos() == null || repProduto.listarTodos().isEmpty()) {
-			throw new ListarTodosInvalidoException();
-		}
+	public List<Produto> listarTodosProdutos() {
 		return repProduto.listarTodos();
 	}
 }

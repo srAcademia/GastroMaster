@@ -310,7 +310,7 @@ public class MainPrincipal {
 						mainProduto.gerenciarCadastroProduto("Coca-cola 2,5 litros", 50, 7);
 						break;
 					case 2:
-						mainProduto.gerenciarAlteracaoProduto("Coca-cola 2,5 litros", "", 1, 0);
+						//mainProduto.gerenciarAlteracaoProduto("Coca-cola 2,5 litros", "", 1, 0);
 						break;
 					case 3:
 						mainProduto.gerenciarRemocaoProduto("Coca-cola 2 litros");
@@ -325,7 +325,7 @@ public class MainPrincipal {
 						mainProduto.gerenciarVerificarQuantidadeProduto("Coca-cola 2 litros");
 						break;
 					case 7:
-						mainProduto.gerenciarListarProduto();
+						//mainProduto.gerenciarListarProduto();
 					case 0:
 						break;
 					default:

@@ -41,7 +41,7 @@ public class MainProduto {
 	}
 	
 	//ALTERACAO
-	public void gerenciarAlteracaoProduto(String nome, String novoNome, int quantidade, double preco)throws SQLException, NomeInvalidoException, ProdutoInexistenteException, ProdutoExistenteException{
+	/*public void gerenciarAlteracaoProduto(String nome, String novoNome, int quantidade, double preco)throws SQLException, NomeInvalidoException, ProdutoInexistenteException, ProdutoExistenteException{
 		try {
 			Produto produto = new Produto();
 			produto = Fachada.getSingleton().recuperarProdutoNome(nome);
@@ -52,7 +52,7 @@ public class MainProduto {
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 	
 	//RECUPERAR
 	public void gerenciarRecuperarProduto(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException {
@@ -121,7 +121,7 @@ public class MainProduto {
 	}
 		
 	//TESTE DE MOSTRAR TODOS
-	public void gerenciarListarProduto() throws SQLException, ListarTodosInvalidoException{
+	/*public void gerenciarListarProduto() throws SQLException, ListarTodosInvalidoException{
 		try {
 			System.out.println(Fachada.getSingleton().listarTodosProdutos());
 		}catch(ListarTodosInvalidoException ex) {
@@ -129,5 +129,5 @@ public class MainProduto {
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 }
