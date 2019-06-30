@@ -21,12 +21,20 @@ public class PedidoNegocio {
 	}
 
 	public void cadastrarPedido(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
-		pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), pedido.getProduto().getPreco()));
+		if (pedido.getCardapio() == null && pedido.getProduto() == null) {
+			throw new PedidoVazioException();
+		}
+		if (pedido.getProduto() == null ) {
+			pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), 0));
+		}
+		else if(pedido.getCardapio() == null ) {
+			pedido.setValor(pedido.calcularValorPedido(0, pedido.getProduto().getPreco()));
+		}
+		else {
+			pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), pedido.getProduto().getPreco()));
+		}
 		if (pedido.getValor() <= 0) {
 			throw new PedidoInvalidoException();
-		}
-		if (pedido.getCardapio().equals(null) && pedido.getProduto().equals(null)) {
-			throw new PedidoVazioException();
 		}
 		repPedido.inserir(pedido);
 	}

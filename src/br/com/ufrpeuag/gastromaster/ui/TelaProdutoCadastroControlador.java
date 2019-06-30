@@ -39,7 +39,6 @@ public class TelaProdutoCadastroControlador {
 		}catch(NumberFormatException ex) {
 			CaixasDeAlerta.CaixaErro("Cadastrar Produto", "Campo inválido.", "Preencha os campos corretamente antes de concluir o cadastro.");
 		}catch(Exception ex) {
-			System.out.println(ex.getStackTrace());
 			CaixasDeAlerta.CaixaErro("Cadastrar Produto", "Erro inesperado.", "Erro inesperado.");
 		}
 	}
