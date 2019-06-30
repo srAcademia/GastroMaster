@@ -196,13 +196,13 @@ public class Fachada {
 		this.produto.cadastrarProduto(produto);
 	}
 
-	public void deletarProduto(Produto produto) throws ProdutoInexistenteException {
+	public void deletarProduto(Produto produto) throws ProdutoInexistenteException, NomeInvalidoException {
 		this.produto.deletarProduto(produto);
 	}
 
-	public void alterarProduto(Produto produto, String nome, String novoNome, int quantidade, double preco)
+	public void alterarProduto(Produto produto, String novoNome, int quantidade, double preco)
 			throws ProdutoExistenteException {
-		this.produto.alterarProduto(produto, nome, novoNome, quantidade, preco);
+		this.produto.alterarProduto(produto, novoNome, quantidade, preco);
 	}
 
 	public Produto recuperarProdutoNome(String nome) throws ProdutoInexistenteException, NomeInvalidoException {
@@ -227,7 +227,7 @@ public class Fachada {
 		this.produto.adicionarQuantidadeProduto(produto, quantidade);
 	}
 
-	public List<Produto> listarTodosProdutos() throws ListarTodosInvalidoException {
+	public List<Produto> listarTodosProdutos() {
 		return this.produto.listarTodosProdutos();
 	}
 
