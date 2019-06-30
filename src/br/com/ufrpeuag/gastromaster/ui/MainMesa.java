@@ -84,7 +84,7 @@ public class MainMesa {
 	}
 		
 	//LISTAR TODOS
-	public void gerenciarListarMesa() throws SQLException, ListarTodosInvalidoException{
+	/*public void gerenciarListarMesa() throws SQLException, ListarTodosInvalidoException{
 		try {
 			System.out.println(Fachada.getSingleton().listarTodasMesas());
 		}catch(ListarTodosInvalidoException ex) {
@@ -92,5 +92,5 @@ public class MainMesa {
 		}catch(Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 }

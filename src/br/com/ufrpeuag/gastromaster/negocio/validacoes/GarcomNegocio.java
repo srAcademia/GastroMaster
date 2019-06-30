@@ -89,7 +89,9 @@ public class GarcomNegocio {
 
 	public void alterarGarcom(Garcom garcom)
 			throws GarcomExistenteException, DataNascimentoInvalidaException, CPFInvalidoException {
-
+		if (garcom == null) {
+			throw new CPFInvalidoException();
+		}
 		if (garcom.getNome().isEmpty() == false) {
 			garcom.setNome(garcom.getNome());
 		}

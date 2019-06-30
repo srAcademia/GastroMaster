@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioPedido;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IPedidoDao;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ExceptionRecuperarUltimoID;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperacaoItemInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;

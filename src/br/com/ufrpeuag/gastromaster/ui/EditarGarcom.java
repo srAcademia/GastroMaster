@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +14,7 @@ import javafx.stage.Stage;
 public class EditarGarcom extends Application {
 	
 	public EditarGarcom(Garcom garcom) {
-		GarcomControladorAlterar.setGarcom(garcom);
+		GarcomControladorAlterar.setGarcom2(garcom);
 	}
 
 	public static void main(String[] args) {

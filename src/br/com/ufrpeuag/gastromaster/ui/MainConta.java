@@ -46,7 +46,7 @@ public class MainConta {
 		return 0;
 	}
 	
-	public List<Conta> gerenciarRetornarTodasContaPorMesa(Integer codigo) throws SQLException, ContaGerarException {
+	/*public List<Conta> gerenciarRetornarTodasContaPorMesa(Integer codigo) throws SQLException, ContaGerarException {
 		try {
 			List<Conta> contas = new ArrayList<>();
 			contas = Fachada.getSingleton().recuperarContaPorMesa(codigo);
@@ -57,7 +57,7 @@ public class MainConta {
 			System.out.println("Erro inesperado.");
 		}
 		return null;
-	}
+	}*/
 	
 	public void gerenciarRemoverTodasConta(Conta conta) throws SQLException{
 		try {

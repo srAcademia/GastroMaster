@@ -6,7 +6,6 @@ import java.util.List;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioMesa;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IMesaDao;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.IDRecuperarMesaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaCadastradaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaDisponibilidadeInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaInexistenteException;
@@ -23,7 +22,6 @@ public class MesaNegocio {
 
 	public void cadastrarMesa(Mesa mesa)
 			throws MesaCadastradaException, MesaDisponibilidadeInvalidaException, NumeroInvalidoException {
-
 		if (mesa.getNumero() < 1) {
 			throw new NumeroInvalidoException();
 		}
@@ -37,6 +35,9 @@ public class MesaNegocio {
 	}
 
 	public void deletarMesa(Mesa mesa) throws MesaInexistenteException {
+		if (mesa == null) {
+			throw new MesaInexistenteException();
+		}
 		if (repMesa.recuperar(mesa.getId_mesa()) == null) {
 			throw new MesaInexistenteException();
 		}
@@ -77,10 +78,7 @@ public class MesaNegocio {
 		repMesa.mudarDisponibilidade(mesa);
 	}
 
-	public List<Mesa> listarTodasMesas() throws ListarTodosInvalidoException {
-		if (repMesa.listarTodos() == null || repMesa.listarTodos().isEmpty()) {
-			throw new ListarTodosInvalidoException();
-		}
+	public List<Mesa> listarTodasMesas() {
 		return repMesa.listarTodos();
 	}
 

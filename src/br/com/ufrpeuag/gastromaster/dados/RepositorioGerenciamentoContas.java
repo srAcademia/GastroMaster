@@ -29,14 +29,13 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 	@Override
 	public void inserir(GerenciamentoContas g) {
 		String inserirSql = "INSERT INTO  GerenciamentoContas(cod_garcom , cod_mesa, valorTotal , data) VALUES(?,?,?,?)";
-		Data d = new Data();
 		try {
 			pstmt = this.conn.prepareStatement(inserirSql);
 
 			pstmt.setInt(1, g.getGarcom().getId_garcom());
 			pstmt.setInt(2, g.getMesa().getId_mesa());
 			pstmt.setDouble(3, g.getValorTotal());
-			pstmt.setString(4, d.mudarDataParaString(g.getData()));
+			pstmt.setString(4, Data.mudarDataParaString(g.getData()));
 
 			pstmt.executeUpdate();
 
@@ -59,7 +58,6 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 		Garcom g = null;
 		Endereco e = null;
 		GerenciamentoContas gc = null;
-		Data d = new Data();
 
 		String sql = "SELECT * FROM GerenciamentoContas gc JOIN Garcom g"
 				+ " ON (gc.cod_garcom = g.id_garcom) JOIN Endereco e on (e.id_endereco =g.cod_endereco) "
@@ -82,7 +80,7 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
+				g.setDataNasc(Data.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -103,7 +101,7 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 
 				gc.setMesa(m);
 				gc.setValorTotal(result.getDouble("valorTotal"));
-				gc.setData(d.mudarDataParaLocalDate(result.getString("data")));
+				gc.setData(Data.mudarDataParaLocalDate(result.getString("data")));
 
 				return gc;
 
@@ -125,7 +123,6 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 
 	@Override
 	public void alterar(GerenciamentoContas g) {
-		Data d = new Data();
 		String alterarSql = "UPDATE GerenciamentoContas SET " + " cod_garcom= ? , " + "cod_mesa= ?," + " valorTotal= ?,"
 				+ "data = ? " + "WHERE id_gerenc = ?";
 
@@ -136,7 +133,7 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 			pstmt.setInt(1, g.getGarcom().getId_garcom());
 			pstmt.setInt(2, g.getMesa().getId_mesa());
 			pstmt.setDouble(3, g.getValorTotal());
-			pstmt.setString(4, d.mudarDataParaString(g.getData()));
+			pstmt.setString(4, Data.mudarDataParaString(g.getData()));
 			pstmt.setInt(5, g.getId_gerenc());
 
 			pstmt.executeUpdate();
@@ -183,7 +180,6 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 		Garcom g = null;
 		Endereco e = null;
 		GerenciamentoContas gc = null;
-		Data d = new Data();
 		String sql = "SELECT * FROM GerenciamentoContas gc JOIN Garcom g" + " ON (gc.cod_garcom = g.id_garcom) "
 				+ "JOIN Endereco e on (e.id_endereco =g.cod_endereco) " + "JOIN  Mesa m ON (gc.cod_mesa = m.id_mesa) ";
 		try {
@@ -202,7 +198,7 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
+				g.setDataNasc(Data.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -223,7 +219,7 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 
 				gc.setMesa(m);
 				gc.setValorTotal(result.getDouble("valorTotal"));
-				gc.setData(d.mudarDataParaLocalDate(result.getString("data")));
+				gc.setData(Data.mudarDataParaLocalDate(result.getString("data")));
 				lista.add(gc);
 
 			}

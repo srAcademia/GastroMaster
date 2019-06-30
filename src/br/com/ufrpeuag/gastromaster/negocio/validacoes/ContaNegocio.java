@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioConta;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IContaDao;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
 
 public class ContaNegocio {
@@ -29,17 +28,14 @@ public class ContaNegocio {
 	}
 
 	public double mostrarValorConta(Conta conta) {
-		if(conta.equals(null)) {
+		if(conta == null) {
 			return 0;
 		}
 		
 		return repConta.mostrarValorConta(conta);
 	}
 
-	public List<Conta> recuperarContaPorMesa(Integer codigo) throws ContaGerarException {
-		if (repConta.recuperarPorMesa(codigo) == null || repConta.recuperarPorMesa(codigo).isEmpty()) {
-			throw new ContaGerarException();
-		}
+	public List<Conta> recuperarContaPorMesa(Integer codigo) {
 		return repConta.recuperarPorMesa(codigo);
 	}
 

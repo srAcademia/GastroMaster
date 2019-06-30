@@ -31,13 +31,12 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public void inserir(Conta conta) {
-		Data d = new Data();
 		String inserirSql = "INSERT INTO  Conta(data, cod_pedido , cod_garcom , cod_mesa, valor) VALUES(?,?,?,?,?)";
 
 		try {
 			pstmt = this.conn.prepareStatement(inserirSql);
 
-			pstmt.setString(1, d.mudarDataParaString(conta.getData()));
+			pstmt.setString(1, Data.mudarDataParaString(conta.getData()));
 			pstmt.setInt(2, conta.getPedido().getId_pedido());
 			pstmt.setInt(3, conta.getGarcom().getId_garcom());
 			pstmt.setInt(4, conta.getMesa().getId_mesa());
@@ -89,10 +88,9 @@ public class RepositorioConta implements IContaDao {
 				card = new Cardapio();
 				prod = new Produto();
 				e = new Endereco();
-				Data d = new Data();
 
 				c.setId_conta(result.getInt("id_conta"));
-				c.setData(d.mudarDataParaLocalDate(result.getString("data")));
+				c.setData(Data.mudarDataParaLocalDate(result.getString("data")));
 
 				// Pedido
 				pedido.setId_pedido(result.getInt("id_pedido"));
@@ -114,7 +112,7 @@ public class RepositorioConta implements IContaDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
+				g.setDataNasc(Data.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -158,7 +156,6 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public void alterar(Conta conta) {
-		Data d = new Data();
 		String alterarSql = "UPDATE Conta SET data= ? , " + "cod_pedido= ? , cod_garcom= ? , " + "cod_mesa= ?,"
 				+ " valor= ?  WHERE id_conta = ?";
 
@@ -166,7 +163,7 @@ public class RepositorioConta implements IContaDao {
 
 			pstmt = this.conn.prepareStatement(alterarSql);
 
-			pstmt.setString(1, d.mudarDataParaString(conta.getData()));
+			pstmt.setString(1, Data.mudarDataParaString(conta.getData()));
 			pstmt.setInt(2, conta.getPedido().getId_pedido());
 			pstmt.setInt(3, conta.getGarcom().getId_garcom());
 			pstmt.setInt(4, conta.getMesa().getId_mesa());
@@ -218,7 +215,6 @@ public class RepositorioConta implements IContaDao {
 		Produto prod = null;
 		Cardapio card = null;
 		Endereco e = null;
-		Data d = new Data();
 		List<Conta> lista = new ArrayList<>();
 
 		String listarTodosSql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
@@ -244,7 +240,7 @@ public class RepositorioConta implements IContaDao {
 				e = new Endereco();
 
 				c.setId_conta(result.getInt("id_conta"));
-				c.setData(d.mudarDataParaLocalDate(result.getString("data")));
+				c.setData(Data.mudarDataParaLocalDate(result.getString("data")));
 
 				// Pedido
 				pedido.setId_pedido(result.getInt("id_pedido"));
@@ -266,7 +262,7 @@ public class RepositorioConta implements IContaDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
+				g.setDataNasc(Data.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));
@@ -367,7 +363,6 @@ public class RepositorioConta implements IContaDao {
 			result = pstmt.executeQuery();
 
 			while (result.next()) {
-				Data d = new Data();
 				c = new Conta();
 				m = new Mesa();
 				pedido = new Pedido();
@@ -377,7 +372,7 @@ public class RepositorioConta implements IContaDao {
 				e = new Endereco();
 
 				c.setId_conta(result.getInt("id_conta"));
-				c.setData(d.mudarDataParaLocalDate(result.getString("data")));
+				c.setData(Data.mudarDataParaLocalDate(result.getString("data")));
 
 				// Pedido
 				pedido.setId_pedido(result.getInt("id_pedido"));
@@ -399,7 +394,7 @@ public class RepositorioConta implements IContaDao {
 				g.setId_garcom(result.getInt("id_garcom"));
 				g.setNome(result.getString("nome"));
 				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(d.mudarDataParaLocalDate(result.getString("dataNasc")));
+				g.setDataNasc(Data.mudarDataParaLocalDate(result.getString("dataNasc")));
 				g.setTelefone(result.getString("telefone"));
 				g.setEmail(result.getString("email"));
 				g.setSalario(result.getDouble("salario"));

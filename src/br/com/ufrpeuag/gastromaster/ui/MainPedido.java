@@ -131,7 +131,7 @@ public class MainPedido {
 	}
 
 	// LISTAR POR MESA
-	public List<Pedido> gerenciarListarPorMesa(Integer codigo) throws SQLException, ConcluirPagamentoException {
+	/*public List<Pedido> gerenciarListarPorMesa(Integer codigo) throws SQLException, ConcluirPagamentoException {
 		try {
 			List<Pedido> pedidos = new ArrayList<>();
 			pedidos = Fachada.getSingleton().listarPedidosPorMesa(codigo);
@@ -142,7 +142,7 @@ public class MainPedido {
 			System.out.println("Erro inesperado.");
 		}
 		return null;
-	}
+	}*/
 
 	// REMOVER TODOS PEDIDOS
 	public void gerenciarRemoverTodosPedido(Integer codigo) throws SQLException {
