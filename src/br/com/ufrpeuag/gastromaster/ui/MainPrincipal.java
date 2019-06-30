@@ -256,7 +256,7 @@ public class MainPrincipal {
 									break;
 								case 4:
 									List<Conta> contas = new ArrayList<>();
-									contas = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
+									//contas = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
 									if (contas != null) {
 										System.out.println(
 												"Conta da mesa: " + mainConta.gerenciarGerarConta(contas.get(0)));
@@ -264,7 +264,7 @@ public class MainPrincipal {
 									break;
 								case 5:
 									List<Conta> contas1 = new ArrayList<>();
-									contas1 = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
+									//contas1 = mainConta.gerenciarRetornarTodasContaPorMesa((Integer) mesa.getId_mesa());
 									if (contas1 != null) {
 										mainGerenciamento.gerenciarCadastroGerenciamento(garcom, mesa, mainConta.gerenciarGerarConta(contas1.get(0)), contas1.get(0).getData());
 										mainConta.gerenciarRemoverTodasConta(contas1.get(0));
@@ -285,7 +285,7 @@ public class MainPrincipal {
 						}
 						break;
 					case 5:
-						mainMesa.gerenciarListarMesa();
+						//mainMesa.gerenciarListarMesa();
 					case 0:
 						break;
 					default:
@@ -348,7 +348,7 @@ public class MainPrincipal {
 						mainCardapio.gerenciarCadastroCardapio("Camarão", 32);
 						break;
 					case 2:
-						mainCardapio.gerenciarAlteracaoCardapio("Camarão", "", 30);
+						//mainCardapio.gerenciarAlteracaoCardapio("Camarão", "", 30);
 						break;
 					case 3:
 						mainCardapio.gerenciarRemocaoCardapio("Camarão");
@@ -357,7 +357,7 @@ public class MainPrincipal {
 						mainCardapio.gerenciarRecuperarCardapio(2);
 						break;
 					case 5:
-						mainCardapio.gerenciarListarCardapio();
+						//mainCardapio.gerenciarListarCardapio();
 					case 0:
 						break;
 					default:

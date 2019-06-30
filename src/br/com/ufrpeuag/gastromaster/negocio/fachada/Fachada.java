@@ -7,8 +7,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CidadeInvalidaException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ConcluirPagamentoException;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ExceptionRecuperarUltimoID;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomExistenteException;
@@ -187,7 +185,7 @@ public class Fachada {
 		this.mesa.mudarDisponibilidadeMesa(mesa);
 	}
 
-	public List<Mesa> listarTodasMesas() throws ListarTodosInvalidoException {
+	public List<Mesa> listarTodasMesas() {
 		return this.mesa.listarTodasMesas();
 	}
 
@@ -248,9 +246,9 @@ public class Fachada {
 		this.cardapio.deletarCardapio(cardapio);
 	}
 
-	public void alterarCardapio(Cardapio cardapio, String nome, String novoNome, double preco)
+	public void alterarCardapio(Cardapio cardapio, String novoNome, double preco)
 			throws PratoExistenteException {
-		this.cardapio.alterarCardapio(cardapio, nome, novoNome, preco);
+		this.cardapio.alterarCardapio(cardapio, novoNome, preco);
 	}
 
 	public Cardapio recuperarCardapioPeloNome(String nome) throws PratoInexistenteException, NomeInvalidoException {
@@ -261,7 +259,7 @@ public class Fachada {
 		return this.cardapio.recuperarCardapioPorID(codigo);
 	}
 
-	public List<Cardapio> listarTodosCardapios() throws ListarTodosInvalidoException {
+	public List<Cardapio> listarTodosCardapios() {
 		return this.cardapio.listarTodosCardapios();
 	}
 
@@ -300,7 +298,7 @@ public class Fachada {
 		return this.pedido.recuperarUltimoIDPedido();
 	}
 
-	public List<Pedido> listarPedidosPorMesa(Integer codigo) throws ConcluirPagamentoException {
+	public List<Pedido> listarPedidosPorMesa(Integer codigo) {
 		return this.pedido.listarPedidosPorMesa(codigo);
 	}
 
@@ -326,7 +324,7 @@ public class Fachada {
 		return this.conta.mostrarValorConta(conta);
 	}
 
-	public List<Conta> recuperarContaPorMesa(Integer codigo) throws ContaGerarException {
+	public List<Conta> recuperarContaPorMesa(Integer codigo) {
 		return this.conta.recuperarContaPorMesa(codigo);
 	}
 

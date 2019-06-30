@@ -43,7 +43,7 @@ public class MainCardapio {
 	}
 
 	// ALTERACAO
-	public void gerenciarAlteracaoCardapio(String nome, String novoNome, double preco)
+	/*public void gerenciarAlteracaoCardapio(String nome, String novoNome, double preco)
 			throws SQLException, PratoInexistenteException, NomeInvalidoException, PratoExistenteException {
 		try {
 			Cardapio cardapio = new Cardapio();
@@ -55,7 +55,7 @@ public class MainCardapio {
 		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 
 	// RECUPERAR
 	public void gerenciarRecuperarCardapio(Integer codigo) throws SQLException, IDRecuperacaoItemInvalidoException {
@@ -83,7 +83,7 @@ public class MainCardapio {
 	}
 
 	// LISTAR TODOS
-	public void gerenciarListarCardapio() throws SQLException, ListarTodosInvalidoException {
+	/*public void gerenciarListarCardapio() throws SQLException, ListarTodosInvalidoException {
 		try {
 			System.out.println(Fachada.getSingleton().listarTodosCardapios());
 		} catch (ListarTodosInvalidoException ex) {
@@ -91,6 +91,6 @@ public class MainCardapio {
 		} catch (Exception ex) {
 			System.out.println("Erro inesperado.");
 		}
-	}
+	}*/
 
 }

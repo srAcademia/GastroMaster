@@ -48,7 +48,6 @@ public class GerenteControladorEditar implements Initializable{
 	private Button concluirGerenteEdicao;
 	@FXML
 	private Button cancelarGerenteCadastro;
-	
 	private static Gerente gerente2;
 	
 	@Override
@@ -67,11 +66,11 @@ public class GerenteControladorEditar implements Initializable{
 			Fachada.getSingleton().alterarGerente(gerente);
 			CaixasDeAlerta.CaixaConcluido("Alterar Gerente", "Gerente alterado.");
 		}catch(CPFInvalidoException | DataNascimentoInvalidaException | GerenteExistenteException ex) {
-			CaixasDeAlerta.CaixaErro("Alterar Gerente", "Campo invï¿½lido.", ex.getLocalizedMessage());
+			CaixasDeAlerta.CaixaErro("Alterar Gerente", "Campo inválido.", ex.getLocalizedMessage());
 		}catch(NumberFormatException ex) {
-			CaixasDeAlerta.CaixaErro("Alterar Gerente", "Campo invï¿½lido.", "Preencha os campos corretamente antes de concluir o cadastro.");
+			CaixasDeAlerta.CaixaErro("Alterar Gerente", "Campo inválido.", "Preencha os campos corretamente antes de concluir a edição.");
 		}catch(Exception ex) {
-			CaixasDeAlerta.CaixaErro("Cadastrar Gerente", "Erro inesperado.", "Erro inesperado.");
+			CaixasDeAlerta.CaixaErro("Alterar Gerente", "Erro inesperado.", "Erro inesperado.");
 		}
 	}
 	

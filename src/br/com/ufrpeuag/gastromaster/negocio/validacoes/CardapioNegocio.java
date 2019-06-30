@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioCardapio;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.ICardapioDao;
-import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.NomeInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PratoInexistenteException;
@@ -21,7 +20,10 @@ public class CardapioNegocio {
 
 	public void cadastrarCardapio(Cardapio cardapio)
 			throws PratoExistenteException, NomeInvalidoException, PrecoInvalidoException {
-
+		if (cardapio == null){
+			throw new NomeInvalidoException();
+		}
+		
 		if (repCardapio.recuperarPorNome(cardapio.getPrato()) != null) {
 			throw new PratoExistenteException();
 		}
@@ -35,14 +37,16 @@ public class CardapioNegocio {
 	}
 
 	public void deletarCardapio(Cardapio cardapio) throws PratoInexistenteException {
-
+		if(cardapio == null) {
+			throw new PratoInexistenteException();
+		}
 		if (repCardapio.recuperarPorNome(cardapio.getPrato()) == null) {
 			throw new PratoInexistenteException();
 		}
 		repCardapio.deletar(cardapio);
 	}
 
-	public void alterarCardapio(Cardapio cardapio, String nome, String novoNome, double preco) throws PratoExistenteException {
+	public void alterarCardapio(Cardapio cardapio, String novoNome, double preco) throws PratoExistenteException {
 		if(novoNome.isEmpty() == false) {
 			if(repCardapio.recuperarPorNome(novoNome) != null) {
 				throw new PratoExistenteException();
@@ -86,10 +90,7 @@ public class CardapioNegocio {
 
 	}
 
-	public List<Cardapio> listarTodosCardapios() throws ListarTodosInvalidoException {
-		if (repCardapio.listarTodos() == null || repCardapio.listarTodos().isEmpty()) {
-			throw new ListarTodosInvalidoException();
-		}
+	public List<Cardapio> listarTodosCardapios() {
 		return repCardapio.listarTodos();
 	}
 }

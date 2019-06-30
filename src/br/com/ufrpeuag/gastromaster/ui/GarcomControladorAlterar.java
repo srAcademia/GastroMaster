@@ -60,10 +60,10 @@ public class GarcomControladorAlterar {
 	@FXML
 	private Button cancelarGarcom;
 
-	private static Garcom garcom;
+	private static Garcom garcom2;
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		initGerente();
+		initGarcom();
 	}
 
 	@FXML
@@ -94,28 +94,28 @@ public class GarcomControladorAlterar {
 		}
 	}
 
-	public void initGerente() {
-		nomeFieldGarcom.setText(garcom.getNome());
-		dataNascFieldGarcom.setText(Data.mudarDataParaString(garcom.getDataNasc()));
-		telefoneFieldGarcom.setText(garcom.getTelefone());
-		emailFieldGarcom.setText(garcom.getEmail());
-		salarioFieldGarcom.setText(Double.toString(garcom.getSalario()));
-		cidadeFieldGarcom.setText(garcom.getEndereco().getCidade());
-		bairroFieldGarcom.setText(garcom.getEndereco().getBairro());
-		ruaFieldGarcom.setText(garcom.getEndereco().getRua());
-		numeroFieldGarcom.setText(Integer.toString(garcom.getEndereco().getNumero()));
-		cepFieldGarcom.setText(garcom.getEndereco().getCep());
+	public void initGarcom() {
+		nomeFieldGarcom.setText(garcom2.getNome());
+		dataNascFieldGarcom.setText(Data.mudarDataParaString(garcom2.getDataNasc()));
+		telefoneFieldGarcom.setText(garcom2.getTelefone());
+		emailFieldGarcom.setText(garcom2.getEmail());
+		salarioFieldGarcom.setText(Double.toString(garcom2.getSalario()));
+		cidadeFieldGarcom.setText(garcom2.getEndereco().getCidade());
+		bairroFieldGarcom.setText(garcom2.getEndereco().getBairro());
+		ruaFieldGarcom.setText(garcom2.getEndereco().getRua());
+		numeroFieldGarcom.setText(Integer.toString(garcom2.getEndereco().getNumero()));
+		cepFieldGarcom.setText(garcom2.getEndereco().getCep());
 	}
 
 	@FXML
 	public void handleCancelar(ActionEvent event) {
 	}
 
-	public static Garcom getGarcom() {
-		return garcom;
+	public static Garcom getGarcom2() {
+		return garcom2;
 	}
 
-	public static void setGarcom(Garcom garcom) {
-		GarcomControladorAlterar.garcom = garcom;
+	public static void setGarcom2(Garcom garcom2) {
+		GarcomControladorAlterar.garcom2 = garcom2;
 	}
 }
