@@ -5,10 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class TelaHomeGerenteControlador {
+public class TelaHomeGarcomControlador {
 	
-	@FXML
-	private Button funcionarios;
+
 	@FXML
 	private Button mesas;
 	@FXML
@@ -16,31 +15,25 @@ public class TelaHomeGerenteControlador {
 	@FXML
 	private Button estoque;
 	@FXML
-	private Button relatorios;
-	@FXML
 	private Button sair;
 	
 	MainAppLogin mainAppLogin = new MainAppLogin();
+
 	
-	public void handleTelaFuncionarios(ActionEvent event) {
-		MainAppGerente.changeScreen("funcionarios");
-	}
 	public void handleTelaMesas(ActionEvent event) {
-		MainAppGerente.changeScreen("mesas");
+		MainAppGarcom.changeScreen("mesas");
 	}
 	public void handleTelaCardapio(ActionEvent event) {
-		MainAppGerente.changeScreen("cardapio");
+		MainAppGarcom.changeScreen("cardapio");
 	}
 	public void handleTelaEstoque(ActionEvent event) {
-		MainAppGerente.changeScreen("estoque");
-	}
-	public void handleTelaRelatorios(ActionEvent event) {
+		MainAppGarcom.changeScreen("estoque");
 	}
 	public void handleSair(ActionEvent event) {
 		boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Sair Garcom", "Tem certeza de que deseja sair?");
 		if (confirmacao == true) {
 			mainAppLogin.start(new Stage());
-			MainAppGerente.getStage().close();
+			MainAppGarcom.getStage().close();
 		}
 	}
 

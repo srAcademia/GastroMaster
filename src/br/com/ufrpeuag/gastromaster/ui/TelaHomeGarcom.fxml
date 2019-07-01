@@ -6,21 +6,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="500.0" prefWidth="800.0" styleClass="background" stylesheets="@base16-google-dark.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ufrpeuag.gastromaster.ui.TelaHomeGerenteControlador">
+<BorderPane prefHeight="500.0" prefWidth="800.0" styleClass="background" stylesheets="@base16-google-dark.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ufrpeuag.gastromaster.ui.TelaHomeGarcomControlador">
    <top>
       <HBox alignment="CENTER" prefHeight="70.0" prefWidth="800.0" styleClass="label-header" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="800.0" styleClass="label-header" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="800.0" spacing="80.0" styleClass="label-header" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="funcionarios" mnemonicParsing="false" onAction="#handleTelaFuncionarios" style="-fx-background-color: #9e181b; -fx-border-color: #9e181b;" text="Funcionários">
-                     <graphic>
-                        <ImageView fitHeight="90.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icons/pessoa.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                   <Button fx:id="mesas" mnemonicParsing="false" onAction="#handleTelaMesas" style="-fx-background-color: #9e181b; -fx-border-color: #9e181b;" text="Mesas">
                      <graphic>
                         <ImageView fitHeight="90.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -48,16 +39,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="relatorios" mnemonicParsing="false" onAction="#handleTelaRelatorios" style="-fx-background-color: #9e181b; -fx-border-color: #9e181b;" text="Relatórios">
-                     <graphic>
-                        <ImageView fitHeight="90.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icons/grafico.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="sair" mnemonicParsing="false" onAction="#handleSair" style="-fx-background-color: #9e181b; -fx-border-color: #9e181b;" text="Sair">
+                  <Button fx:id="sair" layoutX="553.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleSair" style="-fx-background-color: #9e181b; -fx-border-color: #9e181b;" text="Sair">
                      <graphic>
                         <ImageView fitHeight="90.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
