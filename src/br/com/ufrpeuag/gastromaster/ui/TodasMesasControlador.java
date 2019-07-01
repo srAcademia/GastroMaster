@@ -8,13 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ContaGerarException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,14 +68,14 @@ public class TodasMesasControlador implements Initializable{
 	private Label numeroLabel;
 	@FXML
 	private Label disponibilidadeLabel;
+	@FXML
+	private Label cpfGarcom;
 	
 	@FXML
 	private ListView<Pedido> pedidoList;
 	private List<Pedido> pedidos = new ArrayList<>();
 	private double valorMesa = 0;
     private ObservableList<Pedido> listaObservabelPedido;
-	private List<Conta> contas;
-
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -112,6 +118,8 @@ public class TodasMesasControlador implements Initializable{
 			}
 		});
 		
+		cpfGarcom.setText(TelaHomeGarcomControlador.getGarcom2().getCpf());
+		
 	}
 	
 	public void listarMesas() throws SQLException{
@@ -147,8 +155,9 @@ public class TodasMesasControlador implements Initializable{
 	}
 	public void gerarValorTotal(Mesa mesa) throws SQLException {
 		if(mesa != null) {
+			List<Conta> contas;
 			contas = new ArrayList<>();
-			contas = Fachada.getSingleton().recuperarContaPorMesa(Integer.parseInt(numeroLabel.getText()));
+			contas = Fachada.getSingleton().recuperarContaPorMesa(mesa.getNumero());
 			if (contas == null || contas.isEmpty()) {
 				valorLabel.setText("0.0");
 			}else {
@@ -221,22 +230,68 @@ public class TodasMesasControlador implements Initializable{
 	@FXML
 	public void handleFazerPedido(ActionEvent event) throws Exception {
 		Mesa mesa = new Mesa();
+		Garcom garcom = new Garcom();
 		mesa = mesaList.getSelectionModel().getSelectedItem();
 		if(mesa != null) {
-			FazerPedido pedir = new FazerPedido(mesa, Double.parseDouble(valorLabel.getText()));
+			garcom = Fachada.getSingleton().recuperarGarcomPorCPF(cpfGarcom.getText());
+			FazerPedido pedir = new FazerPedido(mesa, Double.parseDouble(valorLabel.getText()), garcom);
 			pedir.start(new Stage());
 		} else {
 			CaixasDeAlerta.CaixaErro("Fazer Pedido", "Mesa não encontrada", "Selecione uma mesa para fazer o pedido.");
 		}
 		listarPedidos(mesa);
+		gerarValorTotal(mesa);
 	}
 	
 	@FXML
-	public void handlePagar(ActionEvent event) throws ContaGerarException, SQLException, PedidoInexistenteException {
-		List<Conta> contas = new ArrayList<>();
-		contas = Fachada.getSingleton().recuperarContaPorMesa(1);
-		Fachada.getSingleton().deletarTodasContasPorMesa(contas.get(0));
-		Fachada.getSingleton().deletarTodosPedidosPelaMesa(1);
+	public void handlePagar(ActionEvent event) throws ContaGerarException, SQLException, PedidoInexistenteException, CPFInvalidoException, RecuperarCPFException {
+			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Realizar Pagamento", "Tem certeza de que deseja realizar pagamento?");
+			if (confirmacao == true) {
+				Mesa mesa = new Mesa();
+				mesa = mesaList.getSelectionModel().getSelectedItem();
+				if(mesa != null) {
+					List<Conta> contas = new ArrayList<>();
+					contas = Fachada.getSingleton().recuperarContaPorMesa(mesa.getNumero());
+					if(contas == null || contas.isEmpty()) {
+						CaixasDeAlerta.CaixaErro("Realizar Pagamento", "Pedidos não encontrados", "Peça algo para poder pagar.");
+					}else {
+						GerenciamentoContas gerenciamento = new GerenciamentoContas(Fachada.getSingleton().recuperarGarcomPorCPF(cpfGarcom.getText()), 
+								mesa, Fachada.getSingleton().mostrarValorConta(contas.get(0)), contas.get(0).getData());
+						Fachada.getSingleton().cadastrarGerenciamentoContas(gerenciamento);
+						Fachada.getSingleton().deletarTodasContasPorMesa(contas.get(0));
+						Fachada.getSingleton().deletarTodosPedidosPelaMesa(mesa.getNumero());
+					}
+				} else {
+					CaixasDeAlerta.CaixaErro("Realizar Pagamento", "Mesa não encontrada", "Selecione uma mesa para fazer o pagamento.");
+				}
+				listarPedidos(mesa);
+				gerarValorTotal(mesa);
+			}
+	}
+	
+	@FXML
+	public void handleDeletarPedido(ActionEvent event) throws PedidoInexistenteException{
+		try {
+			boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Deletar Pedido", "Tem certeza de que deseja deletar o pedido?");
+			Pedido pedido = new Pedido();
+			pedido = pedidoList.getSelectionModel().getSelectedItem();
+			if (confirmacao == true) {
+				Conta conta = new Conta();
+				if (pedido != null) {
+					conta = Fachada.getSingleton().recuperarContaID(pedido.getId_pedido());
+					if (pedido.getProduto() != null) {
+						Fachada.getSingleton().adicionarQuantidadeProduto(pedido.getProduto(), 1);
+					}
+					Fachada.getSingleton().deletarConta(conta);
+					Fachada.getSingleton().deletarPedido(pedido);
+					CaixasDeAlerta.CaixaConcluido("Deletar Pedido", "Pedido deletado.");
+				}
+			}
+		}catch(PedidoInexistenteException ex) {
+			CaixasDeAlerta.CaixaErro("Deletar Pedido", ex.getLocalizedMessage(), "Selecione um pedido para deletar.");
+		}catch(Exception ex) {
+			CaixasDeAlerta.CaixaErro("Deletar Pedido", "Erro inesperado.", "Erro inesperado.");
+		}
 	}
 
 }

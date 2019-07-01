@@ -27,7 +27,6 @@ public class TelaInicialLoginControler implements Initializable {
 	@FXML
 	private Button buttonEntrar;
 	private static Stage window = new Stage();
-	MainAppGarcom mainAppGarcom = new MainAppGarcom();
 	MainAppGerente mainAppGerente = new MainAppGerente();
 
 	@FXML
@@ -67,6 +66,7 @@ public class TelaInicialLoginControler implements Initializable {
 				window.showAndWait();
 			}
 			else if(garcom != null){
+				MainAppGarcom mainAppGarcom = new MainAppGarcom(garcom);
 				mainAppGarcom.start(new Stage());
 				TelaInicialLoginControler.getWindow().close();
 				MainAppLogin.getStage().close();

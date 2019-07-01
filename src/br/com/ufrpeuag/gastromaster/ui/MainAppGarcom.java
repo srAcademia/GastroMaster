@@ -3,6 +3,7 @@ package br.com.ufrpeuag.gastromaster.ui;
 import java.io.File;
 import java.io.IOException;
 
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +12,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class MainAppGarcom extends Application {
+	
+	public MainAppGarcom(Garcom garcom) {
+		TelaHomeGarcomControlador.setGarcom2(garcom);
+	}
+	
 	private BorderPane rootLayout1;
 	private BorderPane rootLayout2;
 	private BorderPane rootLayout3;

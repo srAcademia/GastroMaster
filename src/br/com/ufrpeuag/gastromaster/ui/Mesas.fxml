@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="800.0" styleClass="background" stylesheets="@base16-google-dark.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ufrpeuag.gastromaster.ui.TodasMesasControlador">
@@ -99,7 +100,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="deletarPedido" defaultButton="true" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #444444; -fx-border-color: #444444;">
+                        <Button fx:id="deletarPedido" defaultButton="true" mnemonicParsing="false" onAction="#handleDeletarPedido" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #444444; -fx-border-color: #444444;">
                            <graphic>
                               <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -112,6 +113,12 @@
                   </HBox>
                   <Label text="Realizar Pedido" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="12.0" />
                   <Label text="Detalhes da Mesa:" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="42.0" prefWidth="139.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0">
+                     <children>
+                        <Label text="CPF do Garçom:" />
+                        <Label fx:id="cpfGarcom" text="000.000.000-00" />
+                     </children>
+                  </VBox>
                   <GridPane prefHeight="87.0" prefWidth="227.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

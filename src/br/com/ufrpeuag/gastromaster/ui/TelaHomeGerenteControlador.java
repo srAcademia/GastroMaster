@@ -37,7 +37,7 @@ public class TelaHomeGerenteControlador {
 	public void handleTelaRelatorios(ActionEvent event) {
 	}
 	public void handleSair(ActionEvent event) {
-		boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Sair Garcom", "Tem certeza de que deseja sair?");
+		boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Sair Gerente", "Tem certeza de que deseja sair?");
 		if (confirmacao == true) {
 			mainAppLogin.start(new Stage());
 			MainAppGerente.getStage().close();

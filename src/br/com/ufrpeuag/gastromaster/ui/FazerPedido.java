@@ -3,6 +3,7 @@ package br.com.ufrpeuag.gastromaster.ui;
 import java.io.File;
 import java.io.IOException;
 
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +14,10 @@ import javafx.stage.Stage;
 
 public class FazerPedido extends Application {
 	
-	public FazerPedido (Mesa mesa, double valorMesa) {
+	public FazerPedido (Mesa mesa, double valorMesa, Garcom garcom) {
 		FazerPedidoControlador.setMesa2(mesa);
 		FazerPedidoControlador.setValorMesa2(valorMesa);
+		FazerPedidoControlador.setGarcom2(garcom);
 	}
 
     public static void main(String[] args) {
