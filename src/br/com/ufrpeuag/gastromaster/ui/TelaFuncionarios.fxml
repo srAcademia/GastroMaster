@@ -21,13 +21,13 @@
         <tabs>
           <Tab text="Gerente">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
                         <SplitPane dividerPositions="0.29797979797979796" prefHeight="371.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                            <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #333333;" styleClass="background">
                                  <children>
-                                    <TableView fx:id="gerenteList" layoutX="17.0" layoutY="78.0" prefHeight="370.0" prefWidth="234.0" style="-fx-background-color: #333333;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TableView fx:id="gerenteList" layoutX="17.0" layoutY="78.0" prefHeight="370.0" prefWidth="234.0" style="-fx-background-color: #333333;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columns>
                                         <TableColumn fx:id="nomeColunaGerente" prefWidth="75.0" text="Nome" />
                                         <TableColumn fx:id="identificadorColunaGerente" prefWidth="75.0" text="Identificador" />
@@ -36,9 +36,40 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                     </TableView>
+                                    <HBox alignment="CENTER" prefHeight="59.0" prefWidth="238.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Button fx:id="cadastrarGerente" mnemonicParsing="false" onAction="#handleCadastarGerente" style="-fx-background-color: #333333; -fx-border-color: #333333;">
+                                             <graphic>
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@icons/mais.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="alterarGerente" mnemonicParsing="false" onAction="#handleAlterarGerente" style="-fx-background-color: #333333; -fx-border-color: #333333;">
+                                             <graphic>
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@icons/editar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="deletarGerente" mnemonicParsing="false" onAction="#handleDeletarGerente" style="-fx-background-color: #333333; -fx-border-color: #333333;">
+                                             <graphic>
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@icons/menos.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                            <AnchorPane minHeight="0.0" minWidth="0.0" styleClass="background">
                                  <children>
                                     <Label style="-fx-font-size: 18;" text="Detalhes:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                                     <GridPane layoutX="-2.0" layoutY="120.0" prefHeight="333.0" prefWidth="560.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
@@ -90,37 +121,6 @@
                                           <Label fx:id="identificadorLabelGerente" text="Label12" GridPane.columnIndex="1" GridPane.rowIndex="12" />
                                        </children>
                                     </GridPane>
-                                    <HBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <children>
-                                          <Button fx:id="cadastrarGerente" mnemonicParsing="false" onAction="#handleCadastarGerente" style="-fx-background-color: #444444; -fx-border-color: #444444;">
-                                             <graphic>
-                                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@icons/mais.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                          <Button fx:id="alterarGerente" mnemonicParsing="false" onAction="#handleAlterarGerente" style="-fx-background-color: #444444; -fx-border-color: #444444;">
-                                             <graphic>
-                                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@icons/editar.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                          <Button fx:id="deletarGerente" mnemonicParsing="false" onAction="#handleDeletarGerente" style="-fx-background-color: #444444; -fx-border-color: #444444;">
-                                             <graphic>
-                                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@icons/menos.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </HBox>
                                  </children>
                               </AnchorPane>
                           </items>
@@ -131,13 +131,13 @@
           </Tab>
           <Tab text="Garçom">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
                         <SplitPane dividerPositions="0.29797979797979796" prefHeight="371.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <items>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                              <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #333333;" styleClass="background">
                                  <children>
-                                    <TableView fx:id="garcomList" layoutX="17.0" layoutY="78.0" prefHeight="370.0" prefWidth="234.0" style="-fx-background-color: #333333;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TableView fx:id="garcomList" layoutX="17.0" layoutY="78.0" prefHeight="370.0" prefWidth="234.0" style="-fx-background-color: #333333;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columns>
                                           <TableColumn fx:id="nomeColunaGarcom" prefWidth="75.0" text="Nome" />
                                           <TableColumn fx:id="identificadorColunaGarcom" prefWidth="75.0" text="Identificador" />
@@ -146,9 +146,40 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                     </TableView>
+                                    <HBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Button fx:id="cadastrarGarcom" mnemonicParsing="false" onAction="#handleCadastarGarcom" style="-fx-background-color: #333333; -fx-border-color: #333333;">
+                                             <graphic>
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@icons/mais.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="alterarGarcom" mnemonicParsing="false" onAction="#handleAlterarGarcom" style="-fx-background-color: #333333; -fx-border-color: #333333;">
+                                             <graphic>
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@icons/editar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="deletarGarcom" mnemonicParsing="false" onAction="#handleDeletarGarcom" style="-fx-background-color: #333333; -fx-border-color: #333333;">
+                                             <graphic>
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@icons/menos.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                              <AnchorPane minHeight="0.0" minWidth="0.0" styleClass="background">
                                  <children>
                                     <Label style="-fx-font-size: 18;" text="Detalhes:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                                     <GridPane layoutX="-2.0" layoutY="120.0" prefHeight="333.0" prefWidth="560.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
@@ -197,37 +228,6 @@
                                           <Label fx:id="identificadorLabelGarcom" text="Label11" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                                        </children>
                                     </GridPane>
-                                    <HBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <children>
-                                          <Button fx:id="cadastrarGarcom" mnemonicParsing="false" onAction="#handleCadastarGarcom" style="-fx-background-color: #444444; -fx-border-color: #444444;">
-                                             <graphic>
-                                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@icons/mais.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                          <Button fx:id="alterarGarcom" mnemonicParsing="false" onAction="#handleAlterarGarcom" style="-fx-background-color: #444444; -fx-border-color: #444444;">
-                                             <graphic>
-                                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@icons/editar.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                          <Button fx:id="deletarGarcom" mnemonicParsing="false" onAction="#handleDeletarGarcom" style="-fx-background-color: #444444; -fx-border-color: #444444;">
-                                             <graphic>
-                                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@icons/menos.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </HBox>
                                  </children>
                               </AnchorPane>
                            </items>
