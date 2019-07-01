@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="300.0" styleClass="background" stylesheets="@base16-google-dark.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="br.com.ufrpeuag.gastromaster.ui.TelaLogarGerenteControlador">
+   <children>
+      <Label text="Logar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+      <Label layoutX="14.0" layoutY="140.0" text="Senha" />
+      <PasswordField fx:id="senhaField" layoutX="63.0" layoutY="132.0" promptText="Senha" />
+      <HBox layoutX="24.0" layoutY="253.0" spacing="10.0">
+         <children>
+            <Button fx:id="concluirLogin" mnemonicParsing="false" onAction="#handleconcluirLogin" text="Logar" />
+            <Button fx:id="cancelarLogin" mnemonicParsing="false" onAction="#handleCancelar" style="-fx-background-color: #7f1215;" text="Cancelar" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

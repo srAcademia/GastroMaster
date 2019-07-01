@@ -178,7 +178,7 @@ public class GerenteNegocio {
 	}
 
 	public Gerente logarGerente(String senha) throws SenhaInvalidaException {
-		if (senha.equals(null) || senha.isEmpty()) {
+		if (senha == null || senha.isEmpty()) {
 			throw new SenhaInvalidaException();
 		}
 		if (repGerente.logar(senha) == null) {

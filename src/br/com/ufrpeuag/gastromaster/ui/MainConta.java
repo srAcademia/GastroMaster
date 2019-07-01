@@ -27,7 +27,6 @@ public class MainConta {
 	
 	public void gerenciarRemocaoConta(Integer codigo) throws SQLException {
 		try {
-			ConfiguracoesBanco.getSingleton().getConnection();	
 			Conta conta = new Conta();
 			conta = Fachada.getSingleton().recuperarContaID(codigo);
 			Fachada.getSingleton().deletarConta(conta);

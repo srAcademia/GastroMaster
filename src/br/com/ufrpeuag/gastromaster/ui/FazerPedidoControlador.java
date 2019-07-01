@@ -2,6 +2,7 @@ package br.com.ufrpeuag.gastromaster.ui;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -11,6 +12,8 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoVazioException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
@@ -37,6 +40,7 @@ public class FazerPedidoControlador implements Initializable{
     private ObservableList<Produto> listaObservabelProduto;
 	private static Mesa mesa2;
 	private static double valorMesa2;
+	private static Garcom garcom2;
     
     public void listarOpcoes() throws ListarTodosInvalidoException, SQLException {
     	pratos = Fachada.getSingleton().listarTodosCardapios();
@@ -68,6 +72,14 @@ public class FazerPedidoControlador implements Initializable{
 			cardapio = cardapioList.getSelectionModel().getSelectedItem();
 			Pedido pedido = new Pedido(cardapio, produto, valorMesa2, mesa2);
 			Fachada.getSingleton().cadastrarPedido(pedido);
+			int id = Fachada.getSingleton().recuperarUltimoIDPedido();
+			pedido = Fachada.getSingleton().recuperarPedidoPorID(id);
+			if (pedido.getProduto() != null) {
+				Fachada.getSingleton().removerQuantidadeProduto(pedido.getProduto(), 1);
+			}
+			LocalDate localDate = LocalDate.now();
+		   	Conta conta = new Conta(localDate, pedido, garcom2, mesa2, pedido.getValor());
+		    Fachada.getSingleton().cadastrarConta(conta);
 		}catch( PedidoInvalidoException | PedidoVazioException ex) {
 			CaixasDeAlerta.CaixaErro("Realizar Pedido", "Campo inv�lido.", ex.getLocalizedMessage());
 		}catch(Exception ex) {
@@ -90,6 +102,14 @@ public class FazerPedidoControlador implements Initializable{
 
 	public static void setValorMesa2(double valorMesa2) {
 		FazerPedidoControlador.valorMesa2 = valorMesa2;
+	}
+
+	public static Garcom getGarcom2() {
+		return garcom2;
+	}
+
+	public static void setGarcom2(Garcom garcom2) {
+		FazerPedidoControlador.garcom2 = garcom2;
 	}
 
 }
