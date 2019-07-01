@@ -1,10 +1,11 @@
-package br.com.ufrpeuag.gastromaster.ui;
+/*package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Scanner;
 import br.com.ufrpeuag.gastromaster.dados.ConfiguracoesBanco;
 import br.com.ufrpeuag.gastromaster.dados.RepositorioCardapio;
@@ -61,6 +62,7 @@ import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
+import javafx.scene.chart.XYChart;
 
 public class Teste {
 
@@ -71,6 +73,21 @@ public class Teste {
 			ListarTodosInvalidoException, GerenteExistenteException, SenhaInvalidaException, MesaCadastradaException,
 			MesaDisponibilidadeInvalidaException, IDRecuperarMesaException, MesaInexistenteException, PratoExistenteException, PrecoInvalidoException, IDRecuperacaoItemInvalidoException, PratoInexistenteException, ProdutoInexistenteException, ProdutoExistenteException, QuantidadeProdutoInvalidaException, QuantidadeInvalidaException, PedidoInvalidoException, PedidoVazioException, PedidoInexistenteException, ConcluirPagamentoException, ExceptionRecuperarUltimoID, ContaGerarException, RelatorioVazioException {
 
+		RepositorioGerenciamentoContas rg =new RepositorioGerenciamentoContas();
+		RepositorioGerenciamentoContas gn = new RepositorioGerenciamentoContas();
+		LocalDate data = LocalDate.now();  
+		
+		try {
+		Map<String, Integer> example=null;
+		example = gn.reucuperarPorMes(data);
+		for (String key : example.keySet()) {
+			Integer value = example.get(key);
+			System.out.println("CHave "+ key+" Valor "+value);
+           }
+		}catch(ArrayIndexOutOfBoundsException a) {
+			System.out.println("Lista Vazia");
+			a.printStackTrace();
+		}
 		// Garcom e endereco cadastrar
 
 		/*
@@ -370,6 +387,6 @@ public class Teste {
 		/*
 		 * System.out.println(Fachada.getSingleton().listarTodosPedidos());
 		 * System.out.println(Fachada.getSingleton().listarPedidosPorMesa(1));
-		 */	}
+		 */	//}
 	
-}
+//}

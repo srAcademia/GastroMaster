@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IGerenciamentoContasDao;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
@@ -241,4 +244,181 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 		return null;
 	}
 
+	@Override
+	public Map<String, Integer> recuperarPorDia(LocalDate data) {
+
+		String sql = "select data,sum(valorTotal) from GerenciamentoContas where data like ? GROUP by data ";
+
+		Map<String, Integer> mapa = new HashMap<String, Integer>();
+
+		String date = Data.mudarDataParaString(data);
+
+		try {
+
+			date = "%/" + date.charAt(3) + date.charAt(4) + "/%";
+			pstmt = this.conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			result = pstmt.executeQuery();
+
+			while (result.next()) {
+
+				String dat = "";
+				int quant = 0;
+
+				dat = result.getString("data");
+				dat = "" + dat.charAt(0) + dat.charAt(1) + dat.charAt(2) + dat.charAt(3) + dat.charAt(4);
+				quant = result.getInt("sum(valorTotal)");
+				mapa.put(dat, quant);
+			}
+			
+			return mapa;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+
+		return mapa;
+	}
+
+	@Override
+	public Map<String, Integer> recuperarPorAno() {
+
+		int c = 0;
+		String dat = "";
+		int quant = 0;
+
+		String sql = "select data,sum(valorTotal) from GerenciamentoContas where data like ? group by data ";
+
+		Map<String, Integer> mapa = new HashMap<String, Integer>();
+
+		try {
+
+			String date = "%/20%";
+
+			pstmt = this.conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			result = pstmt.executeQuery();
+
+			while (result.next()) {
+
+				dat = result.getString("data");
+				dat = "" + dat.charAt(6) + dat.charAt(7) + dat.charAt(8) + dat.charAt(9);
+				quant = result.getInt("sum(valorTotal)");
+
+				for (String key : mapa.keySet()) {
+					Integer value = mapa.get(key);
+					if (dat.equals(key)) {
+
+						value = value + quant;
+						mapa.put(dat, value);
+						c = 1;
+					}
+				}
+				if (c == 0) {
+					mapa.put(dat, quant);
+				}
+				dat = "";
+				quant = 0;
+				c = 0;
+			}
+
+			return mapa;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+
+		return mapa;
+	}
+
+	@Override
+	public Map<String, Integer> recuperarPorMes(LocalDate data) {
+
+		int c = 0;
+		String dat = "";
+		int quant = 0;
+
+		String sql = "select data,sum(valorTotal) from GerenciamentoContas where data like ? group by data ";
+
+		Map<String, Integer> mapa = new HashMap<String, Integer>();
+
+
+		String date = Data.mudarDataParaString(data);
+
+		try {
+
+			date = "%/" + date.charAt(6) + date.charAt(7) +  date.charAt(8) + date.charAt(9) + "%";
+
+			pstmt = this.conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			result = pstmt.executeQuery();
+
+			while (result.next()) {
+
+				dat = result.getString("data");
+				dat = "" + dat.charAt(3) + dat.charAt(4);
+				quant = result.getInt("sum(valorTotal)");
+				
+				if(dat.equals("01")) {dat = "jan";
+				}else if(dat.equals("02")) {dat = "fev";
+				}else if(dat.equals("03")) {dat = "mar";
+				}else if(dat.equals("04")) {dat = "abr";
+				}else if(dat.equals("05")) {dat = "maio";
+				}else if(dat.equals("06")) {dat = "jun";
+				}else if(dat.equals("07")) {dat = "jul";
+				}else if(dat.equals("08")) {dat = "ago";
+				}else if(dat.equals("09")) {dat = "set";
+				}else if(dat.equals("10")) {dat = "out";
+				}else if(dat.equals("11")) {dat = "nov";
+				}else {dat = "dez";
+				}
+				
+				for (String key : mapa.keySet()) {
+					Integer value = mapa.get(key);
+					if (dat.equals(key)) {
+
+						value = value + quant;
+						mapa.put(dat, value);
+						c = 1;
+					}
+				}
+				if (c == 0) {
+					mapa.put(dat, quant);
+				}
+				dat = "";
+				quant = 0;
+				c = 0;
+			}
+
+			return mapa;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+
+			try {
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+
+		return mapa;
+	}
 }

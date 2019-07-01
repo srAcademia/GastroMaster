@@ -39,6 +39,7 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.SalarioInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.SenhaInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
+import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
@@ -343,5 +344,13 @@ public class Fachada {
 	
 	public LocalDate ValidarData(String data) throws DataNascimentoInvalidaException {
 		return this.data.ValidarData(data);
+	}
+	
+	public LocalDate mudarDataParaLocalDate(String data) {
+		return Data.mudarDataParaLocalDate(data);
+	}
+
+	public String mudarDataParaString(LocalDate data) {
+		return Data.mudarDataParaString(data);
 	}
 }
