@@ -21,21 +21,24 @@ public class PedidoNegocio {
 	}
 
 	public void cadastrarPedido(Pedido pedido) throws PedidoInvalidoException, PedidoVazioException {
+
 		if (pedido.getCardapio() == null && pedido.getProduto() == null) {
 			throw new PedidoVazioException();
+
 		}
-		if (pedido.getProduto() == null ) {
+
+		if (pedido.getProduto() == null) {
 			pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), 0));
-		}
-		else if(pedido.getCardapio() == null ) {
+		} else if (pedido.getCardapio() == null) {
 			pedido.setValor(pedido.calcularValorPedido(0, pedido.getProduto().getPreco()));
-		}
-		else {
-			pedido.setValor(pedido.calcularValorPedido(pedido.getCardapio().getPreco(), pedido.getProduto().getPreco()));
+		} else {
+			pedido.setValor(
+					pedido.calcularValorPedido(pedido.getCardapio().getPreco(), pedido.getProduto().getPreco()));
 		}
 		if (pedido.getValor() <= 0) {
 			throw new PedidoInvalidoException();
 		}
+
 		repPedido.inserir(pedido);
 	}
 
@@ -95,7 +98,7 @@ public class PedidoNegocio {
 		repPedido.deletarPedidosPelaMesa(codigo);
 	}
 
-	public List<Pedido> listarPedidosPorMesa(Integer codigo){
+	public List<Pedido> listarPedidosPorMesa(Integer codigo) {
 		return repPedido.listarPorMesa(codigo);
 	}
 

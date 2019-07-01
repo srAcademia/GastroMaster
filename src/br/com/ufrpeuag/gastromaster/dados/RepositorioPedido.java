@@ -29,19 +29,29 @@ public class RepositorioPedido implements IPedidoDao {
 		String inserirSql = "INSERT INTO Pedido (cod_produto, cod_cardapio, valor,cod_mesa) VALUES(?,?,?,?)";
 
 		try {
-			
+
 			pstmt = conn.prepareStatement(inserirSql);
 
-			pstmt.setInt(1, pedido.getProduto().getId_produto());
-			pstmt.setInt(2, pedido.getCardapio().getId_cardapio());
+			if (pedido.getProduto() == null) {
+				pstmt.setInt(1, 0);
+				pstmt.setInt(2, pedido.getCardapio().getId_cardapio());
+			} else if (pedido.getCardapio() == null) {
+				pstmt.setInt(1, pedido.getProduto().getId_produto());
+				pstmt.setInt(2, 0);
+			} else {
+
+				pstmt.setInt(1, pedido.getProduto().getId_produto());
+				pstmt.setInt(2, pedido.getCardapio().getId_cardapio());
+			}
+
 			pstmt.setDouble(3, pedido.getValor());
 			pstmt.setInt(4, pedido.getMesa().getId_mesa());
+
 			pstmt.executeUpdate();
 
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {
-
 			try {
 				pstmt.close();
 			} catch (SQLException ex) {
@@ -53,54 +63,29 @@ public class RepositorioPedido implements IPedidoDao {
 	@Override
 	public Pedido recuperar(Integer codigo) {
 
-		String sqlRecuperar = "select * " + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) "
-				+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) JOIN Mesa m on (pe.cod_mesa = m.id_mesa) "
-				+ "where pe.id_pedido = ?";
-
 		Cardapio c = null;
 		Produto p = null;
 		Pedido pedido = null;
+		Mesa m = null;
 
+		String recuperarCodCardapio = "SELECT cod_cardapio FROM Pedido where id_pedido = ?  and cod_cardapio = 0;";
+		int idCardapio = 1;
 		try {
 
-			pstmt = conn.prepareStatement(sqlRecuperar);
+			pstmt = conn.prepareStatement(recuperarCodCardapio);
 			pstmt.setInt(1, codigo);
-
 			result = pstmt.executeQuery();
 
-			if (result.next()) {
+			if (result != null) {
+				if (result.next()) {
+					idCardapio = result.getInt("cod_cardapio");
 
-				c = new Cardapio();
-				p = new Produto();
-				pedido = new Pedido();
-				Mesa m = new Mesa();
-
-				pedido.setId_pedido(result.getInt("id_pedido"));
-
-				c.setId_cardapio(result.getInt("Id_cardapio"));
-				c.setPrato(result.getString("prato"));
-				c.setPreco(result.getDouble("preco"));
-				pedido.setCardapio(c);
-
-				p.setId_produto(result.getInt("id_produto"));
-				p.setNome(result.getString("nome"));
-				p.setQuantidade(result.getInt("quantidade"));
-				p.setPreco(result.getDouble("preco"));
-				pedido.setProduto(p);
-
-				pedido.setValor(result.getDouble("valor"));
-
-				m.setId_mesa(result.getInt("id_mesa"));
-				m.setNumero(result.getInt("numero"));
-				m.setDisponibilidade(result.getInt("disponibilidade"));
-
-				pedido.setMesa(m);
-
-				return pedido;
+				}
 			}
 
-		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+
 		} finally {
 
 			try {
@@ -111,7 +96,223 @@ public class RepositorioPedido implements IPedidoDao {
 			}
 
 		}
-		return null;
+
+		String recuperarCodProduto = "SELECT cod_produto FROM Pedido where id_pedido = ?  and cod_produto = 0;";
+		int idProduto = 1;
+		try {
+
+			pstmt = conn.prepareStatement(recuperarCodProduto);
+			pstmt.setInt(1, codigo);
+			result = pstmt.executeQuery();
+
+			if (result != null) {
+				if (result.next()) {
+					idProduto = result.getInt("cod_produto");
+
+				}
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+		String id = "SELECT cod_cardapio, cod_produto FROM Pedido where id_pedido = ?  and cod_cardapio != 0 and cod_produto !=0 ;";
+		int idCard = 0;
+		int idProd = 0;
+		try {
+
+			pstmt = conn.prepareStatement(id);
+			pstmt.setInt(1, codigo);
+			result = pstmt.executeQuery();
+
+			if (result != null) {
+				if (result.next()) {
+					idCard = result.getInt("cod_cardapio");
+					idProd = result.getInt("cod_produto");
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+		if (idCard != 0 && idProd != 0) {
+
+			String sql = "select * \r\n" + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) \r\n"
+					+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) \r\n"
+					+ "JOIN Mesa m on (pe.cod_mesa = m.id_mesa) \r\n" + "where pe.id_pedido = ? ;";
+
+			try {
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, codigo);
+				result = pstmt.executeQuery();
+
+				if (result.next()) {
+
+					c = new Cardapio();
+					p = new Produto();
+					pedido = new Pedido();
+					m = new Mesa();
+
+					pedido.setId_pedido(result.getInt("id_pedido"));
+
+					c.setId_cardapio(result.getInt("Id_cardapio"));
+					c.setPrato(result.getString("prato"));
+					c.setPreco(result.getDouble("preco"));
+					pedido.setCardapio(c);
+
+					p.setId_produto(result.getInt("id_produto"));
+					p.setNome(result.getString("nome"));
+					p.setQuantidade(result.getInt("quantidade"));
+					p.setPreco(result.getDouble("preco"));
+					pedido.setProduto(p);
+
+					pedido.setValor(result.getDouble("valor"));
+
+					m.setId_mesa(result.getInt("id_mesa"));
+					m.setNumero(result.getInt("numero"));
+					m.setDisponibilidade(result.getInt("disponibilidade"));
+
+					pedido.setMesa(m);
+
+				}
+
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+
+			} finally {
+
+				try {
+					result.close();
+					pstmt.close();
+				} catch (SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+
+			}
+		}
+		if (idProduto == 0) {
+			System.out.println("entrou prod");
+			String sql = "SELECT * from Pedido pe\r\n" + "join cardapio c on pe.cod_cardapio = c.id_cardapio\r\n"
+					+ "join mesa m on (pe.cod_mesa = m.id_mesa)\r\n" + "where pe.id_pedido = ?  and cod_produto = 0;";
+			try {
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, codigo);
+				result = pstmt.executeQuery();
+
+				if (result.next()) {
+
+					c = new Cardapio();
+					pedido = new Pedido();
+					m = new Mesa();
+
+					pedido.setId_pedido(result.getInt("id_pedido"));
+
+					c.setId_cardapio(result.getInt("Id_cardapio"));
+					c.setPrato(result.getString("prato"));
+					c.setPreco(result.getDouble("preco"));
+					pedido.setCardapio(c);
+
+					pedido.setProduto(null);
+
+					pedido.setValor(result.getDouble("valor"));
+
+					m.setId_mesa(result.getInt("id_mesa"));
+					m.setNumero(result.getInt("numero"));
+					m.setDisponibilidade(result.getInt("disponibilidade"));
+
+					pedido.setMesa(m);
+
+				}
+
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+
+			} finally {
+
+				try {
+					result.close();
+					pstmt.close();
+				} catch (SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+
+			}
+
+		}
+		if (idCardapio == 0) {
+			String sql = "SELECT * " + "from Pedido pe join Produto p on pe.cod_produto = p.id_produto "
+					+ "join mesa m on (pe.cod_mesa = m.id_mesa) " + "where pe.id_pedido = ? and pe.cod_cardapio = 0 ";
+
+			try {
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, codigo);
+				result = pstmt.executeQuery();
+
+				if (result.next()) {
+
+					p = new Produto();
+					pedido = new Pedido();
+					m = new Mesa();
+
+					pedido.setId_pedido(result.getInt("id_pedido"));
+
+					pedido.setCardapio(null);
+
+					p.setId_produto(result.getInt("id_produto"));
+					p.setNome(result.getString("nome"));
+					p.setQuantidade(result.getInt("quantidade"));
+					p.setPreco(result.getDouble("preco"));
+					pedido.setProduto(p);
+
+					pedido.setValor(result.getDouble("valor"));
+
+					m.setId_mesa(result.getInt("id_mesa"));
+					m.setNumero(result.getInt("numero"));
+					m.setDisponibilidade(result.getInt("disponibilidade"));
+
+					pedido.setMesa(m);
+
+				}
+
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+
+			} finally {
+
+				try {
+					result.close();
+					pstmt.close();
+				} catch (SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+
+			}
+
+		}
+		return pedido;
 	}
 
 	@Override
@@ -328,56 +529,27 @@ public class RepositorioPedido implements IPedidoDao {
 
 	@Override
 	public List<Pedido> listarPorMesa(Integer id_mesa) {
+
 		Cardapio c = null;
 		Produto p = null;
 		Pedido pedido = null;
 		Mesa m = null;
-
 		List<Pedido> lista = new ArrayList<>();
 
-		String sql = "select * \r\n" + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) \r\n"
-				+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) \r\n"
-				+ "JOIN Mesa m on (pe.cod_mesa = m.id_mesa) \r\n" + "where pe.cod_mesa = ? ;";
-
+		String recuperarCodCardapio = "SELECT cod_cardapio FROM Pedido where cod_mesa = ?  and cod_cardapio = 0;";
+		int idCardapio = 1;
 		try {
-			
-			pstmt = conn.prepareStatement(sql);
+
+			pstmt = conn.prepareStatement(recuperarCodCardapio);
 			pstmt.setInt(1, id_mesa);
 			result = pstmt.executeQuery();
-			
-			while (result.next()) {
-			
-				c = new Cardapio();
-				p = new Produto();
-				pedido = new Pedido();
-				m = new Mesa();
 
-				pedido.setId_pedido(result.getInt("id_pedido"));
+			if (result != null) {
+				if (result.next()) {
+					idCardapio = result.getInt("cod_cardapio");
 
-				c.setId_cardapio(result.getInt("Id_cardapio"));
-				c.setPrato(result.getString("prato"));
-				c.setPreco(result.getDouble("preco"));
-				pedido.setCardapio(c);
-
-				p.setId_produto(result.getInt("id_produto"));
-				p.setNome(result.getString("nome"));
-				p.setQuantidade(result.getInt("quantidade"));
-				p.setPreco(result.getDouble("preco"));
-				pedido.setProduto(p);
-
-				pedido.setValor(result.getDouble("valor"));
-
-				m.setId_mesa(result.getInt("id_mesa"));
-				m.setNumero(result.getInt("numero"));
-				m.setDisponibilidade(result.getInt("disponibilidade"));
-
-				pedido.setMesa(m);
-
-				lista.add(pedido);
-				
-
+				}
 			}
-			return lista;
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -393,7 +565,230 @@ public class RepositorioPedido implements IPedidoDao {
 
 		}
 
-		return null;
+		String recuperarCodProduto = "SELECT cod_produto FROM Pedido where cod_mesa = ?  and cod_produto = 0;";
+		int idProduto = 1;
+		try {
+
+			pstmt = conn.prepareStatement(recuperarCodProduto);
+			pstmt.setInt(1, id_mesa);
+			result = pstmt.executeQuery();
+
+			if (result != null) {
+				if (result.next()) {
+					idProduto = result.getInt("cod_produto");
+
+				}
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+		String id = "SELECT cod_cardapio, cod_produto FROM Pedido where cod_mesa = ?  and cod_cardapio != 0 and cod_produto !=0 ;";
+		int idCard = 0;
+		int idProd = 0;
+		try {
+
+			pstmt = conn.prepareStatement(id);
+			pstmt.setInt(1, id_mesa);
+			result = pstmt.executeQuery();
+
+			if (result != null) {
+				if (result.next()) {
+					idCard = result.getInt("cod_cardapio");
+					idProd = result.getInt("cod_produto");
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			try {
+				result.close();
+				pstmt.close();
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+
+		}
+
+		if (idCard != 0 && idProd != 0) {
+
+			String sql = "select * \r\n" + "from Pedido pe join Produto pr on (pe.cod_produto = pr.id_produto) \r\n"
+					+ "JOIN Cardapio c on (pe.cod_cardapio = c.id_cardapio) \r\n"
+					+ "JOIN Mesa m on (pe.cod_mesa = m.id_mesa) \r\n" + "where pe.cod_mesa = ? ;";
+
+			try {
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, id_mesa);
+				result = pstmt.executeQuery();
+
+				while (result.next()) {
+
+					c = new Cardapio();
+					p = new Produto();
+					pedido = new Pedido();
+					m = new Mesa();
+
+					pedido.setId_pedido(result.getInt("id_pedido"));
+
+					c.setId_cardapio(result.getInt("Id_cardapio"));
+					c.setPrato(result.getString("prato"));
+					c.setPreco(result.getDouble("preco"));
+					pedido.setCardapio(c);
+
+					p.setId_produto(result.getInt("id_produto"));
+					p.setNome(result.getString("nome"));
+					p.setQuantidade(result.getInt("quantidade"));
+					p.setPreco(result.getDouble("preco"));
+					pedido.setProduto(p);
+
+					pedido.setValor(result.getDouble("valor"));
+
+					m.setId_mesa(result.getInt("id_mesa"));
+					m.setNumero(result.getInt("numero"));
+					m.setDisponibilidade(result.getInt("disponibilidade"));
+
+					pedido.setMesa(m);
+
+					lista.add(pedido);
+
+				}
+
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+
+			} finally {
+
+				try {
+					result.close();
+					pstmt.close();
+				} catch (SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+
+			}
+		}
+		if (idProduto == 0) {
+
+			String sql = "SELECT * from Pedido pe\r\n" + "join cardapio c on pe.cod_cardapio = c.id_cardapio\r\n"
+					+ "join mesa m on (pe.cod_mesa = m.id_mesa)\r\n" + "where pe.cod_mesa = ?  and cod_produto = 0;";
+			try {
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, id_mesa);
+				result = pstmt.executeQuery();
+
+				while (result.next()) {
+
+					c = new Cardapio();
+					pedido = new Pedido();
+					m = new Mesa();
+
+					pedido.setId_pedido(result.getInt("id_pedido"));
+
+					c.setId_cardapio(result.getInt("Id_cardapio"));
+					c.setPrato(result.getString("prato"));
+					c.setPreco(result.getDouble("preco"));
+					pedido.setCardapio(c);
+
+					pedido.setProduto(null);
+
+					pedido.setValor(result.getDouble("valor"));
+
+					m.setId_mesa(result.getInt("id_mesa"));
+					m.setNumero(result.getInt("numero"));
+					m.setDisponibilidade(result.getInt("disponibilidade"));
+
+					pedido.setMesa(m);
+
+					lista.add(pedido);
+
+				}
+
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+
+			} finally {
+
+				try {
+					result.close();
+					pstmt.close();
+				} catch (SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+
+			}
+
+		}
+		if (idCardapio == 0) {
+			String sql = "SELECT * " + "from Pedido pe join Produto p on pe.cod_produto = p.id_produto "
+					+ "join mesa m on (pe.cod_mesa = m.id_mesa) " + "where pe.cod_mesa = ? and pe.cod_cardapio = 0 ";
+
+			try {
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, id_mesa);
+				result = pstmt.executeQuery();
+
+				while (result.next()) {
+
+					p = new Produto();
+					pedido = new Pedido();
+					m = new Mesa();
+
+					pedido.setId_pedido(result.getInt("id_pedido"));
+
+					pedido.setCardapio(null);
+
+					p.setId_produto(result.getInt("id_produto"));
+					p.setNome(result.getString("nome"));
+					p.setQuantidade(result.getInt("quantidade"));
+					p.setPreco(result.getDouble("preco"));
+					pedido.setProduto(p);
+
+					pedido.setValor(result.getDouble("valor"));
+
+					m.setId_mesa(result.getInt("id_mesa"));
+					m.setNumero(result.getInt("numero"));
+					m.setDisponibilidade(result.getInt("disponibilidade"));
+
+					pedido.setMesa(m);
+
+					lista.add(pedido);
+
+				}
+				;
+
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+
+			} finally {
+
+				try {
+					result.close();
+					pstmt.close();
+				} catch (SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+
+			}
+
+		}
+
+		return lista;
 	}
 
 }

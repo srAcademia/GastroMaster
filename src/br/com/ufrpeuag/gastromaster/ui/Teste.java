@@ -91,9 +91,10 @@ public class Teste {
 		 * g.setIdentificador(g.gerarIdentificador());
 		 * Fachada.getSingleton().cadastrarGarcom(g);
 		 */
-		String data ="14/07/1998";
-		String a =""+ data.charAt(6)+ data.charAt(7)+ data.charAt(8)+ data.charAt(9);
-		System.out.println(a);
+		/*
+		 * String data ="14/07/1998"; String a =""+ data.charAt(6)+ data.charAt(7)+
+		 * data.charAt(8)+ data.charAt(9); System.out.println(a);
+		 */
 		  /* //Recuperar: Garcom g = null; g =
 		  Fachada.getSingleton().recuperarGarcomID(1);
 		  System.out.println("Recuperar por ID: "+g); g =
@@ -182,8 +183,8 @@ public class Teste {
 		
 		//Cadastrar
 		
+		
 		/*
-	
 		Cardapio card = new Cardapio("Pizza",30);
 		Cardapio card2 = new Cardapio("Lasanha",20);
 		Fachada.getSingleton().cadastrarCardapio(card);
@@ -224,8 +225,8 @@ public class Teste {
 		//Produto 
 		
 		//Cadastrar
-		
-		/*Produto p = new Produto("Fanta",20,3);
+		/*
+		Produto p = new Produto("Fanta",20,3);
 		Produto p2 = new Produto("Coca-cola",10,4);
 		Fachada.getSingleton().cadastrarProduto(p);
 		Fachada.getSingleton().cadastrarProduto(p2);
@@ -280,15 +281,15 @@ public class Teste {
 		Produto p = null;
 		Cardapio c = null;
 		Mesa mesa = null;
-		mesa = Fachada.getSingleton().recuperarMesaID(2);
-		p = Fachada.getSingleton().recuperarProdutoPorID(1);
-		c= Fachada.getSingleton().recuperarCardapioPorID(4);
+		mesa = Fachada.getSingleton().recuperarMesaID(1);
+		//p = Fachada.getSingleton().recuperarProdutoPorID(1);
+	    c= Fachada.getSingleton().recuperarCardapioPorID(1);
 		Pedido pedido = new Pedido(c,p,0,mesa);
-		pedido.getCardapio().setId_cardapio(4);
-		pedido.getProduto().setId_produto(1);
-		pedido.getMesa().setId_mesa(2);
+		pedido.getCardapio().setId_cardapio(1);
+		//pedido.getProduto().setId_produto(1);
+		pedido.getMesa().setId_mesa(1);
 		Fachada.getSingleton().cadastrarPedido(pedido);
-	
+		
 		Pedido p = null;
 		Cardapio card =null;
 		
@@ -318,21 +319,25 @@ public class Teste {
 		Fachada.getSingleton().deletarPedido(Fachada.getSingleton().recuperarPedidoPorID(7));
 	
 		//Listar Por mesa 
-		System.out.println(Fachada.getSingleton().listarPedidosPorMesa(2));
-		*/
 		
+		*/
+		/*
+		// Rcuperar e Mostrar
+		
+				System.out.println(Fachada.getSingleton().recuperarContaID(1));
+				System.out.println(Fachada.getSingleton().mostrarValorConta(Fachada.getSingleton().recuperarContaID(1)));
+				System.out.println(Fachada.getSingleton().recuperarContaPorMesa(2));
+
 		//CONTA
 		
 		//Cadastrar Conta
 
-		/*
-		Pedido ped = Fachada.getSingleton().recuperarPedidoPorID(7);
-		Conta conta = null;
-		Garcom g = Fachada.getSingleton().recuperarGarcomID(1);
-		Mesa m = Fachada.getSingleton().recuperarMesaID(3);
-		conta = new Conta(LocalDate.now(), ped, g, m, ped.getValor());
-		Fachada.getSingleton().cadastrarConta(conta);
-
+		
+		 * Pedido ped = Fachada.getSingleton().recuperarPedidoPorID(9); Conta conta =
+		 * null; Garcom g = Fachada.getSingleton().recuperarGarcomID(1); Mesa m =
+		 * Fachada.getSingleton().recuperarMesaID(1); conta = new Conta(LocalDate.now(),
+		 * ped, g, m, ped.getValor()); Fachada.getSingleton().cadastrarConta(conta);
+		
 		// Rcuperar e Mostrar
 		System.out.println(Fachada.getSingleton().recuperarContaID(1));
 		System.out.println(Fachada.getSingleton().mostrarValorConta(Fachada.getSingleton().recuperarContaID(1)));
@@ -349,8 +354,8 @@ public class Teste {
 		// GERENCIAMENTO DE CONTA
 
 		Garcom g = Fachada.getSingleton().recuperarGarcomID(1);
-		Mesa m = Fachada.getSingleton().recuperarMesaID(3);
-		Conta c = Fachada.getSingleton().recuperarContaID(3);
+		Mesa m = Fachada.getSingleton().recuperarMesaID(1);
+		Conta c = Fachada.getSingleton().recuperarContaID(1);
 
 		// CADASTRAR
 
@@ -362,6 +367,9 @@ public class Teste {
 
 		System.out.println(Fachada.getSingleton().listarTodosGerenciamentoContas());
 */
-	}
+		/*
+		 * System.out.println(Fachada.getSingleton().listarTodosPedidos());
+		 * System.out.println(Fachada.getSingleton().listarPedidosPorMesa(1));
+		 */	}
 	
 }
