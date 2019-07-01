@@ -69,9 +69,10 @@ public class FazerPedidoControlador implements Initializable{
 			Pedido pedido = new Pedido(cardapio, produto, valorMesa2, mesa2);
 			Fachada.getSingleton().cadastrarPedido(pedido);
 		}catch( PedidoInvalidoException | PedidoVazioException ex) {
-			CaixasDeAlerta.CaixaErro("Realizar Pedido", "Campo inválido.", ex.getLocalizedMessage());
+			CaixasDeAlerta.CaixaErro("Realizar Pedido", "Campo invï¿½lido.", ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			CaixasDeAlerta.CaixaErro("Realizar Pedido", "Erro inesperado.", "Erro inesperado.");
+	
 		}
 	}
 
