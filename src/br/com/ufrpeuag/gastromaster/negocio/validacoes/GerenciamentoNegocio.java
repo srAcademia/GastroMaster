@@ -2,6 +2,7 @@ package br.com.ufrpeuag.gastromaster.negocio.validacoes;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import br.com.ufrpeuag.gastromaster.dados.RepositorioGerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.dados.interfaces.IGerenciamentoContasDao;
@@ -26,4 +27,14 @@ public class GerenciamentoNegocio {
 		}
 		return repGerenciamento.listarTodos();
 	}
+	public Map<String, Integer> recuperarPorDia(String mes, String ano) {
+		return repGerenciamento.recuperarPorDia(mes, ano);
+	}
+	public Map<String, Integer> recuperarPorAno() {
+		return repGerenciamento.recuperarPorAno();
+	}
+	public Map<String, Integer> recuperarPorMes(String ano) {
+		return repGerenciamento.recuperarPorMes(ano);
+	}
+
 }

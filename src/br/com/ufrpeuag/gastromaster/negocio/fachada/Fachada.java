@@ -3,6 +3,8 @@ package br.com.ufrpeuag.gastromaster.negocio.fachada;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.BairroInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CEPInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
@@ -353,4 +355,15 @@ public class Fachada {
 	public String mudarDataParaString(LocalDate data) {
 		return Data.mudarDataParaString(data);
 	}
+	public Map<String, Integer> recuperarPorDia(String mes, String ano) {
+		return this.gerenciamento.recuperarPorDia(mes, ano);
+	}
+	public Map<String, Integer> recuperarPorAno() {
+		return this.gerenciamento.recuperarPorAno();
+	}
+	public Map<String, Integer> recuperarPorMes(String ano) {
+		return this.gerenciamento.recuperarPorMes(ano);
+	}
+
+	
 }

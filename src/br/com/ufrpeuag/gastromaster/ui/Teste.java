@@ -1,4 +1,4 @@
-/*package br.com.ufrpeuag.gastromaster.ui;
+package br.com.ufrpeuag.gastromaster.ui;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -74,20 +74,27 @@ public class Teste {
 			MesaDisponibilidadeInvalidaException, IDRecuperarMesaException, MesaInexistenteException, PratoExistenteException, PrecoInvalidoException, IDRecuperacaoItemInvalidoException, PratoInexistenteException, ProdutoInexistenteException, ProdutoExistenteException, QuantidadeProdutoInvalidaException, QuantidadeInvalidaException, PedidoInvalidoException, PedidoVazioException, PedidoInexistenteException, ConcluirPagamentoException, ExceptionRecuperarUltimoID, ContaGerarException, RelatorioVazioException {
 
 		RepositorioGerenciamentoContas rg =new RepositorioGerenciamentoContas();
-		RepositorioGerenciamentoContas gn = new RepositorioGerenciamentoContas();
-		LocalDate data = LocalDate.now();  
+		RepositorioConta rc = new RepositorioConta();
 		
-		try {
-		Map<String, Integer> example=null;
-		example = gn.reucuperarPorMes(data);
-		for (String key : example.keySet()) {
-			Integer value = example.get(key);
-			System.out.println("CHave "+ key+" Valor "+value);
-           }
-		}catch(ArrayIndexOutOfBoundsException a) {
-			System.out.println("Lista Vazia");
-			a.printStackTrace();
-		}
+		LocalDate data = LocalDate.now();  
+		//rc.recuperarPorMesa();
+		/*
+		 * try { Map<String, Integer> example=null; example = gn.reucuperarPorMes(data);
+		 * for (String key : example.keySet()) { Integer value = example.get(key);
+		 * System.out.println("CHave "+ key+" Valor "+value); }
+		 * }catch(ArrayIndexOutOfBoundsException a) { System.out.println("Lista Vazia");
+		 * a.printStackTrace(); }
+		 
+		Conta c =null;
+		Pedido p =null;
+		RepositorioConta rc = new RepositorioConta();
+		RepositorioPedido rp = new RepositorioPedido();
+		p = rp.recuperar(4);
+		c = rc.recuperar(4);
+		rp.deletar(p);
+		rc.deletar(c);
+		*/
+		//System.out.println(c);
 		// Garcom e endereco cadastrar
 
 		/*
@@ -383,10 +390,9 @@ public class Teste {
 		// LISTAR TODOS
 
 		System.out.println(Fachada.getSingleton().listarTodosGerenciamentoContas());
-*/
 		/*
 		 * System.out.println(Fachada.getSingleton().listarTodosPedidos());
 		 * System.out.println(Fachada.getSingleton().listarPedidosPorMesa(1));
-		 */	//}
+		 */	}
 	
-//}
+}

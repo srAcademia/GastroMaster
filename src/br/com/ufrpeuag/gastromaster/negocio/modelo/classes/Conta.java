@@ -1,6 +1,5 @@
 package br.com.ufrpeuag.gastromaster.negocio.modelo.classes;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 public class Conta {
@@ -76,11 +75,7 @@ public class Conta {
 	@Override
 	public String toString() {
 
-		java.sql.Date date = java.sql.Date.valueOf(this.data);
-		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-		String dataFormatada = formatador.format(date);
-
-		return "Conta [id_conta=" + id_conta + ", data=" + dataFormatada + ", pedido=" + pedido + ", garcom=" + garcom
+		return "Conta [id_conta=" + id_conta + ", pedido=" + pedido + ", garcom=" + garcom
 				+ ", mesa=" + mesa + ", valor=" + valor + "]\n";
 	}
 

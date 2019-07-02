@@ -57,20 +57,10 @@ public class RepositorioConta implements IContaDao {
 
 	@Override
 	public Conta recuperar(Integer codigo) {
-		String sql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
-				+ "JOIN Cardapio card on (p.cod_cardapio=card.id_cardapio)  \r\n"
-				+ "JOIN Produto prod on(p.cod_produto =Prod.id_produto) \r\n"
-				+ "JOIN Garcom g on (c.cod_garcom = g.id_garcom)\r\n"
-				+ "JOIN Endereco e on (g.cod_endereco=e.id_endereco)\r\n"
-				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n" + "WHERE id_conta = ?";
+		
+		String sql = "SELECT * from conta c join Pedido p on c.cod_pedido = p.id_pedido where c.id_conta = ?;";
 
-		Conta c = null;
-		Mesa m = null;
-		Pedido pedido = null;
-		Garcom g = null;
-		Produto prod = null;
-		Cardapio card = null;
-		Endereco e = null;
+		Conta c = new Conta();
 
 		try {
 
@@ -81,64 +71,15 @@ public class RepositorioConta implements IContaDao {
 
 			if (result.next()) {
 
-				c = new Conta();
-				m = new Mesa();
-				pedido = new Pedido();
-				g = new Garcom();
-				card = new Cardapio();
-				prod = new Produto();
-				e = new Endereco();
-
 				c.setId_conta(result.getInt("id_conta"));
-				c.setData(Data.mudarDataParaLocalDate(result.getString("data")));
+				c.setValor(0);
+				c.setData(null);
+				c.setGarcom(null);
+				c.setMesa(null);
+				c.setPedido(null);
 
-				// Pedido
-				pedido.setId_pedido(result.getInt("id_pedido"));
-
-				card.setId_cardapio(result.getInt("Id_cardapio"));
-				card.setPrato(result.getString("prato"));
-				card.setPreco(result.getDouble("preco"));
-				pedido.setCardapio(card);
-
-				prod.setId_produto(result.getInt("id_produto"));
-				prod.setNome(result.getString("nome"));
-				prod.setQuantidade(result.getInt("quantidade"));
-				prod.setPreco(result.getDouble("preco"));
-				pedido.setProduto(prod);
-				pedido.setValor(result.getDouble("valor"));
-				c.setPedido(pedido);
-
-				// Garcom
-				g.setId_garcom(result.getInt("id_garcom"));
-				g.setNome(result.getString("nome"));
-				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(Data.mudarDataParaLocalDate(result.getString("dataNasc")));
-				g.setTelefone(result.getString("telefone"));
-				g.setEmail(result.getString("email"));
-				g.setSalario(result.getDouble("salario"));
-				e.setId_endereco(result.getInt("id_endereco"));
-				e.setCidade(result.getString("cidade"));
-				e.setBairro(result.getString("Bairro"));
-				e.setRua(result.getString("rua"));
-				e.setNumero(result.getInt("numero"));
-				e.setCep(result.getString("cep"));
-				g.setIdentificador(result.getString("identificador"));
-				g.setEndereco(e);
-
-				c.setGarcom(g);
-
-				// Mesa
-				m.setId_mesa(result.getInt("id_mesa"));
-				m.setNumero(result.getInt("numero"));
-				m.setDisponibilidade(result.getInt("disponibilidade"));
-
-				c.setMesa(m);
-
-				c.setValor(result.getDouble("valor"));
-
-				return c;
 			}
-
+			return c;
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {
@@ -341,19 +282,12 @@ public class RepositorioConta implements IContaDao {
 		Conta c = null;
 		Mesa m = null;
 		Pedido pedido = null;
-		Garcom g = null;
-		Produto prod = null;
-		Cardapio card = null;
-		Endereco e = null;
-
+		Garcom g = null; 
 		List<Conta> lista = new ArrayList<>();
 
-		String sql = "SELECT *\r\n" + "FROM Conta c join pedido p on (c.cod_pedido=p.id_pedido) \r\n"
-				+ "JOIN Cardapio card on (p.cod_cardapio=card.id_cardapio)  \r\n"
-				+ "JOIN Produto prod on(p.cod_produto =Prod.id_produto) \r\n"
-				+ "JOIN Garcom g on (c.cod_garcom = g.id_garcom)\r\n"
-				+ "JOIN Endereco e on (g.cod_endereco=e.id_endereco)\r\n"
-				+ "JOIN Mesa m on ( c.cod_mesa =m.id_mesa )\r\n" + "WHERE c.cod_mesa = ?";
+		String sql = "SELECT *\r\n" + 
+				"from conta \r\n" + 
+				"where cod_mesa = ?";
 
 		try {
 
@@ -367,53 +301,20 @@ public class RepositorioConta implements IContaDao {
 				m = new Mesa();
 				pedido = new Pedido();
 				g = new Garcom();
-				card = new Cardapio();
-				prod = new Produto();
-				e = new Endereco();
 
 				c.setId_conta(result.getInt("id_conta"));
 				c.setData(Data.mudarDataParaLocalDate(result.getString("data")));
 
 				// Pedido
-				pedido.setId_pedido(result.getInt("id_pedido"));
-
-				card.setId_cardapio(result.getInt("Id_cardapio"));
-				card.setPrato(result.getString("prato"));
-				card.setPreco(result.getDouble("preco"));
-				pedido.setCardapio(card);
-
-				prod.setId_produto(result.getInt("id_produto"));
-				prod.setNome(result.getString("nome"));
-				prod.setQuantidade(result.getInt("quantidade"));
-				prod.setPreco(result.getDouble("preco"));
-				pedido.setProduto(prod);
-				pedido.setValor(result.getDouble("valor"));
-				c.setPedido(pedido);
-
+				pedido.setId_pedido(result.getInt("cod_pedido"));
+				c.setPedido(pedido);		
+				
 				// Garcom
-				g.setId_garcom(result.getInt("id_garcom"));
-				g.setNome(result.getString("nome"));
-				g.setCpf(result.getString("cpf"));
-				g.setDataNasc(Data.mudarDataParaLocalDate(result.getString("dataNasc")));
-				g.setTelefone(result.getString("telefone"));
-				g.setEmail(result.getString("email"));
-				g.setSalario(result.getDouble("salario"));
-				e.setId_endereco(result.getInt("id_endereco"));
-				e.setCidade(result.getString("cidade"));
-				e.setBairro(result.getString("Bairro"));
-				e.setRua(result.getString("rua"));
-				e.setNumero(result.getInt("numero"));
-				e.setCep(result.getString("cep"));
-				g.setIdentificador(result.getString("identificador"));
-				g.setEndereco(e);
-
+				g.setId_garcom(result.getInt("cod_garcom"));
 				c.setGarcom(g);
 
 				// Mesa
-				m.setId_mesa(result.getInt("id_mesa"));
-				m.setNumero(result.getInt("numero"));
-				m.setDisponibilidade(result.getInt("disponibilidade"));
-
+				m.setId_mesa(result.getInt("cod_mesa"));
 				c.setMesa(m);
 
 				c.setValor(result.getDouble("valor"));

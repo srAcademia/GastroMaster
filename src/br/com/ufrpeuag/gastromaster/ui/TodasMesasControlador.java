@@ -14,13 +14,11 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.MesaInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.RecuperarCPFException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.GerenciamentoContas;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Mesa;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Pedido;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Produto;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -142,9 +140,9 @@ public class TodasMesasControlador implements Initializable{
 		if(mesa != null) {
 			numeroLabel.setText(Integer.toString(mesa.getNumero()));
 			if(mesa.getDisponibilidade() == 1) {
-				disponibilidadeLabel.setText("Disponível");
+				disponibilidadeLabel.setText("Disponï¿½vel");
 			} else {
-				disponibilidadeLabel.setText("Indisponível");
+				disponibilidadeLabel.setText("Indisponï¿½vel");
 			}
 			
 		} else {
@@ -222,7 +220,7 @@ public class TodasMesasControlador implements Initializable{
 			EditarTodasMesas editar = new EditarTodasMesas(mesa);
 			editar.start(new Stage());
 		} else {
-			CaixasDeAlerta.CaixaErro("Alterar Mesa", "Mesa não encontrada", "Selecione uma mesa para alterar.");
+			CaixasDeAlerta.CaixaErro("Alterar Mesa", "Mesa nï¿½o encontrada", "Selecione uma mesa para alterar.");
 		}
 		listarMesas();
 	}
@@ -237,7 +235,7 @@ public class TodasMesasControlador implements Initializable{
 			FazerPedido pedir = new FazerPedido(mesa, Double.parseDouble(valorLabel.getText()), garcom);
 			pedir.start(new Stage());
 		} else {
-			CaixasDeAlerta.CaixaErro("Fazer Pedido", "Mesa não encontrada", "Selecione uma mesa para fazer o pedido.");
+			CaixasDeAlerta.CaixaErro("Fazer Pedido", "Mesa nï¿½o encontrada", "Selecione uma mesa para fazer o pedido.");
 		}
 		listarPedidos(mesa);
 		gerarValorTotal(mesa);
@@ -253,7 +251,7 @@ public class TodasMesasControlador implements Initializable{
 					List<Conta> contas = new ArrayList<>();
 					contas = Fachada.getSingleton().recuperarContaPorMesa(mesa.getNumero());
 					if(contas == null || contas.isEmpty()) {
-						CaixasDeAlerta.CaixaErro("Realizar Pagamento", "Pedidos não encontrados", "Peça algo para poder pagar.");
+						CaixasDeAlerta.CaixaErro("Realizar Pagamento", "Pedidos nï¿½o encontrados", "Peï¿½a algo para poder pagar.");
 					}else {
 						GerenciamentoContas gerenciamento = new GerenciamentoContas(Fachada.getSingleton().recuperarGarcomPorCPF(cpfGarcom.getText()), 
 								mesa, Fachada.getSingleton().mostrarValorConta(contas.get(0)), contas.get(0).getData());
@@ -262,7 +260,7 @@ public class TodasMesasControlador implements Initializable{
 						Fachada.getSingleton().deletarTodosPedidosPelaMesa(mesa.getNumero());
 					}
 				} else {
-					CaixasDeAlerta.CaixaErro("Realizar Pagamento", "Mesa não encontrada", "Selecione uma mesa para fazer o pagamento.");
+					CaixasDeAlerta.CaixaErro("Realizar Pagamento", "Mesa nï¿½o encontrada", "Selecione uma mesa para fazer o pagamento.");
 				}
 				listarPedidos(mesa);
 				gerarValorTotal(mesa);
@@ -278,13 +276,23 @@ public class TodasMesasControlador implements Initializable{
 			if (confirmacao == true) {
 				Conta conta = new Conta();
 				if (pedido != null) {
+					System.out.println(pedido.getId_pedido());
 					conta = Fachada.getSingleton().recuperarContaID(pedido.getId_pedido());
 					if (pedido.getProduto() != null) {
 						Fachada.getSingleton().adicionarQuantidadeProduto(pedido.getProduto(), 1);
 					}
-					Fachada.getSingleton().deletarConta(conta);
+					System.out.println(conta);
+					System.out.println(pedido);
 					Fachada.getSingleton().deletarPedido(pedido);
-					CaixasDeAlerta.CaixaConcluido("Deletar Pedido", "Pedido deletado.");
+					System.out.println("Enrtro");
+					Fachada.getSingleton().deletarConta(conta);
+					CaixasDeAlerta.CaixaConcluido("Deletar Pedido", "Pedido deletado.");Mesa mesa = new Mesa();
+					mesa = mesaList.getSelectionModel().getSelectedItem();
+					listarPedidos(mesa);
+					gerarValorTotal(mesa);
+					
+				}else {
+					CaixasDeAlerta.CaixaErro("Deletar Pedido", "Pedidos nÃ£o encontrados", "Selecione um pedido para deletar.");
 				}
 			}
 		}catch(PedidoInexistenteException ex) {

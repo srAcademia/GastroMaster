@@ -21,12 +21,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GraficoLucroMensalControlador extends Application {
-	
+
 	private static Stage stage = new Stage();
-	
+
 	public void mostrarGrafico(LocalDate data) throws SQLException {
+		
 		RepositorioGerenciamentoContas gn = new RepositorioGerenciamentoContas();
-		Map<String, Integer> example = gn.recuperarPorMes(data);
+		
+		Map<String, Integer> example = gn.recuperarPorMes("2019");
 
 		CategoryAxis xAxis = new CategoryAxis();
 		xAxis.setLabel("Mês ");
@@ -59,36 +61,35 @@ public class GraficoLucroMensalControlador extends Application {
 
 		stage.show();
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		LocalDate data = LocalDate.now();
-		primaryStage.setTitle("creating date picker"); 
-		TilePane r = new TilePane(); 
-        Label l = new Label(Fachada.getSingleton().mudarDataParaString(data)); 
-        DatePicker d = new DatePicker(); 
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() { 
-            public void handle(ActionEvent e) 
-            { 
-            	LocalDate i = d.getValue(); 
-                l.setText("Date :" + i); 
-                
-            }
-        }; 
-        data = Fachada.getSingleton().mudarDataParaLocalDate(l.getText());
-        d.setShowWeekNumbers(true); 
-        d.setOnAction(event); 
-        r.getChildren().add(d); 
-        r.getChildren().add(l); 
-        Scene sc = new Scene(r, 200, 200); 
-        primaryStage.setScene(sc); 
+		primaryStage.setTitle("creating date picker");
+		TilePane r = new TilePane();
+		Label l = new Label(Fachada.getSingleton().mudarDataParaString(data));
+		DatePicker d = new DatePicker();
+		EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				LocalDate i = d.getValue();
+				l.setText("Date :" + i);
+
+			}
+		};
+		data = Fachada.getSingleton().mudarDataParaLocalDate(l.getText());
+		d.setShowWeekNumbers(true);
+		d.setOnAction(event);
+		r.getChildren().add(d);
+		r.getChildren().add(l);
+		Scene sc = new Scene(r, 200, 200);
+		primaryStage.setScene(sc);
 		primaryStage.show();
 		mostrarGrafico(data);
 
 	}
+
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
 
 }

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -245,17 +244,29 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 	}
 
 	@Override
-	public Map<String, Integer> recuperarPorDia(LocalDate data) {
+	public Map<String, Integer> recuperarPorDia(String mes, String ano) {
 
 		String sql = "select data,sum(valorTotal) from GerenciamentoContas where data like ? GROUP by data ";
 
 		Map<String, Integer> mapa = new HashMap<String, Integer>();
 
-		String date = Data.mudarDataParaString(data);
-
 		try {
-
-			date = "%/" + date.charAt(3) + date.charAt(4) + "/%";
+			
+			if(mes.equals("jan")) {mes = "01";
+			}else if(mes.equals("fev")) {mes = "02";
+			}else if(mes.equals("mar")) {mes = "03";
+			}else if(mes.equals("abr")) {mes = "04";
+			}else if(mes.equals("maio")) {mes = "05";
+			}else if(mes.equals("jun")) {mes = "06";
+			}else if(mes.equals("jul")) {mes = "07";
+			}else if(mes.equals("ago")) {mes = "08";
+			}else if(mes.equals("set")) {mes = "09";
+			}else if(mes.equals("out")) {mes = "10";
+			}else if(mes.equals("nov")) {mes = "11";
+			}else {mes = "12";
+			}
+			
+			String date = "%/"+mes+"/"+ano+"%";
 			pstmt = this.conn.prepareStatement(sql);
 			pstmt.setString(1, date);
 			result = pstmt.executeQuery();
@@ -329,6 +340,11 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 				quant = 0;
 				c = 0;
 			}
+			/*
+			 * ArrayList<String> anos = new ArrayList<>(); for (String key : mapa.keySet())
+			 * { Integer value = mapa.get(key); anos.add(key);
+			 * System.out.println("KEY: "+key+" VALUE: "+value); } System.out.println(anos);
+			 */
 
 			return mapa;
 		} catch (SQLException e) {
@@ -347,7 +363,7 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 	}
 
 	@Override
-	public Map<String, Integer> recuperarPorMes(LocalDate data) {
+	public Map<String, Integer> recuperarPorMes(String ano) {
 
 		int c = 0;
 		String dat = "";
@@ -357,12 +373,9 @@ public class RepositorioGerenciamentoContas implements IGerenciamentoContasDao {
 
 		Map<String, Integer> mapa = new HashMap<String, Integer>();
 
-
-		String date = Data.mudarDataParaString(data);
-
 		try {
 
-			date = "%/" + date.charAt(6) + date.charAt(7) +  date.charAt(8) + date.charAt(9) + "%";
+			String date = "%/"+ano+"%";
 
 			pstmt = this.conn.prepareStatement(sql);
 			pstmt.setString(1, date);

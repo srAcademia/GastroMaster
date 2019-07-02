@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.ListarTodosInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.PedidoVazioException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeInvalidaException;
+import br.com.ufrpeuag.gastromaster.negocio.excecoes.QuantidadeProdutoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Cardapio;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Conta;
@@ -33,6 +35,7 @@ public class FazerPedidoControlador implements Initializable{
 	private ListView<Produto> produtoList;
 	@FXML
 	private Button concluiPedido;
+	
 	
 	private List<Cardapio> pratos = new ArrayList<>();
 	private List<Produto> produtos = new ArrayList<>();
@@ -64,23 +67,25 @@ public class FazerPedidoControlador implements Initializable{
 	}
 	
 	@FXML
-	public void handleConcluirPedido(ActionEvent event)throws PedidoInvalidoException, PedidoVazioException, SQLException  {
+	public void handleConcluirPedido(ActionEvent event)throws PedidoInvalidoException, PedidoVazioException, QuantidadeInvalidaException, QuantidadeProdutoInvalidaException, SQLException  {
 		try {
 			Produto produto = new Produto();
 			produto = produtoList.getSelectionModel().getSelectedItem();
 			Cardapio cardapio = new Cardapio();
 			cardapio = cardapioList.getSelectionModel().getSelectedItem();
 			Pedido pedido = new Pedido(cardapio, produto, valorMesa2, mesa2);
-			Fachada.getSingleton().cadastrarPedido(pedido);
-			int id = Fachada.getSingleton().recuperarUltimoIDPedido();
-			pedido = Fachada.getSingleton().recuperarPedidoPorID(id);
 			if (pedido.getProduto() != null) {
 				Fachada.getSingleton().removerQuantidadeProduto(pedido.getProduto(), 1);
 			}
+			Fachada.getSingleton().cadastrarPedido(pedido);
+			int id = Fachada.getSingleton().recuperarUltimoIDPedido();
+			pedido = Fachada.getSingleton().recuperarPedidoPorID(id);
 			LocalDate localDate = LocalDate.now();
 		   	Conta conta = new Conta(localDate, pedido, garcom2, mesa2, pedido.getValor());
 		    Fachada.getSingleton().cadastrarConta(conta);
-		}catch( PedidoInvalidoException | PedidoVazioException ex) {
+		}catch(QuantidadeInvalidaException | QuantidadeProdutoInvalidaException ex) {
+			CaixasDeAlerta.CaixaErro("Realizar Pedido", "Verifque o Estoque.", ex.getLocalizedMessage());
+		}catch( PedidoInvalidoException | PedidoVazioException  ex) {
 			CaixasDeAlerta.CaixaErro("Realizar Pedido", "Campo inv�lido.", ex.getLocalizedMessage());
 		}catch(Exception ex) {
 			CaixasDeAlerta.CaixaErro("Realizar Pedido", "Erro inesperado.", "Erro inesperado.");

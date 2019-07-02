@@ -43,10 +43,6 @@ public class PedidoNegocio {
 	}
 
 	public void deletarPedido(Pedido pedido) throws PedidoInexistenteException {
-		if (repPedido.retornarId(pedido.getCardapio().getId_cardapio(), pedido.getProduto().getId_produto(),
-				pedido.getMesa().getId_mesa()) == 0) {
-			throw new PedidoInexistenteException();
-		}
 		repPedido.deletar(pedido);
 	}
 
