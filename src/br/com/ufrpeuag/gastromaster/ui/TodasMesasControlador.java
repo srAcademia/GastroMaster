@@ -279,15 +279,11 @@ public class TodasMesasControlador implements Initializable{
 			if (confirmacao == true) {
 				Conta conta = new Conta();
 				if (pedido != null) {
-					System.out.println(pedido.getId_pedido());
 					conta = Fachada.getSingleton().recuperarContaID(pedido.getId_pedido());
 					if (pedido.getProduto() != null) {
 						Fachada.getSingleton().adicionarQuantidadeProduto(pedido.getProduto(), 1);
 					}
-					System.out.println(conta);
-					System.out.println(pedido);
 					Fachada.getSingleton().deletarPedido(pedido);
-					System.out.println("Enrtro");
 					Fachada.getSingleton().deletarConta(conta);
 					CaixasDeAlerta.CaixaConcluido("Deletar Pedido", "Pedido deletado.");Mesa mesa = new Mesa();
 					mesa = mesaList.getSelectionModel().getSelectedItem();
@@ -316,7 +312,7 @@ public class TodasMesasControlador implements Initializable{
 				CaixasDeAlerta.CaixaErro("Deletar Mesa", ex.getLocalizedMessage(), "Selecione uma mesa para mudar a disponibilidade..");
 			}
 		} else {
-			CaixasDeAlerta.CaixaErro("Mudar Disponibilidade", "Mesa não encontrada", "Selecione uma mesa mudar a disponibilidade.");
+			CaixasDeAlerta.CaixaErro("Mudar Disponibilidade", "Mesa nï¿½o encontrada", "Selecione uma mesa mudar a disponibilidade.");
 		}
 		listarMesas();
 	}

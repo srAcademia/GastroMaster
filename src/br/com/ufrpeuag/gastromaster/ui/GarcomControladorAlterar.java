@@ -56,9 +56,6 @@ public class GarcomControladorAlterar {
 	@FXML
 	private Button concluirAlterarGarcom;
 
-	@FXML
-	private Button cancelarGarcom;
-
 	private static Garcom garcom2;
 
 	public void initialize(URL arg0, ResourceBundle arg1) throws SQLException {
@@ -106,9 +103,6 @@ public class GarcomControladorAlterar {
 		cepFieldGarcom.setText(garcom2.getEndereco().getCep());
 	}
 
-	@FXML
-	public void handleCancelar(ActionEvent event) {
-	}
 
 	public static Garcom getGarcom2() {
 		return garcom2;

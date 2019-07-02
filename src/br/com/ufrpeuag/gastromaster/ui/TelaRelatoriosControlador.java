@@ -27,6 +27,8 @@ public class TelaRelatoriosControlador implements Initializable{
 	private Button gerarGrafico;
 	@FXML
 	private Button gerarGraficoAnual;
+	@FXML
+	private Button gerarGraficoMensal;
 	
     private ObservableList<String> listaObservabelAnos;
     private ObservableList<String> listaObservabelMeses;
@@ -90,11 +92,6 @@ public class TelaRelatoriosControlador implements Initializable{
 			GraficoLucroDiarioControlador gerarGraficoDias = new GraficoLucroDiarioControlador(ano2, mes2);
 			gerarGraficoDias.start(new Stage());
 		}
-		else if (anos.getSelectionModel().getSelectedItem() != null && meses.getSelectionModel().getSelectedItem() == null) {
-			ano2 = anos.getSelectionModel().getSelectedItem().toString();
-			GraficoLucroMensalControlador gerarGraficoMensal = new GraficoLucroMensalControlador(ano2);
-			gerarGraficoMensal.start(new Stage());
-		}
 
 	}
 	@FXML
@@ -102,6 +99,15 @@ public class TelaRelatoriosControlador implements Initializable{
 		if (anos.getItems().isEmpty() == false) {
 			GraficoLucroAnualControlador gerarGraficoAnual = new GraficoLucroAnualControlador();
 			gerarGraficoAnual.start(new Stage());
+		}
+	}
+	
+	@FXML
+	public void handleGerarGraficoMensal(ActionEvent event) throws Exception {
+		if (anos.getSelectionModel().getSelectedItem() != null) {
+			ano2 = anos.getSelectionModel().getSelectedItem().toString();
+			GraficoLucroMensalControlador gerarGraficoMensal = new GraficoLucroMensalControlador(ano2);
+			gerarGraficoMensal.start(new Stage());
 		}
 	}
 

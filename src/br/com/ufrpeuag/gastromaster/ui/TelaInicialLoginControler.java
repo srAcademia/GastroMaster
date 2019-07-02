@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class TelaInicialLoginControler implements Initializable {
@@ -40,6 +41,7 @@ public class TelaInicialLoginControler implements Initializable {
 				CaixasDeAlerta.CaixaErro("Login", "Login Inválido", "Login não encontrado.");
 			}
 			else if(gerente != null){
+				window.initModality(Modality.APPLICATION_MODAL);
 				Parent root = null;
 		        File css = new File("base16-google-dark.css");
 		        String fileURI = css.toURI().toString();

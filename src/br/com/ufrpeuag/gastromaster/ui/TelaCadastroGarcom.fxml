@@ -58,7 +58,6 @@
       <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0">
          <children>
             <Button fx:id="cadastrarGarcom" mnemonicParsing="false" onAction="#handleConcluirGarcom" text="Concluir" />
-            <Button fx:id="cancelarGarcom" mnemonicParsing="false" onAction="#handleCancelar" style="-fx-background-color: #7f1215;" text="Cancelar" />
          </children>
       </HBox>
    </children>

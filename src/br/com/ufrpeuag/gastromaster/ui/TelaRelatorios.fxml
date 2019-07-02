@@ -3,12 +3,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="400.0" prefWidth="800.0" styleClass="background" stylesheets="@base16-google-dark.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ufrpeuag.gastromaster.ui.TelaRelatoriosControlador">
    <children>
       <ComboBox fx:id="anos" prefWidth="150.0" promptText="Ano" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="60.0" />
       <ComboBox fx:id="meses" prefWidth="150.0" promptText="Mês" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="100.0" />
-      <Button fx:id="gerarGrafico" layoutX="10.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleGerarGrafico" text="Gerar Gráfico" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="143.0" />
-      <Button fx:id="gerarGraficoAnual" layoutX="10.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleGerarGraficoAnual" text="Gráfico Anual" />
+      <VBox layoutX="10.0" layoutY="280.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+         <children>
+            <Button fx:id="gerarGrafico" mnemonicParsing="false" onAction="#handleGerarGrafico" text="Gráfico Diário" />
+            <Button fx:id="gerarGraficoMensal" mnemonicParsing="false" onAction="#handleGerarGraficoMensal" text="Gráfico Mensal" />
+            <Button fx:id="gerarGraficoAnual" mnemonicParsing="false" onAction="#handleGerarGraficoAnual" text="Gráfico Anual" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

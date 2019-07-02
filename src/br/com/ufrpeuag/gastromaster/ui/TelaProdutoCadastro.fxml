@@ -18,7 +18,6 @@
       <HBox spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0">
          <children>
             <Button fx:id="concluirProdutoCadastro" mnemonicParsing="false" onAction="#handleConcluirCadastro" text="Concluir" />
-            <Button fx:id="cancelarProdutoCadastro" mnemonicParsing="false" onAction="#handleCancelar" style="-fx-background-color: #7f1215;" text="Cancelar" />
          </children>
       </HBox>
    </children>

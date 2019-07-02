@@ -212,7 +212,6 @@ public class RepositorioPedido implements IPedidoDao {
 			}
 		}
 		if (idProduto == 0) {
-			System.out.println("entrou prod");
 			String sql = "SELECT * from Pedido pe\r\n" + "join cardapio c on pe.cod_cardapio = c.id_cardapio\r\n"
 					+ "join mesa m on (pe.cod_mesa = m.id_mesa)\r\n" + "where pe.id_pedido = ?  and cod_produto = 0;";
 			try {
