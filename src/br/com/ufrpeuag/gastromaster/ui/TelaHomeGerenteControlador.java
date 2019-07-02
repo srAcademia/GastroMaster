@@ -35,6 +35,7 @@ public class TelaHomeGerenteControlador {
 		MainAppGerente.changeScreen("estoque");
 	}
 	public void handleTelaRelatorios(ActionEvent event) {
+		MainAppGerente.changeScreen("relatorios");
 	}
 	public void handleSair(ActionEvent event) {
 		boolean confirmacao = CaixasDeAlerta.CaixaConfirmar("Sair Gerente", "Tem certeza de que deseja sair?");
@@ -42,6 +43,6 @@ public class TelaHomeGerenteControlador {
 			mainAppLogin.start(new Stage());
 			MainAppGerente.getStage().close();
 		}
-	}
+	}	
 
 }

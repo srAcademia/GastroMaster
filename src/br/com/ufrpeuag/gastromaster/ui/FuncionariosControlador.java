@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GarcomInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteInexistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Garcom;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import javafx.beans.property.SimpleStringProperty;
@@ -122,10 +121,34 @@ public class FuncionariosControlador implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mostarDetalhesGerente(null);
-		mostarDetalhesGarcom(null);
-		gerenteList.getSelectionModel().selectedItemProperty().addListener((observable, odlValue, newValeu) -> mostarDetalhesGerente(newValeu));
-		garcomList.getSelectionModel().selectedItemProperty().addListener((observable, odlValue, newValeu) -> mostarDetalhesGarcom(newValeu));
+		try {
+			mostarDetalhesGerente(null);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			mostarDetalhesGarcom(null);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		gerenteList.getSelectionModel().selectedItemProperty().addListener((observable, odlValue, newValeu) -> {
+			try {
+				mostarDetalhesGerente(newValeu);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		garcomList.getSelectionModel().selectedItemProperty().addListener((observable, odlValue, newValeu) -> {
+			try {
+				mostarDetalhesGarcom(newValeu);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 		
 	}
 	
@@ -144,11 +167,11 @@ public class FuncionariosControlador implements Initializable{
     
     }
 	
-	public void mostarDetalhesGerente(Gerente gerente) {
+	public void mostarDetalhesGerente(Gerente gerente) throws SQLException {
 		if(gerente != null) {
 			nomeLabelGerente.setText(gerente.getNome());
 			cpfLabelGerente.setText(gerente.getCpf());
-			dataNascLabelGerente.setText(Data.mudarDataParaString(gerente.getDataNasc()));
+			dataNascLabelGerente.setText(Fachada.getSingleton().mudarDataParaString((gerente.getDataNasc())));
 			telefoneLabelGerente.setText(gerente.getTelefone());
 			emailLabelGerente.setText(gerente.getEmail());
 			salarioLabelGerente.setText(Double.toString(gerente.getSalario()));
@@ -177,11 +200,11 @@ public class FuncionariosControlador implements Initializable{
 		
 	}
 	
-	public void mostarDetalhesGarcom(Garcom garcom) {
+	public void mostarDetalhesGarcom(Garcom garcom) throws SQLException {
 		if(garcom != null) {
 			nomeLabelGarcom.setText(garcom.getNome());
 			cpfLabelGarcom.setText(garcom.getCpf());
-			dataNascLabelGarcom.setText(Data.mudarDataParaString(garcom.getDataNasc()));
+			dataNascLabelGarcom.setText(Fachada.getSingleton().mudarDataParaString((garcom.getDataNasc())));
 			telefoneLabelGarcom.setText(garcom.getTelefone());
 			emailLabelGarcom.setText(garcom.getEmail());
 			salarioLabelGarcom.setText(Double.toString(garcom.getSalario()));

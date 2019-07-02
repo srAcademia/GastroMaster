@@ -8,7 +8,6 @@ import br.com.ufrpeuag.gastromaster.negocio.excecoes.CPFInvalidoException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.DataNascimentoInvalidaException;
 import br.com.ufrpeuag.gastromaster.negocio.excecoes.GerenteExistenteException;
 import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
-import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Data;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Endereco;
 import br.com.ufrpeuag.gastromaster.negocio.modelo.classes.Gerente;
 import javafx.event.ActionEvent;
@@ -52,7 +51,12 @@ public class GerenteControladorEditar implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		initGerente();
+		try {
+			initGerente();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
@@ -74,9 +78,9 @@ public class GerenteControladorEditar implements Initializable{
 		}
 	}
 	
-	public void initGerente() {
+	public void initGerente() throws SQLException {
 		nomeFieldGerente.setText(gerente2.getNome());
-		dataNascFieldGerente.setText(Data.mudarDataParaString(gerente2.getDataNasc()));
+		dataNascFieldGerente.setText(Fachada.getSingleton().mudarDataParaString((gerente2.getDataNasc())));
 		telefoneFieldGerente.setText(gerente2.getTelefone());
 		emailFieldGerente.setText(gerente2.getEmail()); 
 		salarioFieldGerente.setText(Double.toString(gerente2.getSalario()));

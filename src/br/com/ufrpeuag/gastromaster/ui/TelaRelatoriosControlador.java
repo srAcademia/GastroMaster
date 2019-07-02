@@ -25,10 +25,13 @@ public class TelaRelatoriosControlador implements Initializable{
 	private ComboBox<String> anos;
 	@FXML
 	private Button gerarGrafico;
+	@FXML
+	private Button gerarGraficoAnual;
+	
     private ObservableList<String> listaObservabelAnos;
     private ObservableList<String> listaObservabelMeses;
-    private static String ano2;
-	private static String mes2;
+    private static String ano2 = null;
+	private static String mes2 = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -38,12 +41,30 @@ public class TelaRelatoriosControlador implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			listarMeses(null);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		anos.getSelectionModel().selectedItemProperty().addListener((observable, odlValue, newValeu) -> {
+			try {
+				listarMeses(newValeu);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		
 	}
 	
 	public void listarAnos() throws SQLException {
 		Map<String, Integer> mapaAnos = new HashMap<String, Integer>();
-		mapaAnos = Fachada.getSingleton().recuperarPorAno();
 		ArrayList<String> anosArray = new ArrayList<>(); 
+		mapaAnos = Fachada.getSingleton().recuperarPorAno();
 		for (String key : mapaAnos.keySet()){ 
 			anosArray.add(key);	
 		}
@@ -52,8 +73,8 @@ public class TelaRelatoriosControlador implements Initializable{
     }
 	public void listarMeses(String ano) throws SQLException {
 		Map<String, Integer> mapaMeses = new HashMap<String, Integer>();
+		ArrayList<String> mesesArray = new ArrayList<>();
 		mapaMeses = Fachada.getSingleton().recuperarPorMes(ano);
-		ArrayList<String> mesesArray = new ArrayList<>(); 
 		for (String key : mapaMeses.keySet()){ 
 			mesesArray.add(key);	
 		}
@@ -63,9 +84,24 @@ public class TelaRelatoriosControlador implements Initializable{
 	
 	@FXML
 	public void handleGerarGrafico(ActionEvent event) throws Exception {
-		if(listaObservabelAnos != null && listaObservabelMeses != null) {
+		if(anos.getSelectionModel().getSelectedItem() != null && meses.getSelectionModel().getSelectedItem() != null) {
+			ano2 = anos.getSelectionModel().getSelectedItem().toString();
+			mes2 = meses.getSelectionModel().getSelectedItem().toString();
 			GraficoLucroDiarioControlador gerarGraficoDias = new GraficoLucroDiarioControlador(ano2, mes2);
 			gerarGraficoDias.start(new Stage());
+		}
+		else if (anos.getSelectionModel().getSelectedItem() != null && meses.getSelectionModel().getSelectedItem() == null) {
+			ano2 = anos.getSelectionModel().getSelectedItem().toString();
+			GraficoLucroMensalControlador gerarGraficoMensal = new GraficoLucroMensalControlador(ano2);
+			gerarGraficoMensal.start(new Stage());
+		}
+
+	}
+	@FXML
+	public void handleGerarGraficoAnual(ActionEvent event) throws Exception {
+		if (anos.getItems().isEmpty() == false) {
+			GraficoLucroAnualControlador gerarGraficoAnual = new GraficoLucroAnualControlador();
+			gerarGraficoAnual.start(new Stage());
 		}
 	}
 

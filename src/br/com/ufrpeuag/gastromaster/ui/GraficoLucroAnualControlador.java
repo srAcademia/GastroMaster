@@ -1,9 +1,8 @@
 package br.com.ufrpeuag.gastromaster.ui;
 
-import java.util.ArrayList;
 import java.util.Map;
 
-import br.com.ufrpeuag.gastromaster.dados.RepositorioGerenciamentoContas;
+import br.com.ufrpeuag.gastromaster.negocio.fachada.Fachada;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
@@ -18,10 +17,8 @@ public class GraficoLucroAnualControlador extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
-		RepositorioGerenciamentoContas gn = new RepositorioGerenciamentoContas();
 		
-		Map<String, Integer> example = gn.recuperarPorAno();
+		Map<String, Integer> example = Fachada.getSingleton().recuperarPorAno();
 		
 		CategoryAxis xAxis = new CategoryAxis();
 		xAxis.setLabel("Anos ");
